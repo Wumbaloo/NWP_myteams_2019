@@ -1,0 +1,13 @@
+*.o
+*~
+.idea
+.vscode
+vgcore*
+*client
+*server
+.vscode
+myteams
+boostrap*
+test_ftp.sh
+*.gc*
+tests/unit_tests
