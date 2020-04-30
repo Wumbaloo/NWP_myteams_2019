@@ -3,8 +3,8 @@
 .idea
 .vscode
 vgcore*
-*client
-*server
+myteams_cli
+myteams_server
 .vscode
 myteams
 boostrap*

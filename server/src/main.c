@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2019
-** My FTP
+** My Teams
 ** File description:
 ** Main file
 */
 
-#include "ftp.h"
+#include "teams.h"
 
 int main(int ac, char **av)
 {

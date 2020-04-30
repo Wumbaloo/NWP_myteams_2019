@@ -5,37 +5,28 @@
 ## Just a Makefile that compiles everything
 ##
 
-SRC_DIR	=	src/
-
-FILES	=	\
-
-MAIN_FILE	=	main.c
-
-SRC			=	$(addprefix $(SRC_DIR), $(FILES))
-SRC_MAIN	=	$(addprefix $(SRC_DIR), $(MAIN_FILE))
-
-OBJ		=	$(SRC:.c=.o)
-OBJ_MAIN=	$(SRC_MAIN:.c=.o)
-
-CFLAGS	=	-I include
-
-NAME	=	myftp
+NAME	=	myteams
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(OBJ_MAIN)
-	$(CC) -o $(NAME) $(OBJ) $(OBJ_MAIN)
+$(NAME):
+	make -C server
+	make -C client
 
 debug:
-	$(CC) -o $(NAME) $(SRC) $(SRC_MAIN) $(CFLAGS) -Wall -Werror -Wextra -g
+	make debug -C server
+	make debug -C client
 
 tests_run:
-	make -C tests tests_run from="$(CURDIR)" files="$(SRC)"
+	make tests_run -C client
+	make tests_run -C server
 
 clean:
-	rm -f $(NAME)
+	make clean -C server
+	make clean -C client
 
 fclean: clean
-	rm -f $(OBJ) $(OBJ_MAIN)
+	make fclean -C server
+	make fclean -C client
 
 re: fclean all
