@@ -38,11 +38,13 @@ int launch_server(int ac, char **av)
     teams_t *teams;
     int errors = error_handling(ac, av);
 
-    if (errors != 0)
+    if (!errors)
         return (84);
     else if (strcmp(av[1], "-help") == 0)
         return (display_help());
     teams = create_teams(errors);
     if (!teams || start_teams(teams) != 0)
         return (84);
+    free_teams(teams);
+    return (0);
 }

@@ -29,7 +29,7 @@ int check_port(char *port_str)
     port = atoi(port_str);
     if (port <= 0 || port > 65635)
         return (return_with_msg("The port should be included in [1-65535]", 1));
-    return (0);
+    return (port);
 }
 
 int error_handling(int ac, char **av)

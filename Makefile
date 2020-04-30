@@ -13,6 +13,12 @@ $(NAME):
 	make -C server
 	make -C client
 
+client:
+	make -C client
+
+server:
+	make -C server
+
 debug:
 	make debug -C server
 	make debug -C client

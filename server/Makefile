@@ -9,11 +9,13 @@ SRC_DIR	=	src/
 
 FILES	=	clients/free.c			\
 			clients/linked_list.c	\
+			core/free.c				\
 			core/initialization.c	\
 			core/launcher.c			\
 			core/monitoring.c		\
 			errors/arguments.c		\
 			errors/commands.c		\
+			useful/exit.c			\
 
 MAIN_FILE	=	main.c
 

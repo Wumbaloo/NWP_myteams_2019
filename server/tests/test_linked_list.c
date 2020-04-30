@@ -7,38 +7,26 @@
 
 #include <criterion/criterion.h>
 #include <stdlib.h>
-#include "teams.h"
+#include "prototypes.h"
 #include "structs.h"
 
-Test(insert_new_node, insert_when_empty)
+Test(insert_client, insert_when_empty)
 {
     client_t *head = NULL;
-    client_t *node = malloc(sizeof(client_t));
 
-    if (!node)
-        exit(84);
-    node->fd = 2;
-    node->next = NULL;
-    insert_new_node(&head, node);
+    insert_client(&head, 2);
     cr_assert_eq(head->fd, 2);
     free_list(head);
 }
 
-Test(insert_new_node, basic_insert)
+Test(insert_client, basic_insert)
 {
-    client_t *head = malloc(sizeof(client_t));
+    client_t *head = new_node(2);
     client_t *node;
 
     if (!head)
         exit(84);
-    node = malloc(sizeof(client_t));
-    if (!node)
-        exit(84);
-    head->fd = 1;
-    head->next = NULL;
-    node->fd = 2;
-    node->next = NULL;
-    insert_new_node(&head, node);
+    insert_client(&head, 2);
     cr_assert_eq(head->next->fd, 2);
     free_list(head);
 }
@@ -47,64 +35,37 @@ Test(delete_node, delete_when_empty)
 {
     client_t *head = NULL;
 
-    delete_node(head, head);
+    remove_client(head, 1);
     cr_assert_eq(head, NULL);
     free_list(head);
 }
 
 Test(delete_node, basic_delete)
 {
-    client_t *head = malloc(sizeof(client_t));
+    client_t *head = new_node(1);
     client_t *node;
 
     if (!head)
         exit(84);
-    node = malloc(sizeof(client_t));
-    if (!node)
-        exit(84);
-    head->fd = 1;
-    node->fd = 2;
-    node->next = NULL;
-    head->next = node;
-    delete_node(head, node);
-    cr_assert_eq(head->next, NULL);
-    free_list(head);
-}
-
-Test(delete_node, advanced_delete)
-{
-    client_t *head = malloc(sizeof(client_t));
-    client_t *node = malloc(sizeof(client_t));
-    client_t *node1 = malloc(sizeof(client_t));
-
-    if (!head || !node || !node1)
-        exit(84);
-    head->fd = 1;
-    node->fd = 2;
-    node1->fd = 3;
-    head->next = node;
-    node->next = node1;
-    node1->next = NULL;
-    delete_node(head, node);
-    cr_assert_eq(head->next->fd, 3);
+    insert_client(&head, 2);
+    insert_client(&head, 5);
+    remove_client(head, 2);
+    cr_assert_eq(head->next->fd, 5);
     free_list(head);
 }
 
 Test(delete_node, delete_inexistant)
 {
-    client_t *head = malloc(sizeof(client_t));
-    client_t *node;
+    client_t *head = new_node(1);
+    client_t *node = new_node(2);
 
     if (!head)
         exit(84);
-    node = malloc(sizeof(client_t));
     if (!node)
         exit(84);
-    head->fd = 1;
-    node->fd = 2;
     node->next = NULL;
     head->next = NULL;
-    delete_node(head, node);
+    remove_client(head, 2);
     cr_assert_eq(head->next, NULL);
     free_list(head);
     free_list(node);
@@ -114,44 +75,37 @@ Test(get_client, empty_getter)
 {
     client_t *head = NULL;
 
-    cr_assert_eq(get_client_by_id(head, 1), NULL);
+    cr_assert_eq(get_client(head, 1), NULL);
 }
 
 Test(get_client, normal_getter)
 {
-    client_t *head = malloc(sizeof(client_t));
-    client_t *node;
+    client_t *head = new_node(1);
+    client_t *node = new_node(2);
 
     if (!head)
         exit(84);
-    node = malloc(sizeof(client_t));
     if (!node)
         exit(84);
-    head->fd = 1;
-    node->fd = 2;
     node->next = NULL;
     head->next = node;
-
-    cr_assert_eq(get_client_by_id(head, 2), node);
+    cr_assert_eq(get_client(head, 2), node);
     free_list(head);
 }
 
 Test(get_client, getter_inexistant)
 {
-    client_t *head = malloc(sizeof(client_t));
-    client_t *node;
+    client_t *head = new_node(1);
+    client_t *node = new_node(2);
 
     if (!head)
         exit(84);
-    node = malloc(sizeof(client_t));
     if (!node)
         exit(84);
-    head->fd = 1;
-    node->fd = 2;
     node->next = NULL;
     head->next = NULL;
 
-    cr_assert_eq(get_client_by_id(head, 2), NULL);
+    cr_assert_eq(get_client(head, 2), NULL);
     free_list(head);
     free_list(node);
 }

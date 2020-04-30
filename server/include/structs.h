@@ -26,7 +26,7 @@ typedef enum
     ACTIVE
 } connection_mode;
 
-typedef struct
+typedef struct server_s
 {
     struct sockaddr_in addr;
     int control_socket;
@@ -42,16 +42,13 @@ typedef struct client_s
     auth_state password;
     bool is_connected;
     char *reply;
-    char *folder_path;
-    DIR *current_directory;
     connection_mode mode;
     struct client_s *next;
 } client_t;
 
-typedef struct
+typedef struct teams_s
 {
     server_t *server;
-    char *default_path;
     int maxfd;
     int act_idx;
     int *clients;

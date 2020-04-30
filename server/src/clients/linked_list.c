@@ -17,7 +17,7 @@ client_t *get_client(client_t *first, int fd)
 {
     client_t *copy = first;
 
-    while (copy->fd != fd)
+    while (copy && copy->fd != fd)
         copy = copy->next;
     return (copy);
 }
@@ -26,7 +26,6 @@ void send_replies(client_t *first, fd_set wr_set)
 {
     client_t *copy = first;
 
-    copy = copy->next;
     while (copy) {
         if (FD_ISSET(copy->fd, &wr_set) && copy->reply) {
             dprintf(copy->fd, "%s\r\n", copy->reply);
@@ -37,15 +36,13 @@ void send_replies(client_t *first, fd_set wr_set)
     }
 }
 
-client_t *new_node(int fd, char *path)
+client_t *new_node(int fd)
 {
     client_t *elem = malloc(sizeof(client_t));
 
-    if (!elem) {
-        perror("malloc");
-        exit(84);
-    }
-    elem = new_client(fd, path);
+    if (!elem)
+        perror_exit("malloc", 84);
+    elem = new_client(fd);
     elem->next = NULL;
     return (elem);
 }
@@ -53,22 +50,29 @@ client_t *new_node(int fd, char *path)
 void remove_client(client_t *first, int fd)
 {
     client_t *copy = first;
-    client_t *temp = NULL;
+    client_t *tmp = NULL;
 
-    while (copy->fd != fd) {
-        temp = copy;
-        copy = copy->next;
+    if (!first)
+        return;
+    for (; copy->next; copy = copy->next) {
+        if (copy->next->fd == fd && copy->next->next) {
+            tmp = copy->next;
+            copy->next = copy->next->next;
+            free_client(tmp);
+            break;
+        }
     }
-    temp->next = copy->next;
-    free_client(copy);
-    free(copy);
 }
 
-void insert_client(client_t *first, int fd, char *path)
+void insert_client(client_t **first, int fd)
 {
-    client_t *copy = first;
+    client_t *copy = (*first);
+    client_t *new = new_node(fd);
 
-    while (copy->next != NULL)
-        copy = copy->next;
-    copy->next = new_node(fd, path);
+    if (!*first) {
+        *first = new;
+        return;
+    }
+    for (; copy->next; copy = copy->next);
+    copy->next = new;
 }

@@ -13,3 +13,4 @@ boostrap*
 test_ftp.sh
 *.gc*
 tests/unit_tests
+lib/libmyteams.so

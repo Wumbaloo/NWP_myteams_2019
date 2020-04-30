@@ -54,7 +54,7 @@ void connection_received(teams_t *teams)
         if (teams->clients[i] == 0) {
             teams->clients[i] = new_socket;
             dprintf(new_socket, "%s\r\n", HELLO);
-            insert_client(teams->client_head, new_socket, teams->default_path);
+            insert_client(&teams->client_head, new_socket);
             break;
         } else
             full_connected++;
