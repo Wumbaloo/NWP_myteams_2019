@@ -7,7 +7,13 @@
 
 SRC_DIR	=	src/
 
-FILES	=	\
+FILES	=	clients/free.c			\
+			clients/linked_list.c	\
+			core/initialization.c	\
+			core/launcher.c			\
+			core/monitoring.c		\
+			errors/arguments.c		\
+			errors/commands.c		\
 
 MAIN_FILE	=	main.c
 

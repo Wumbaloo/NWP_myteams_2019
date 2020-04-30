@@ -5,7 +5,7 @@
 ** Main file
 */
 
-#include "teams.h"
+#include "prototypes.h"
 
 int main(int ac, char **av)
 {

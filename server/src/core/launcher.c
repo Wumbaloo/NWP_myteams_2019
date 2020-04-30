@@ -18,7 +18,7 @@ int start_teams(teams_t *teams)
         reset_update_set(teams);
         if (select(teams->maxfd + 1, &teams->readset, &teams->writeset,
             NULL, NULL) == -1)
-            return return_with_msg("Error on select", 1);
+            return (return_with_msg("Error on select", 1));
         else if (FD_ISSET(teams->server->control_socket, &teams->readset))
             connection_received(teams);
         check_for_instructions(teams);
@@ -33,15 +33,16 @@ int display_help(void)
     return (0);
 }
 
-int main(int ac, char **av)
+int launch_server(int ac, char **av)
 {
     teams_t *teams;
+    int errors = error_handling(ac, av);
 
-    if (ac == 2 && !strcmp(av[1], "-help"))
-        return display_help();
-    else if (error_handling(ac, av))
+    if (errors != 0)
         return (84);
-    teams = create_teams(atoi(av[1]), av[2]);
+    else if (strcmp(av[1], "-help") == 0)
+        return (display_help());
+    teams = create_teams(errors);
     if (!teams || start_teams(teams) != 0)
         return (84);
 }

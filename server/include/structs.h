@@ -35,7 +35,7 @@ typedef struct
     int data_port;
 } server_t;
 
-typedef struct
+typedef struct client_s
 {
     int fd;
     auth_state username;
@@ -45,15 +45,8 @@ typedef struct
     char *folder_path;
     DIR *current_directory;
     connection_mode mode;
+    struct client_s *next;
 } client_t;
-
-typedef struct element element;
-
-struct element
-{
-    client_t *client;
-    element *next;
-};
 
 typedef struct
 {
@@ -64,7 +57,7 @@ typedef struct
     int *clients;
     fd_set readset;
     fd_set writeset;
-    element *firstnode;
+    client_t *client_head;
 } teams_t;
 
 #endif
