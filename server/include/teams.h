@@ -21,7 +21,7 @@
 #define OK_DELE "250 File deleted."
 #define FAILED_DELE "550 Failed to delete the file."
 #define BAD_CMD "500 Unknown command."
-#define HELLO "220 Welcome on my_ftp's server"
+#define HELLO "220 Welcome on our teams server"
 #define QUIT "221 Goodbye.\r\n"
 #define NOOP "200 NOOP ok."
 #define USER "Anonymous"

@@ -7,8 +7,8 @@
 
 #include <criterion/criterion.h>
 #include <stdlib.h>
-#include "ftp.h"
-#include "clients.h"
+#include "teams.h"
+#include "structs.h"
 
 Test(insert_new_node, insert_when_empty)
 {
