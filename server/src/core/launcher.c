@@ -29,7 +29,7 @@ int start_teams(teams_t *teams)
 int display_help(void)
 {
     printf("USAGE: ./myteams_server port\n"
-           "\tport is the port number on which the server socket listens\n");
+            "\tport is the port number on which the server socket listens\n");
     return (0);
 }
 

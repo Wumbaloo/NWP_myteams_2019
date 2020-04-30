@@ -27,23 +27,29 @@ client_t *new_client(int fd)
     return (client);
 }
 
+void setup_server_config(server_t *server, int control_port)
+{
+    int reuse = 1;
+
+    if (setsockopt(server->control_socket, SOL_SOCKET, SO_REUSEPORT, &reuse,
+        sizeof(int)) < 0)
+        perror_exit("setsockopt", 84);
+    server->addr.sin_family = AF_INET;
+    server->addr.sin_port = htons(control_port);
+    server->addr.sin_addr.s_addr = htonl(INADDR_ANY);
+}
+
 server_t *create_server(int control_port)
 {
     server_t *server = malloc(sizeof(server_t));
     socklen_t server_length;
-    int reuse = 1;
 
     if (!server)
         perror_exit("malloc", 84);
     server->control_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (setsockopt(server->control_socket, SOL_SOCKET, SO_REUSEPORT, &reuse,
-        sizeof(int)) < 0)
-        perror_exit("setsockopt", 84);
     if (server->control_socket < 0)
         perror_exit("malloc", 84);
-    server->addr.sin_family = AF_INET;
-    server->addr.sin_port = htons(control_port);
-    server->addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    setup_server_config(server, control_port);
     server_length = sizeof(server->addr);
     if (bind(server->control_socket, (struct sockaddr *)&server->addr,
         server_length) == -1)
