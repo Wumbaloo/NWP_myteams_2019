@@ -13,6 +13,21 @@
 #include <unistd.h>
 #include "structs.h"
 
+//Clients prototypes ==> clients
+char *read_from_client(int fd);
+
+//Commands prototypes ==> commands
+void create_all_commands(command_t **head);
+void insert_command(command_t **head, command_t *node);
+void remove_command(command_t *head, command_t *node);
+void manage_command(teams_t *teams, int fd, char *input);
+void free_command(command_t *cmd);
+void free_commands_list(command_t *head);
+command_t *get_command(command_t *head, char *cmd);
+command_t *create_command(char *txt, int login,
+                            void (*ptr)(teams_t *, client_t *, void *));
+
+
 //Useful functions ==> useful
 void perror_exit(char *err, int exit_code);
 
@@ -42,7 +57,7 @@ int manage_connection(teams_t *teams, int fd, char *buffer);
 
 //Free Things
 void free_client(client_t *client);
-void free_list(client_t *head);
+void free_clients_list(client_t *head);
 void free_teams(teams_t *teams);
 
 #endif

@@ -8,7 +8,12 @@
 SRC_DIR	=	src/
 
 FILES	=	clients/free.c			\
+			clients/input.c			\
 			clients/linked_list.c	\
+			commands/free.c			\
+			commands/linked_list.c	\
+			commands/listing.c		\
+			commands/manager.c		\
 			core/free.c				\
 			core/initialization.c	\
 			core/launcher.c			\
@@ -25,6 +30,7 @@ SRC_MAIN	=	$(addprefix $(SRC_DIR), $(MAIN_FILE))
 OBJ		=	$(SRC:.c=.o)
 OBJ_MAIN=	$(SRC_MAIN:.c=.o)
 
+LDFLAGS	=	-L ../lib -lmyteams
 CFLAGS	=	-I include
 
 NAME	=	../myteams_server
@@ -32,10 +38,10 @@ NAME	=	../myteams_server
 all: $(NAME)
 
 $(NAME): $(OBJ) $(OBJ_MAIN)
-	$(CC) -o $(NAME) $(OBJ) $(OBJ_MAIN)
+	$(CC) -o $(NAME) $(OBJ) $(OBJ_MAIN) $(LDFLAGS)
 
 debug:
-	$(CC) -o $(NAME) $(SRC) $(SRC_MAIN) $(CFLAGS) -Wall -Werror -Wextra -g
+	$(CC) -o $(NAME) $(SRC) $(SRC_MAIN) $(CFLAGS) -Wall -Werror -Wextra -g $(LDFLAGS)
 
 tests_run:
 	make -C tests tests_run from="$(CURDIR)" files="$(SRC)"

@@ -16,7 +16,7 @@ void free_client(client_t *client)
     }
 }
 
-void free_list(client_t *head)
+void free_clients_list(client_t *head)
 {
     client_t *tmp = NULL;
 

@@ -12,7 +12,7 @@
 
 void free_teams(teams_t *teams)
 {
-    free_list(teams->client_head);
+    free_clients_list(teams->client_head);
     close(teams->server->control_socket);
     free(teams->server);
     free(teams);

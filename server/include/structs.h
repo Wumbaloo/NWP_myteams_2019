@@ -55,6 +55,14 @@ typedef struct teams_s
     fd_set readset;
     fd_set writeset;
     client_t *client_head;
+    struct command_s *command_head;
 } teams_t;
+
+typedef struct command_s {
+    int need_login;
+    char *command;
+    void (*func)(teams_t *, client_t *, void *);
+    struct command_s *next;
+} command_t;
 
 #endif

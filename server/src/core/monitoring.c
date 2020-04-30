@@ -68,20 +68,20 @@ void connection_received(teams_t *teams)
 
 void check_for_instructions(teams_t *teams)
 {
-    char buffer[1024] = {0};
     int act_fd;
+    char *input = NULL;
 
     for (int i = 0; i < CLIENTS_MAX; i++) {
         act_fd = teams->clients[i];
         if (FD_ISSET(act_fd, &teams->readset)) {
             teams->act_idx = i;
-            if (read(act_fd, buffer, 1024) == 0) {
+            input = read_from_client(act_fd);
+            if (!input) {
                 remove_client(teams->client_head, act_fd);
                 close(act_fd);
                 teams->clients[i] = 0;
             } else {
-                bad_command(teams, act_fd);
-                // manage_connection(teams, act_fd, buffer);
+                manage_command(teams, act_fd, input);
                 send_replies(teams->client_head, teams->writeset);
             }
         }
