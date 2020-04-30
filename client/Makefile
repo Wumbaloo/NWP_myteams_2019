@@ -7,7 +7,8 @@
 
 SRC_DIR	=	src/
 
-FILES	=	\
+FILES	=	clean_str.c	\
+			client.c
 
 MAIN_FILE	=	main.c
 
@@ -17,7 +18,7 @@ SRC_MAIN	=	$(addprefix $(SRC_DIR), $(MAIN_FILE))
 OBJ		=	$(SRC:.c=.o)
 OBJ_MAIN=	$(SRC_MAIN:.c=.o)
 
-CFLAGS	=	-I include
+CFLAGS	+=	-I include
 
 NAME	=	../myteams_cli
 
