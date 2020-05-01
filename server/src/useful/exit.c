@@ -9,6 +9,13 @@
 #include <stdlib.h>
 #include "structs.h"
 
+void free_array(char **arr)
+{
+    for (int i = 0; arr[i]; i++)
+        free(arr[i]);
+    free(arr);
+}
+
 void free_all(myteams_t *teams)
 {
     (void)(teams);

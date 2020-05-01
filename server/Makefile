@@ -24,7 +24,7 @@ FILES	=	clients/free.c						\
 			errors/commands.c					\
 			useful/exit.c						\
 			useful/logs.c						\
-			useful/command_parser.c
+			useful/my_str_to_word_array.c
 
 MAIN_FILE	=	main.c
 
