@@ -7,8 +7,10 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "prototypes.h"
 #include "structs.h"
+#include "logs.h"
 
 command_t *create_command(char *txt, int login,
                             void (*ptr)(teams_t *, client_t *, void *))
@@ -34,11 +36,13 @@ void help_cmd(teams_t *teams, client_t *client, void *arg)
     (void)(teams);
     (void)(client);
     (void)(arg);
+    console_log(client, "HELP", BASIC, NULL);
+    client->reply = strdup("HELP command");
 }
 
 void create_all_commands(command_t **head)
 {
-    command_t *help = create_command("help", 0, NULL);
+    command_t *help = create_command("HELP", 0, help_cmd);
 
     insert_command(head, help);
 }
