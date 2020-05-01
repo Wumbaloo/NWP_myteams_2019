@@ -14,12 +14,13 @@
 char *get_color_by_type(log_type type)
 {
     switch (type) {
-        case BASIC:
-            return ("[0m");
         case ERROR:
             return ("[1;31m");
         case SUCCESS:
             return ("[0;32m");
+        case BASIC:
+        default:
+            return ("[0m");
     }
 }
 
@@ -32,11 +33,10 @@ char *get_color(log_type type, char *custom_color)
 
 void setup_msg_with_client(char **new_msg, char *msg, char *color, int fd)
 {
-    size_t len = 0;
-
-    len = snprintf(NULL, 0, "\033[0;33mClient %d\033[0m: \033%s%s\033[0:33m.",
-        fd, color, msg);
+    size_t len = snprintf(NULL, 0,
+        "\033[0;33mClient %d\033[0m: \033%s%s\033[0:33m.", fd, color, msg);
     (*new_msg) = malloc(sizeof(char) * (len + 1));
+
     if (!(*new_msg))
         return;
     sprintf((*new_msg), "\033[0;33mClient %d\033[0m: \033%s%s\033[0:33m.",
