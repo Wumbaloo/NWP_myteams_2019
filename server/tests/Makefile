@@ -7,6 +7,7 @@
 
 TEST_FILES	=	test_client_linked_list.c	\
 				test_commands_linked_list.c	\
+				test_logs.c					\
 
 NAME = unit_tests
 

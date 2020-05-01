@@ -17,6 +17,6 @@ typedef enum
     SUCCESS
 } log_type;
 
-void console_log(client_t *from, char *msg, log_type type, char *base_color);
+void console_log(client_t *from, char *msg, log_type type, char *custom_color);
 
 #endif
