@@ -17,10 +17,11 @@
 char *read_from_client(int fd);
 
 //Commands prototypes ==> commands
+void bad_command(teams_t *teams, client_t *client);
 void create_all_commands(command_t **head);
 void insert_command(command_t **head, command_t *node);
 void remove_command(command_t *head, command_t *node);
-void manage_command(teams_t *teams, int fd, char *input);
+void manage_command(teams_t *teams, client_t *client, char *input);
 void free_command(command_t *cmd);
 void free_commands_list(command_t *head);
 command_t *get_command(command_t *head, char *cmd);
@@ -34,7 +35,6 @@ void perror_exit(char *err, int exit_code);
 //Error handling ==> errors > error.c
 int error_handling(int ac, char **av);
 int return_with_msg(char *msg, int return_value);
-void bad_command(teams_t *teams, int fd);
 
 //Core prototypes in ==> core
 teams_t *create_teams(int port);

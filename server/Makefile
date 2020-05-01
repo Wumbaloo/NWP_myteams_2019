@@ -21,6 +21,7 @@ FILES	=	clients/free.c			\
 			errors/arguments.c		\
 			errors/commands.c		\
 			useful/exit.c			\
+			useful/logs.c			\
 
 MAIN_FILE	=	main.c
 

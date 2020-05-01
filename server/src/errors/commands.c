@@ -10,10 +10,8 @@
 #include "structs.h"
 #include "teams.h"
 
-void bad_command(teams_t *teams, int fd)
+void bad_command(teams_t *teams, client_t *client)
 {
-    client_t *client = get_client(teams->client_head, fd);
-
     if (!client->is_connected) {
         client->reply = strdup(NOT_CONNECTED);
         return;
