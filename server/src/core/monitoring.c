@@ -79,11 +79,10 @@ void check_for_instructions(myteams_t *teams)
                 remove_client(teams->client_head, act_fd);
                 close(act_fd);
                 teams->clients[i] = 0;
-            } else {
+            } else
                 manage_command(teams, get_client(teams->client_head, act_fd),
                     input);
-                send_replies(teams->client_head, teams->writeset);
-            }
         }
     }
+    send_replies(teams->client_head, teams->writeset);
 }
