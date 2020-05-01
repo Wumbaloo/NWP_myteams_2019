@@ -40,7 +40,6 @@ void manage_command(myteams_t *teams, client_t *client, char *input)
 
     if (!client)
         return;
-    printf("|%s|\n", input);
     cmd_tab = my_str_to_word_array(input, ' ');
     if (cmd_tab[0] && cmd_tab[0][0] == '/') {
         cmd = get_command(teams->command_head, &cmd_tab[0][1]);

@@ -49,11 +49,24 @@ void login_cmd(myteams_t *teams, client_t *client, void *arg)
     client->reply = strdup("LOGIN command");
 }
 
+void logout_cmd(myteams_t *teams, client_t *client, void *arg)
+{
+    (void)(arg);
+    console_log(client, "LOGOUT", BASIC, NULL);
+    if (FD_ISSET(client->fd, &teams->writeset))
+        dprintf(client->fd, "221 Good bye!\n");
+    remove_client(teams->client_head, client->fd);
+    close(client->fd);
+    teams->clients[teams->act_idx] = 0;
+}
+
 void create_all_commands(command_t **head)
 {
     command_t *help = create_command("HELP", 0, help_cmd);
     command_t *login = create_command("LOGIN", 0, login_cmd);
+    command_t *logout = create_command("LOGOUT", 0, logout_cmd);
 
     insert_command(head, help);
     insert_command(head, login);
+    insert_command(head, logout);
 }

@@ -83,6 +83,8 @@ void manage_client(int sockfd)
         dprintf(sockfd, "%s\r\n", input);
         buffer = read_from_server(sockfd);
         printf("%s", buffer);
+        if (strncasecmp(input, "/logout", 7) == 0)
+            break;
         free(buffer);
     }
     free(input);
