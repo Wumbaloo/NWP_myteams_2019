@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2019
-** day 03
+** My Teams
 ** File description:
-** test_append
+** test_client_linked_list
 */
 
 #include <criterion/criterion.h>
