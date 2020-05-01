@@ -14,8 +14,14 @@ void help_cmd(myteams_t *teams, client_t *client, void *arg);
 
 void manage_command(myteams_t *teams, client_t *client, char *input)
 {
-    command_t *cmd = get_command(teams->command_head, input);
+    command_t *cmd = NULL;
 
+    if (command_parser(input, teams, client) == -1) {
+        console_log(client, "Used a bad command", ERROR, NULL);
+        bad_command(teams, client);
+        return;
+    }
+    cmd = get_command(teams->command_head, input);
     if (!client)
         return;
     if (cmd)

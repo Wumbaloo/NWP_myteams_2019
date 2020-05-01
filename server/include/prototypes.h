@@ -34,6 +34,7 @@ void insert_message(message_t **first, uuid_t from, uuid_t to, char body[DEFAULT
 
 //Useful functions ==> useful
 void perror_exit(char *err, int exit_code);
+int command_parser(char *input, myteams_t *teams, client_t *client);
 
 //Error handling ==> errors > error.c
 int error_handling(int ac, char **av);
