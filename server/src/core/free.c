@@ -10,7 +10,7 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void free_teams(teams_t *teams)
+void free_teams(myteams_t *teams)
 {
     free_clients_list(teams->client_head);
     close(teams->server->control_socket);

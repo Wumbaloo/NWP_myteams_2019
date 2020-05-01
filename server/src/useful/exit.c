@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "structs.h"
 
-void free_all(teams_t *teams)
+void free_all(myteams_t *teams)
 {
     (void)(teams);
 }

@@ -6,6 +6,7 @@
 */
 
 #include <uuid/uuid.h>
+#include <stdbool.h>
 #include "macros.h"
 
 typedef enum
@@ -26,6 +27,9 @@ typedef struct message_s
 
 typedef struct user_s
 {
+    int fd;
+    bool is_connected;
+    char *reply;
     char user_name[DEFAULT_NAME_LENGTH];
     uuid_t user_uuid;
     use_depth depth;
@@ -34,5 +38,6 @@ typedef struct user_s
     uuid_t *thread_tab;
     uuid_t *comment_tab;
     message_t *message_head;
-    struct user_s *user_head;
-} user_t;
+    struct user_s *next;
+    struct command_s *command_head;
+} client_t;

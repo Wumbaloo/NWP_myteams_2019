@@ -7,7 +7,6 @@
 
 #include <unistd.h>
 #include <stdio.h>
-#include "teams.h"
 #include "prototypes.h"
 #include "structs.h"
 
@@ -22,7 +21,7 @@ int accept_connection(int server_socket)
     return (client_socket);
 }
 
-void reset_update_set(teams_t *teams)
+void reset_update_set(myteams_t *teams)
 {
     int act_fd;
 
@@ -41,7 +40,7 @@ void reset_update_set(teams_t *teams)
     }
 }
 
-void connection_received(teams_t *teams)
+void connection_received(myteams_t *teams)
 {
     int new_socket = accept_connection(teams->server->control_socket);
     int full_connected = 0;
@@ -66,7 +65,7 @@ void connection_received(teams_t *teams)
     }
 }
 
-void check_for_instructions(teams_t *teams)
+void check_for_instructions(myteams_t *teams)
 {
     int act_fd;
     char *input = NULL;

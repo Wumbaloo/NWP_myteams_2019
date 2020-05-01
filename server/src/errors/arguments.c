@@ -9,7 +9,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "teams.h"
 
 int return_with_msg(char *msg, int return_value)
 {

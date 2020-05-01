@@ -7,21 +7,23 @@
 
 SRC_DIR	=	src/
 
-FILES	=	clients/free.c			\
-			clients/input.c			\
-			clients/linked_list.c	\
-			commands/free.c			\
-			commands/linked_list.c	\
-			commands/listing.c		\
-			commands/manager.c		\
-			core/free.c				\
-			core/initialization.c	\
-			core/launcher.c			\
-			core/monitoring.c		\
-			errors/arguments.c		\
-			errors/commands.c		\
-			useful/exit.c			\
-			useful/logs.c			\
+FILES	=	clients/free.c						\
+			clients/input.c						\
+			clients/linked_list.c				\
+			clients/utils.c						\
+			clients/messages/linked_list.c		\
+			commands/free.c						\
+			commands/linked_list.c				\
+			commands/listing.c					\
+			commands/manager.c					\
+			core/free.c							\
+			core/initialization.c				\
+			core/launcher.c						\
+			core/monitoring.c					\
+			errors/arguments.c					\
+			errors/commands.c					\
+			useful/exit.c						\
+			useful/logs.c						\
 
 MAIN_FILE	=	main.c
 
@@ -31,7 +33,7 @@ SRC_MAIN	=	$(addprefix $(SRC_DIR), $(MAIN_FILE))
 OBJ		=	$(SRC:.c=.o)
 OBJ_MAIN=	$(SRC_MAIN:.c=.o)
 
-LDFLAGS	=	-L ../lib -lmyteams
+LDFLAGS	=	-L ../lib -lmyteams -luuid
 CFLAGS	=	-I include
 
 NAME	=	../myteams_server

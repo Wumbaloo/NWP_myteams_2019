@@ -8,9 +8,8 @@
 #include <string.h>
 #include "prototypes.h"
 #include "structs.h"
-#include "teams.h"
 
-void bad_command(teams_t *teams, client_t *client)
+void bad_command(myteams_t *teams, client_t *client)
 {
     if (!client->is_connected) {
         client->reply = strdup(NOT_CONNECTED);

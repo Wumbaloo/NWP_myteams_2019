@@ -11,42 +11,17 @@
 #include <netinet/in.h>
 #include <stdbool.h>
 #include <dirent.h>
+#include "clients_storage.h"
 
-typedef enum
-{
-    UNDEFINED,
-    FALSE,
-    TRUE
-} auth_state;
-
-typedef enum
-{
-    NONE,
-    PASSIVE,
-    ACTIVE
-} connection_mode;
 
 typedef struct server_s
 {
     struct sockaddr_in addr;
     int control_socket;
-    int data_socket;
     int control_port;
-    int data_port;
 } server_t;
 
-typedef struct client_s
-{
-    int fd;
-    auth_state username;
-    auth_state password;
-    bool is_connected;
-    char *reply;
-    connection_mode mode;
-    struct client_s *next;
-} client_t;
-
-typedef struct teams_s
+typedef struct myteams_s
 {
     server_t *server;
     int maxfd;
@@ -56,12 +31,13 @@ typedef struct teams_s
     fd_set writeset;
     client_t *client_head;
     struct command_s *command_head;
-} teams_t;
+} myteams_t;
 
-typedef struct command_s {
+typedef struct command_s
+{
     int need_login;
     char *command;
-    void (*func)(teams_t *, client_t *, void *);
+    void (*func)(myteams_t *, client_t *, void *);
     struct command_s *next;
 } command_t;
 

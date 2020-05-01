@@ -10,9 +10,9 @@
 #include "structs.h"
 #include "logs.h"
 
-void help_cmd(teams_t *teams, client_t *client, void *arg);
+void help_cmd(myteams_t *teams, client_t *client, void *arg);
 
-void manage_command(teams_t *teams, client_t *client, char *input)
+void manage_command(myteams_t *teams, client_t *client, char *input)
 {
     if (!client)
         return;

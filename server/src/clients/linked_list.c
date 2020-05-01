@@ -5,13 +5,31 @@
 ** Linked list for clients
 */
 
-#include <sys/time.h>
-#include <sys/types.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
+#include <string.h>
+#include <uuid/uuid.h>
 #include "structs.h"
 #include "prototypes.h"
+
+client_t *new_client(int fd)
+{
+    client_t *client = malloc(sizeof(client_t));
+
+    if (!client)
+        perror_exit("malloc", 84);
+    memset(client->user_name, '\0', DEFAULT_NAME_LENGTH);
+    uuid_generate_random(client->user_uuid);
+    client->depth = TEAM;
+    client->group_tab = NULL;
+    client->channel_tab = NULL;
+    client->thread_tab = NULL;
+    client->comment_tab = NULL;
+    client->fd = fd;
+    client->is_connected = false;
+    client->reply = NULL;
+    client->message_head = NULL;
+    return (client);
+}
 
 client_t *get_client(client_t *first, int fd)
 {
@@ -20,20 +38,6 @@ client_t *get_client(client_t *first, int fd)
     while (copy && copy->fd != fd)
         copy = copy->next;
     return (copy);
-}
-
-void send_replies(client_t *first, fd_set wr_set)
-{
-    client_t *copy = first;
-
-    while (copy) {
-        if (FD_ISSET(copy->fd, &wr_set) && copy->reply) {
-            dprintf(copy->fd, "%s\r\n", copy->reply);
-            free(copy->reply);
-            copy->reply = NULL;
-        }
-        copy = copy->next;
-    }
 }
 
 client_t *new_node(int fd)

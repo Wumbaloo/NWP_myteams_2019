@@ -8,11 +8,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <zconf.h>
-#include "teams.h"
 #include "prototypes.h"
 
-int start_teams(teams_t *teams)
+int start_teams(myteams_t *teams)
 {
     while (1) {
         reset_update_set(teams);
@@ -35,7 +33,7 @@ int display_help(void)
 
 int launch_server(int ac, char **av)
 {
-    teams_t *teams;
+    myteams_t *teams;
     int errors = error_handling(ac, av);
 
     if (!errors)

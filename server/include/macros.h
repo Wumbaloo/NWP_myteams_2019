@@ -1,14 +1,16 @@
 /*
 ** EPITECH PROJECT, 2023
-** My Teams
+** NWP_myteams_2019
 ** File description:
-** Core header file
+** Created by Anthony ANICOTTE,
 */
 
-#ifndef TEAMS_H_
-#define TEAMS_H_
+#define DEFAULT_NAME_LENGTH 32
+#define DEFAULT_DESCRIPTION_LENGTH 255
+#define DEFAULT_BODY_LENGTH 512
 
 #define CLIENTS_MAX 128
+
 #define NOT_CONNECTED "530 Please login with USER and PASS."
 #define ALREADY_LOGGED "230 Already logged in."
 #define CHANGE_USER "530 Can't change from guest user."
@@ -25,5 +27,3 @@
 #define QUIT "221 Goodbye.\r\n"
 #define NOOP "200 NOOP ok."
 #define USER "Anonymous"
-
-#endif

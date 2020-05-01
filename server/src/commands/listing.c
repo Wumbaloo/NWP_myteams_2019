@@ -11,7 +11,7 @@
 #include "structs.h"
 
 command_t *create_command(char *txt, int login,
-                            void (*ptr)(teams_t *, client_t *, void *))
+                            void (*ptr)(myteams_t *, client_t *, void *))
 {
     command_t *cmd = malloc(sizeof(command_t));
     int len = strlen(txt);
@@ -29,7 +29,7 @@ command_t *create_command(char *txt, int login,
     return (cmd);
 }
 
-void help_cmd(teams_t *teams, client_t *client, void *arg)
+void help_cmd(myteams_t *teams, client_t *client, void *arg)
 {
     (void)(teams);
     (void)(client);

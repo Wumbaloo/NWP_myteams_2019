@@ -6,26 +6,8 @@
 */
 
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
-#include <stdio.h>
-#include "teams.h"
 #include "prototypes.h"
-
-client_t *new_client(int fd)
-{
-    client_t *client = malloc(sizeof(client_t));
-
-    if (!client)
-        perror_exit("malloc", 84);
-    client->fd = fd;
-    client->username = UNDEFINED;
-    client->password = UNDEFINED;
-    client->is_connected = false;
-    client->reply = NULL;
-    client->mode = NONE;
-    return (client);
-}
 
 void setup_server_config(server_t *server, int control_port)
 {
@@ -46,10 +28,11 @@ server_t *create_server(int control_port)
 
     if (!server)
         perror_exit("malloc", 84);
+    server->control_port = control_port;
     server->control_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server->control_socket < 0)
         perror_exit("malloc", 84);
-    setup_server_config(server, control_port);
+    setup_server_config(server, server->control_port);
     server_length = sizeof(server->addr);
     if (bind(server->control_socket, (struct sockaddr *)&server->addr,
         server_length) == -1)
@@ -59,9 +42,9 @@ server_t *create_server(int control_port)
     return (server);
 }
 
-teams_t *create_teams(int port)
+myteams_t *create_teams(int port)
 {
-    teams_t *teams = malloc(sizeof(teams_t));
+    myteams_t *teams = malloc(sizeof(myteams_t));
 
     if (!teams)
         perror_exit("malloc", 84);
