@@ -40,9 +40,20 @@ void help_cmd(myteams_t *teams, client_t *client, void *arg)
     client->reply = strdup("HELP command");
 }
 
+void login_cmd(myteams_t *teams, client_t *client, void *arg)
+{
+    (void)(teams);
+    (void)(client);
+    (void)(arg);
+    console_log(client, "LOGIN", BASIC, NULL);
+    client->reply = strdup("LOGIN command");
+}
+
 void create_all_commands(command_t **head)
 {
     command_t *help = create_command("HELP", 0, help_cmd);
+    command_t *login = create_command("LOGIN", 0, login_cmd);
 
     insert_command(head, help);
+    insert_command(head, login);
 }
