@@ -35,8 +35,8 @@ void setup_msg_with_client(char **new_msg, char *msg, char *color, int fd)
 {
     size_t len = snprintf(NULL, 0,
         "\033[0;33mClient %d\033[0m: \033%s%s\033[0:33m.", fd, color, msg);
-    (*new_msg) = malloc(sizeof(char) * (len + 1));
 
+    (*new_msg) = malloc(sizeof(char) * (len + 1));
     if (!(*new_msg))
         return;
     sprintf((*new_msg), "\033[0;33mClient %d\033[0m: \033%s%s\033[0:33m.",
