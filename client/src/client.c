@@ -51,7 +51,7 @@ int try_connect(char *ip, int port)
         return (-1);
     }
     buffer = read_from_server(sockfd);
-    printf("%s\n", buffer);
+    printf("%s", buffer);
     free(buffer);
     return (sockfd);
 }
@@ -64,9 +64,7 @@ int get_input(char **input)
         free(*input);
     if (getline(&(*input), &len, stdin) == -1)
         return (84);
-    // (*input) = clean_string(*input);
-    // if (strlen(*input) == 0)
-    //     return (1);
+    (*input) = clean_string(*input);
     return (0);
 }
 
@@ -76,20 +74,16 @@ void manage_client(int sockfd)
     char *input = NULL;
     int input_return = 0;
 
-    do {
+    while (1) {
         input_return = get_input(&input);
         if (input_return == 1)
             continue;
         else if (input_return > 0)
             break;
-        dprintf(sockfd, "%s", input);
+        dprintf(sockfd, "%s\r\n", input);
         buffer = read_from_server(sockfd);
         printf("%s", buffer);
-        if (strcmp(buffer, "exit") >= 0) {
-            free(buffer);
-            break;
-        }
         free(buffer);
-    } while (strcmp(input, "exit") != 0);
+    }
     free(input);
 }

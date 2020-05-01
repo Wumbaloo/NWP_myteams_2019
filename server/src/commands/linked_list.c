@@ -45,7 +45,7 @@ command_t *get_command(command_t *head, char *cmd)
     if (!head)
         return (NULL);
     while (tmp) {
-        if (strcmp(tmp->command, cmd) == 0)
+        if (strcasecmp(tmp->command, cmd) == 0)
             return (tmp);
         tmp = tmp->next;
     }
