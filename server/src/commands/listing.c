@@ -65,7 +65,6 @@ void logout_cmd(myteams_t *teams, client_t *client, void *arg)
     console_log(client, "LOGOUT", BASIC, NULL);
     if (FD_ISSET(client->fd, &teams->writeset))
         dprintf(client->fd, "221 Good bye!\n");
-    remove_client(teams->client_head, client->fd);
     close(client->fd);
     teams->clients[teams->act_idx] = 0;
 }
