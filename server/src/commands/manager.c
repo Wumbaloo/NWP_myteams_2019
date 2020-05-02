@@ -7,11 +7,26 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "prototypes.h"
 #include "structs.h"
 #include "logs.h"
 
 void help_cmd(myteams_t *teams, client_t *client, void *arg);
+
+char *get_quote_content(char *str)
+{
+    int idx = 0;
+    int size = strlen(str);
+    char *new_str = malloc(sizeof(char) * (size - 1));
+
+    if (!new_str)
+        exit(84);
+    for (int i = 1; i < strlen(str) - 1; i++)
+        new_str[idx++] = str[i];
+    new_str[idx] = '\0';
+    return (new_str);
+}
 
 int quote_parser(char *input)
 {
@@ -28,7 +43,7 @@ void execute_command(myteams_t *teams, client_t *client, char **cmd_tab, command
             bad_command(teams, client);
             return;
         } else
-            cmd->func(teams, client, &cmd_tab[1]);
+            cmd->func(teams, client, get_quote_content(cmd_tab[1]));
     } else
         cmd->func(teams, client, &cmd_tab[0]);
 }
