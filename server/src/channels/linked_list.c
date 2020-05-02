@@ -8,12 +8,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include "data_storage.h"
+#include "prototypes.h"
 
 channel_t *new_channel(char name[DEFAULT_NAME_LENGTH],
     char desc[DEFAULT_DESCRIPTION_LENGTH])
 {
     channel_t *channel = malloc(sizeof(channel_t));
 
+    if (!channel)
+        perror_exit("malloc", 84);
     uuid_generate(channel->channel_uuid);
     memcpy(channel->channel_name, name, DEFAULT_NAME_LENGTH);
     memcpy(channel->channel_desc, desc, DEFAULT_DESCRIPTION_LENGTH);
@@ -32,6 +35,6 @@ void insert_channel(channel_t **first, char name[DEFAULT_NAME_LENGTH],
         *first = channel;
         return;
     }
-    for(; copy->next; copy = copy->next);
+    for (; copy->next; copy = copy->next);
     copy->next = channel;
 }

@@ -29,6 +29,6 @@ void insert_comment(comment_t **first, char body[DEFAULT_BODY_LENGTH],
         *first = comment;
         return;
     }
-    for(; copy->next; copy = copy->next);
+    for (; copy->next; copy = copy->next);
     copy->next = comment;
 }

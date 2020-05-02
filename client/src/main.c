@@ -9,9 +9,6 @@
 #include <stdlib.h>
 #include "client.h"
 
-// void manage_client(int sockfd);
-// int try_connect(char *ip, int port);
-
 int main(int ac, char **av)
 {
     char *ip = NULL;

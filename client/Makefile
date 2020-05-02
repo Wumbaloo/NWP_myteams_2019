@@ -18,6 +18,7 @@ SRC_MAIN	=	$(addprefix $(SRC_DIR), $(MAIN_FILE))
 OBJ		=	$(SRC:.c=.o)
 OBJ_MAIN=	$(SRC_MAIN:.c=.o)
 
+LDFLAGS	=	-L ../lib -lmyteams -luuid
 CFLAGS	+=	-I include
 
 NAME	=	../myteams_cli
@@ -25,10 +26,10 @@ NAME	=	../myteams_cli
 all: $(NAME)
 
 $(NAME): $(OBJ) $(OBJ_MAIN)
-	$(CC) -o $(NAME) $(OBJ) $(OBJ_MAIN)
+	$(CC) -o $(NAME) $(OBJ) $(OBJ_MAIN) $(LDFLAGS)
 
 debug:
-	$(CC) -o $(NAME) $(SRC) $(SRC_MAIN) $(CFLAGS) -Wall -Werror -Wextra -g
+	$(CC) -o $(NAME) $(SRC) $(SRC_MAIN) $(CFLAGS) $(LDFLAGS) -Wall -Werror -Wextra -g
 
 tests_run:
 	make -C tests tests_run from="$(CURDIR)" files="$(SRC)"

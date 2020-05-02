@@ -1,9 +1,12 @@
 /*
 ** EPITECH PROJECT, 2023
-** NWP_myteams_2019
+** My Teams
 ** File description:
-** Created by Anthony ANICOTTE,
+** Clients storage header file (clients and private messages)
 */
+
+#ifndef CLIENTS_STORAGE_H_
+#define CLIENTS_STORAGE_H_
 
 #include <uuid/uuid.h>
 #include <stdbool.h>
@@ -40,3 +43,5 @@ typedef struct user_s
     struct user_s *next;
     struct command_s *command_head;
 } client_t;
+
+#endif

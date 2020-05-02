@@ -7,12 +7,15 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "prototypes.h"
 #include "data_storage.h"
 
 thread_t *new_thread(char *title, char *content, uuid_t author)
 {
     thread_t *thread = malloc(sizeof(thread_t));
 
+    if (!thread)
+        perror_exit("malloc", 84);
     uuid_generate(thread->thread_uuid);
     memcpy(thread->thread_author, author, 16);
     thread->thread_title = strdup(title);
@@ -31,6 +34,6 @@ void insert_thread(thread_t **first, char *title, char *content, uuid_t author)
         *first = thread;
         return;
     }
-    for(; copy->next; copy = copy->next);
+    for (; copy->next; copy = copy->next);
     copy->next = thread;
 }

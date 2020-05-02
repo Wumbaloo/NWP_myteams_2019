@@ -7,12 +7,15 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "prototypes.h"
 #include "clients_storage.h"
 
 message_t *new_message(uuid_t from, uuid_t to, char body[DEFAULT_BODY_LENGTH])
 {
     message_t *msg = malloc(sizeof(message_t));
 
+    if (!msg)
+        perror_exit("malloc", 84);
     strcpy(msg->body, body);
     memcpy(msg->sender, from, 16);
     memcpy(msg->receiver, to, 16);

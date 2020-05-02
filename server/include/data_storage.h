@@ -1,9 +1,12 @@
 /*
 ** EPITECH PROJECT, 2023
-** NWP_myteams_2019
+** My Teams
 ** File description:
-** Created by Anthony ANICOTTE,
+** Global data storage
 */
+
+#ifndef DATA_STORAGE_H_
+#define DATA_STORAGE_H_
 
 #include <uuid/uuid.h>
 #include "macros.h"
@@ -42,3 +45,5 @@ typedef struct team_s
     channel_t *channel_head;
     struct team_s *next;
 } team_t;
+
+#endif

@@ -35,7 +35,8 @@ int quote_parser(char *input)
     return (0);
 }
 
-void execute_command(myteams_t *teams, client_t *client, char **cmd_tab, command_t *cmd)
+void execute_command(myteams_t *teams, client_t *client, char **cmd_tab,
+                        command_t *cmd)
 {
     if (cmd_tab[1]) {
         if (quote_parser(cmd_tab[1]) == -1) {
@@ -58,13 +59,11 @@ void manage_command(myteams_t *teams, client_t *client, char *input)
     cmd_tab = my_str_to_word_array(input, ' ');
     if (cmd_tab[0] && cmd_tab[0][0] == '/') {
         cmd = get_command(teams->command_head, &cmd_tab[0][1]);
-        if (cmd && !cmd_tab[2]) {
+        if (cmd && !cmd_tab[2])
             execute_command(teams, client, cmd_tab, cmd);
-            free_array(cmd_tab);
-            return;
-        }
+    } else {
+        console_log(client, "Used a bad command", ERROR, NULL);
+        bad_command(teams, client);
     }
-    console_log(client, "Used a bad command", ERROR, NULL);
-    bad_command(teams, client);
     free_array(cmd_tab);
 }

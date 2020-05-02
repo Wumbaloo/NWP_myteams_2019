@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "prototypes.h"
 #include "data_storage.h"
 
 team_t *new_team(char name[DEFAULT_NAME_LENGTH],
@@ -14,6 +15,8 @@ team_t *new_team(char name[DEFAULT_NAME_LENGTH],
 {
     team_t *team = malloc(sizeof(team_t));
 
+    if (!team)
+        perror_exit("malloc", 84);
     uuid_generate(team->team_uuid);
     memcpy(team->team_name, name, DEFAULT_NAME_LENGTH);
     memcpy(team->team_desc, desc, DEFAULT_DESCRIPTION_LENGTH);
@@ -32,6 +35,6 @@ void insert_team(team_t **first, char name[DEFAULT_NAME_LENGTH],
         *first = team;
         return;
     }
-    for(; copy->next; copy = copy->next);
+    for (; copy->next; copy = copy->next);
     copy->next = team;
 }
