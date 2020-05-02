@@ -76,7 +76,6 @@ void check_for_instructions(myteams_t *teams)
             teams->act_idx = i;
             input = read_from_client(act_fd);
             if (!input) {
-                remove_client(teams->client_head, act_fd);
                 close(act_fd);
                 teams->clients[i] = 0;
             } else
