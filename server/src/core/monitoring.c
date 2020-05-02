@@ -80,7 +80,7 @@ void check_for_instructions(myteams_t *teams)
                 close(act_fd);
                 teams->clients[i] = 0;
             } else
-                manage_command(teams, get_client(teams->client_head, act_fd),
+                manage_command(teams, get_client_by_fd(teams->client_head, act_fd),
                     input);
         }
     }

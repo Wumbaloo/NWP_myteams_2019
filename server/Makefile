@@ -7,9 +7,11 @@
 
 SRC_DIR	=	src/
 
-FILES	=	channels/free.c						\
+FILES	=	free.c								\
+			channels/free.c						\
 			channels/linked_list.c				\
 			clients/free.c						\
+			clients/getter.c					\
 			clients/input.c						\
 			clients/linked_list.c				\
 			clients/utils.c						\
@@ -31,6 +33,7 @@ FILES	=	channels/free.c						\
 			teams/linked_list.c					\
 			threads/free.c						\
 			threads/linked_list.c				\
+			useful/array_size.c					\
 			useful/exit.c						\
 			useful/logs.c						\
 			useful/my_str_to_word_array.c

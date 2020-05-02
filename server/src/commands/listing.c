@@ -37,24 +37,26 @@ void help_cmd(myteams_t *teams, client_t *client, void *arg)
     (void)(teams);
     (void)(client);
     (void)(arg);
-    console_log(client, "HELP", BASIC, NULL);
+//    console_log(client, "HELP", BASIC, NULL);
     client->reply = strdup("HELP command");
 }
 
 void login_cmd(myteams_t *teams, client_t *client, void *arg)
 {
     char uuid[36];
+    client_t *temp = get_client_by_username(teams->client_head, arg);
 
-    (void)(teams);
-    (void)(arg);
-    client->reply = strdup("LOGIN command");
-    //Check si quelqu'un a déjà le même login : si oui donner même UUID
-    uuid_generate(client->user_uuid);
-    memcpy(client->user_name, arg, DEFAULT_NAME_LENGTH);
-    client->is_connected = true;
+    if (temp != NULL)
+        duplicate_client(temp, client);
+    else {
+        uuid_generate(client->user_uuid);
+        memcpy(client->user_name, arg, DEFAULT_NAME_LENGTH);
+        client->is_connected = true;
+    }
+//    client->reply = strdup("LOGIN command");
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_in(uuid);
-        console_log(client, "LOGIN", BASIC, NULL);
+//    console_log(client, "LOGIN", BASIC, NULL);
 }
 
 void logout_cmd(myteams_t *teams, client_t *client, void *arg)

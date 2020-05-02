@@ -18,7 +18,6 @@ client_t *new_client(int fd)
     if (!client)
         perror_exit("malloc", 84);
     memset(client->user_name, '\0', DEFAULT_NAME_LENGTH);
-    uuid_generate_random(client->user_uuid);
     client->depth = TEAM;
     client->group_tab = NULL;
     client->channel_tab = NULL;
@@ -27,27 +26,8 @@ client_t *new_client(int fd)
     client->is_connected = false;
     client->reply = NULL;
     client->message_head = NULL;
+    client->next = NULL;
     return (client);
-}
-
-client_t *get_client(client_t *first, int fd)
-{
-    client_t *copy = first;
-
-    while (copy && copy->fd != fd)
-        copy = copy->next;
-    return (copy);
-}
-
-client_t *new_node(int fd)
-{
-    client_t *elem = malloc(sizeof(client_t));
-
-    if (!elem)
-        perror_exit("malloc", 84);
-    elem = new_client(fd);
-    elem->next = NULL;
-    return (elem);
 }
 
 void remove_client(client_t *first, int fd)
@@ -70,7 +50,7 @@ void remove_client(client_t *first, int fd)
 void insert_client(client_t **first, int fd)
 {
     client_t *copy = (*first);
-    client_t *new = new_node(fd);
+    client_t *new = new_client(fd);
 
     if (!*first) {
         *first = new;

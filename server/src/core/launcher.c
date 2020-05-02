@@ -43,6 +43,6 @@ int launch_server(int ac, char **av)
     teams = create_teams(errors);
     if (!teams || start_teams(teams) != 0)
         return (84);
-    free_teams(teams);
+    free_myteams(teams);
     return (0);
 }
