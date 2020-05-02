@@ -23,7 +23,6 @@ client_t *new_client(int fd)
     client->group_tab = NULL;
     client->channel_tab = NULL;
     client->thread_tab = NULL;
-    client->comment_tab = NULL;
     client->fd = fd;
     client->is_connected = false;
     client->reply = NULL;

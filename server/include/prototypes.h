@@ -28,10 +28,6 @@ command_t *get_command(command_t *head, char *cmd);
 command_t *create_command(char *txt, int login,
                             void (*ptr)(myteams_t *, client_t *, void *));
 
-//Messages
-message_t *new_message(uuid_t from, uuid_t to, char body[DEFAULT_BODY_LENGTH]);
-void insert_message(message_t **first, uuid_t from, uuid_t to, char body[DEFAULT_BODY_LENGTH]);
-
 //Useful functions ==> useful
 void perror_exit(char *err, int exit_code);
 void free_array(char **arr);
@@ -60,9 +56,34 @@ void send_replies(client_t *first, fd_set wr_set);
 //Manage commands in ==> commands
 int manage_connection(myteams_t *teams, int fd, char *buffer);
 
+//Channels linked-list
+void insert_channel(channel_t **first, char name[DEFAULT_NAME_LENGTH],
+    char desc[DEFAULT_DESCRIPTION_LENGTH]);
+
+//Clients->Messages linked-list
+void insert_message(message_t **first, uuid_t from, uuid_t to,
+    char body[DEFAULT_BODY_LENGTH]);
+
+//Comments linked-list
+void insert_comment(comment_t **first, char body[DEFAULT_BODY_LENGTH],
+    uuid_t author);
+
+//Teams linked-list
+void insert_team(team_t **first, char name[DEFAULT_NAME_LENGTH],
+    char desc[DEFAULT_DESCRIPTION_LENGTH]);
+
+//Thread linked-list
+void insert_thread(thread_t **first, char *title, char *content, uuid_t author);
+
 //Free Things
+void free_myteams(myteams_t *myteams);
 void free_client(client_t *client);
 void free_clients_list(client_t *head);
 void free_teams(myteams_t *teams);
+void free_messages_list(message_t *head);
+void free_comments_list(comment_t *head);
+void free_threads_list(thread_t *head);
+void free_channels_list(channel_t *head);
+void free_teams_list(team_t *head);
 
 #endif

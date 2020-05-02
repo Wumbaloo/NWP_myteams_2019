@@ -6,14 +6,21 @@
 */
 
 #include <stdlib.h>
+#include "prototypes.h"
 #include "structs.h"
 
 void free_client(client_t *client)
 {
-    if (client) {
+    if (client->reply != NULL)
         free(client->reply);
-        free(client);
-    }
+    if (client->group_tab)
+        free(client->group_tab);
+    if (client->channel_tab)
+        free(client->channel_tab);
+    if (client->thread_tab)
+        free(client->thread_tab);
+    if (client->message_head)
+        free_messages_list(client->message_head);
 }
 
 void free_clients_list(client_t *head)
@@ -23,8 +30,7 @@ void free_clients_list(client_t *head)
     while (head) {
         tmp = head->next;
         free_client(head);
+        free(head);
         head = tmp;
     }
-    if (tmp)
-        free_client(tmp);
 }

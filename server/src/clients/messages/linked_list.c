@@ -20,7 +20,8 @@ message_t *new_message(uuid_t from, uuid_t to, char body[DEFAULT_BODY_LENGTH])
     return msg;
 }
 
-void insert_message(message_t **first, uuid_t from, uuid_t to, char body[DEFAULT_BODY_LENGTH])
+void insert_message(message_t **first, uuid_t from, uuid_t to,
+    char body[DEFAULT_BODY_LENGTH])
 {
     message_t *copy = (*first);
     message_t *new_msg = new_message(from, to, body);

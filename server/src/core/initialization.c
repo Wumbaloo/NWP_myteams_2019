@@ -56,6 +56,7 @@ myteams_t *create_teams(int port)
         teams->clients[i] = 0;
     teams->maxfd = 0;
     teams->client_head = NULL;
+    teams->team_head = NULL;
     create_all_commands(&teams->command_head);
     return (teams);
 }

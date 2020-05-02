@@ -11,8 +11,8 @@
 #include <netinet/in.h>
 #include <stdbool.h>
 #include <dirent.h>
+#include "data_storage.h"
 #include "clients_storage.h"
-
 
 typedef struct server_s
 {
@@ -30,6 +30,7 @@ typedef struct myteams_s
     fd_set readset;
     fd_set writeset;
     client_t *client_head;
+    team_t *team_head;
     struct command_s *command_head;
 } myteams_t;
 

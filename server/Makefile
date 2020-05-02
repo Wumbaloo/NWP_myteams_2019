@@ -7,21 +7,30 @@
 
 SRC_DIR	=	src/
 
-FILES	=	clients/free.c						\
+FILES	=	channels/free.c						\
+			channels/linked_list.c				\
+			clients/free.c						\
 			clients/input.c						\
 			clients/linked_list.c				\
 			clients/utils.c						\
+			clients/messages/free.c				\
 			clients/messages/linked_list.c		\
 			commands/free.c						\
 			commands/linked_list.c				\
 			commands/listing.c					\
 			commands/manager.c					\
+			comments/free.c						\
+			comments/linked_list.c				\
 			core/free.c							\
 			core/initialization.c				\
 			core/launcher.c						\
 			core/monitoring.c					\
 			errors/arguments.c					\
 			errors/commands.c					\
+			teams/free.c						\
+			teams/linked_list.c					\
+			threads/free.c						\
+			threads/linked_list.c				\
 			useful/exit.c						\
 			useful/logs.c						\
 			useful/my_str_to_word_array.c
