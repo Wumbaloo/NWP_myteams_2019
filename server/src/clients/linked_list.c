@@ -18,10 +18,11 @@ client_t *new_client(int fd)
     if (!client)
         perror_exit("malloc", 84);
     memset(client->user_name, '\0', DEFAULT_NAME_LENGTH);
-    client->depth = TEAM;
+    client->depth = UNDEFINED;
     client->group_tab = NULL;
     client->channel_tab = NULL;
     client->thread_tab = NULL;
+    uuid_clear(client->use_position);
     client->fd = fd;
     client->is_connected = false;
     client->reply = NULL;

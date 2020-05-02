@@ -14,6 +14,7 @@
 
 typedef enum
 {
+    UNDEFINED,
     TEAM,
     CHANNEL,
     THREAD,
@@ -36,6 +37,7 @@ typedef struct user_s
     char user_name[DEFAULT_NAME_LENGTH];
     uuid_t user_uuid;
     use_depth depth;
+    uuid_t use_position;
     uuid_t *group_tab;
     uuid_t *channel_tab;
     uuid_t *thread_tab;
