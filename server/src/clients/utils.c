@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "structs.h"
 #include "prototypes.h"
 #include "clients_storage.h"
 
@@ -37,13 +38,17 @@ void duplicate_client(client_t *src, client_t *dest)
     //copie des commandes ?
 }
 
-void send_replies(client_t *first, fd_set wr_set)
+void send_replies(myteams_t *teams, client_t *first, fd_set wr_set)
 {
     client_t *copy = first;
 
     while (copy) {
         if (FD_ISSET(copy->fd, &wr_set) && copy->reply) {
             dprintf(copy->fd, "%s\r\n", copy->reply);
+            if (strstr(copy->reply, "231")) {
+                close(copy->fd);
+                teams->clients[teams->act_idx] = 0;
+            }
             free(copy->reply);
             copy->reply = NULL;
         }

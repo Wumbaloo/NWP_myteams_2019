@@ -11,12 +11,24 @@
 #include "structs.h"
 #include "prototypes.h"
 #include "logging_server.h"
+void answer_client_login(client_t *client, char uuid[36], int code)
+{
+    size_t len = snprintf(NULL, 0, "%d %s", code, uuid);
+    char *msg = malloc(sizeof(char) * (len + 1));
+
+    if (!msg)
+        return;
+    sprintf(msg, "%d %s %s", code, uuid, client->user_name);
+    client->reply = msg;
+}
 
 void login_cmd(myteams_t *teams, client_t *client, void *arg)
 {
     char uuid[36];
     client_t *temp = get_client_by_username(teams->client_head, arg);
 
+    if (!arg)
+        return;
     //User déjà connecté
     if (temp && temp->is_connected == true)
         duplicate_client(temp, client);
@@ -31,8 +43,7 @@ void login_cmd(myteams_t *teams, client_t *client, void *arg)
     }
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_in(uuid);
-    client->reply = strdup("230 UUID");
-    //Envoyer réponse au client
+    answer_client_login(client, uuid, 230);
 }
 
 void logout_cmd(myteams_t *teams, client_t *client, void *arg)
@@ -47,9 +58,7 @@ void logout_cmd(myteams_t *teams, client_t *client, void *arg)
     client->is_connected = false;
     uuid_clear(client->use_position);
     client->depth = UNDEFINED;
-    close(client->fd);
-    teams->clients[teams->act_idx] = 0;
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_out(uuid);
-    //Envoyer réponse au client
+    answer_client_login(client, uuid, 231);
 }

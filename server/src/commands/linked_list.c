@@ -31,10 +31,10 @@ void remove_command(command_t *head, command_t *node)
     while (tmp->next) {
         if (tmp->next == node && tmp->next->next
             && tmp->next->next == node->next) {
-            tmp->next = node->next;
             free_command(node);
             break;
         }
+        tmp->next = node->next;
     }
 }
 
