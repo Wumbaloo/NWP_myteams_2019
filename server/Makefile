@@ -11,7 +11,7 @@ FILES	=	free.c								\
 			channels/free.c						\
 			channels/linked_list.c				\
 			clients/free.c						\
-			clients/getter.c					\
+			clients/client_getter.c				\
 			clients/input.c						\
 			clients/linked_list.c				\
 			clients/utils.c						\
@@ -21,6 +21,7 @@ FILES	=	free.c								\
 			commands/linked_list.c				\
 			commands/listing.c					\
 			commands/manager.c					\
+			commands/log_in_out.c				\
 			comments/free.c						\
 			comments/linked_list.c				\
 			core/free.c							\
@@ -36,7 +37,7 @@ FILES	=	free.c								\
 			useful/array_size.c					\
 			useful/exit.c						\
 			useful/logs.c						\
-			useful/my_str_to_word_array.c
+			useful/my_str_to_word_array.c		\
 
 MAIN_FILE	=	main.c
 

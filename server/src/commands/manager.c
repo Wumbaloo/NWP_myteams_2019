@@ -59,11 +59,12 @@ void manage_command(myteams_t *teams, client_t *client, char *input)
     cmd_tab = my_str_to_word_array(input, ' ');
     if (cmd_tab[0] && cmd_tab[0][0] == '/') {
         cmd = get_command(teams->command_head, &cmd_tab[0][1]);
-        if (cmd && !cmd_tab[2])
+        if (cmd) {
             execute_command(teams, client, cmd_tab, cmd);
-    } else {
-        console_log(client, "Used a bad command", ERROR, NULL);
-        bad_command(teams, client);
+            return;
+        }
     }
+    console_log(client, "Used a bad command", ERROR, NULL);
+    bad_command(teams, client);
     free_array(cmd_tab);
 }

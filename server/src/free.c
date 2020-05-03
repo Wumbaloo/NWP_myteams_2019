@@ -14,9 +14,8 @@ void free_myteams(myteams_t *myteams)
         free(myteams->server);
     if (myteams->clients)
         free(myteams->clients);
-    if (myteams->client_head)
-        free_clients_list(myteams->client_head);
-    if (myteams->team_head)
-        free_teams_list(myteams->team_head);
+    free_commands_list(myteams->command_head);
+    free_clients_list(myteams->client_head);
+    free_teams_list(myteams->team_head);
     free(myteams);
 }

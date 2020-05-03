@@ -29,6 +29,7 @@ command_t *get_command(command_t *head, char *cmd);
 command_t *create_command(char *txt, int login,
                             void (*ptr)(myteams_t *, client_t *, void *));
 void login_cmd(myteams_t *teams, client_t *client, void *arg);
+void logout_cmd(myteams_t *teams, client_t *client, void *arg);
 //Useful functions ==> useful
 void perror_exit(char *err, int exit_code);
 void console_log(client_t *from, char *msg, log_type type, char *custom_color);
