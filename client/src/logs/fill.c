@@ -6,14 +6,28 @@
 */
 
 #include <stdio.h>
+#include "logging_client.h"
+#include "client.h"
 #include "logs.h"
 
-void print_help(char **array)
+int login_trigger(char **array)
 {
-    printf("HERE HELP COMMAND with %s\n", array[0]);
+    if (get_array_length(array) < 2)
+        return (1);
+    client_event_loggedin(array[1], array[2]);
+    return (0);
+}
+
+int logout_trigger(char **array)
+{
+    if (get_array_length(array) < 2)
+        return (1);
+    client_event_loggedout(array[1], array[2]);
+    return (1);
 }
 
 void fill_commands(log_t **head)
 {
-    create_log(head, 530, &print_help);
+    create_log(head, 230, &login_trigger);
+    create_log(head, 231, &logout_trigger);
 }

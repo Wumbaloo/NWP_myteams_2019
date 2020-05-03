@@ -5,7 +5,7 @@
 ## Receive "files" (a list of C files) and "from" (directory of call)
 ##
 
-TEST_FILES	=	test_linked_list.c	\
+TEST_FILES	=	test_logs_linked_list.c	\
 
 NAME = unit_tests
 
@@ -16,7 +16,7 @@ $(NAME): tests_run
 tests_run:
 ifdef files
 ifdef from
-	$(CC) -o $(NAME) $(addprefix $(subst ${space} ,\ ,$(from)/), $(files)) $(TEST_FILES) -I $(subst ${space} ,\ ,$(from)/include) --coverage -lcriterion
+	$(CC) -o $(NAME) $(addprefix $(subst ${space} ,\ ,$(from)/), $(files)) $(TEST_FILES) -I $(subst ${space} ,\ ,$(from)/include) -L ../../lib -lmyteams -luuid --coverage -lcriterion
 	./$(NAME)
 else
 	@echo 'No from directory for unit tests.'

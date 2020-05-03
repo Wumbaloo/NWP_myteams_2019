@@ -22,7 +22,7 @@ void insert_log(log_t **head, log_t *node)
     tmp->next = node;
 }
 
-log_t *create_log(log_t **head, int code, void (*func)(char **))
+log_t *create_log(log_t **head, int code, int (*func)(char **))
 {
     log_t *new = malloc(sizeof(log_t));
 
@@ -46,10 +46,10 @@ void remove_log(log_t *head, log_t *node)
     while (tmp->next) {
         if (tmp->next == node && tmp->next->next
             && tmp->next->next == node->next) {
-            tmp->next = node->next;
             free_log(node);
             break;
         }
+        tmp->next = node->next;
     }
 }
 
