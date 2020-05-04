@@ -11,6 +11,7 @@
 #include "structs.h"
 #include "prototypes.h"
 #include "logging_server.h"
+
 void answer_client_login(client_t *client, char uuid[36], int code)
 {
     size_t len = snprintf(NULL, 0, "%d %s", code, uuid);
@@ -22,12 +23,12 @@ void answer_client_login(client_t *client, char uuid[36], int code)
     client->reply = msg;
 }
 
-void login_cmd(myteams_t *teams, client_t *client, void *arg)
+void login_cmd(myteams_t *teams, client_t *client, char **input)
 {
     char uuid[36];
-    client_t *temp = get_client_by_username(teams->client_head, arg);
+    client_t *temp = get_client_by_username(teams->client_head, input[1]);
 
-    if (!arg)
+    if (!input)
         return;
     //User déjà connecté
     if (temp && temp->is_connected == true)
@@ -38,7 +39,7 @@ void login_cmd(myteams_t *teams, client_t *client, void *arg)
     //User : première arrivée
     else {
         uuid_generate(client->user_uuid);
-        memcpy(client->user_name, arg, DEFAULT_NAME_LENGTH);
+        memcpy(client->user_name, input[1], DEFAULT_NAME_LENGTH);
         client->is_connected = true;
     }
     uuid_unparse(client->user_uuid, uuid);
@@ -46,11 +47,11 @@ void login_cmd(myteams_t *teams, client_t *client, void *arg)
     answer_client_login(client, uuid, 230);
 }
 
-void logout_cmd(myteams_t *teams, client_t *client, void *arg)
+void logout_cmd(myteams_t *teams, client_t *client, char **input)
 {
     char uuid[36];
 
-    (void)(arg);
+    (void)(input);
     if (client->is_connected == false) {
         //Error not logged in
         return;

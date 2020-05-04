@@ -14,7 +14,7 @@
 #include "logs.h"
 
 command_t *create_command(char *txt, int login,
-                            void (*ptr)(myteams_t *, client_t *, void *))
+                            void (*ptr)(myteams_t *, client_t *, char **))
 {
     command_t *cmd = malloc(sizeof(command_t));
     int len = strlen(txt);
@@ -32,12 +32,11 @@ command_t *create_command(char *txt, int login,
     return (cmd);
 }
 
-void help_cmd(myteams_t *teams, client_t *client, void *arg)
+void help_cmd(myteams_t *teams, client_t *client, char **arg)
 {
     (void)(teams);
     (void)(client);
     (void)(arg);
-//    console_log(client, "HELP", BASIC, NULL);
     client->reply = strdup("HELP command");
 }
 

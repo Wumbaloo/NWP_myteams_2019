@@ -27,14 +27,22 @@ void free_command(command_t *cmd);
 void free_commands_list(command_t *head);
 command_t *get_command(command_t *head, char *cmd);
 command_t *create_command(char *txt, int login,
-                            void (*ptr)(myteams_t *, client_t *, void *));
-void login_cmd(myteams_t *teams, client_t *client, void *arg);
-void logout_cmd(myteams_t *teams, client_t *client, void *arg);
+                            void (*ptr)(myteams_t *, client_t *, char **));
+void login_cmd(myteams_t *teams, client_t *client, char **arg);
+void logout_cmd(myteams_t *teams, client_t *client, char **arg);
+
 void specific_user_cmd(myteams_t *teams, client_t *client, void *arg);
 void specific_message_cmd(myteams_t *teams, client_t *client, void *arg);
 void subscribe_cmd(myteams_t *teams, client_t *client, void *arg);
 void unsubscribe_cmd(myteams_t *teams, client_t *client, void *arg);
 bool already_subscribed(sub_list_t *head, uuid_t team);
+
+//Parser functions ==> commandes/parser
+char **parse_arguments(char *input, char separator);
+int remove_quotes_args(char **cmd_tab);
+int char_array_length(char **array);
+int count_words(char *input, char separator);
+int is_banned_char(char c);
 
 //Useful functions ==> useful
 void perror_exit(char *err, int exit_code);

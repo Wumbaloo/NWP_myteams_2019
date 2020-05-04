@@ -20,8 +20,14 @@ FILES	=	free.c								\
 			commands/free.c						\
 			commands/linked_list.c				\
 			commands/listing.c					\
-			commands/manager.c					\
 			commands/log_in_out.c				\
+			commands/manager.c					\
+			commands/parser_utils.c				\
+			commands/parser.c					\
+			commands/private_message.c			\
+			commands/subscription.c				\
+			commands/use.c						\
+			commands/users_info.c				\
 			comments/free.c						\
 			comments/linked_list.c				\
 			core/free.c							\
