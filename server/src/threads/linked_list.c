@@ -18,6 +18,7 @@ thread_t *new_thread(char *title, char *content, uuid_t author)
         perror_exit("malloc", 84);
     uuid_generate(thread->thread_uuid);
     memcpy(thread->thread_author, author, 16);
+    thread->timestamp = time(NULL);
     thread->thread_title = strdup(title);
     thread->thread_msg = strdup(content);
     thread->comment_head = NULL;

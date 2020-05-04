@@ -12,21 +12,38 @@
 #include "prototypes.h"
 #include "clients_storage.h"
 
+void copy_subscribed(client_t *src, client_t *dest)
+{
+    sub_list_t *copy = src->team_tab;
+
+    for (; copy; copy = copy->next)
+        insert_in_sub_list(&dest->team_tab, copy->uuid);
+    copy = src->channel_tab;
+    for (; copy; copy = copy->next)
+        insert_in_sub_list(&dest->channel_tab, copy->uuid);
+    copy = src->thread_tab;
+    for (; copy; copy = copy->next)
+        insert_in_sub_list(&dest->thread_tab, copy->uuid);
+}
+
 void duplicate_client(client_t *src, client_t *dest)
 {
     message_t *copy = src->message_head;
+    message_t *temp;
+
     dest->is_connected = true;
     memcpy(dest->user_name, src->user_name, DEFAULT_NAME_LENGTH);
     uuid_copy(dest->user_uuid, src->user_uuid);
     dest->depth = src->depth;
-    //Copie des listes chaînées
-//    copy_array(src->group_tab, dest->group_tab);
-//    copy_array(src->channel_tab, dest->channel_tab);
-//    copy_array(src->thread_tab, dest->thread_tab);
+    copy_subscribed(src, dest);
     dest->message_head = NULL;
     for (; copy; copy = copy->next)
         insert_message(&dest->message_head, copy->sender, copy->receiver,
             copy->body);
+    copy = dest->message_head;
+    temp = src->message_head;
+    for (; copy && temp; copy = copy->next, temp = temp->next)
+        copy->timestamp = temp->timestamp;
     //copie des commandes ?
 }
 

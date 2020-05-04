@@ -19,6 +19,7 @@ message_t *new_message(uuid_t from, uuid_t to, char body[DEFAULT_BODY_LENGTH])
     strcpy(msg->body, body);
     memcpy(msg->sender, from, 16);
     memcpy(msg->receiver, to, 16);
+    msg->timestamp = time(NULL);
     msg->next = NULL;
     return msg;
 }

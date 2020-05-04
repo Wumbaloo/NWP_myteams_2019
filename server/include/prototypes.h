@@ -36,7 +36,6 @@ void subscribe_cmd(myteams_t *teams, client_t *client, void *arg);
 void unsubscribe_cmd(myteams_t *teams, client_t *client, void *arg);
 bool already_subscribed(sub_list_t *head, uuid_t team);
 
-
 //Useful functions ==> useful
 void perror_exit(char *err, int exit_code);
 void console_log(client_t *from, char *msg, log_type type, char *custom_color);
@@ -74,7 +73,6 @@ void send_replies(myteams_t *teams, client_t *first, fd_set wr_set);
 //Clients->Messages linked-list
 void insert_message(message_t **first, uuid_t from, uuid_t to,
     char body[DEFAULT_BODY_LENGTH]);
-
 
 //Subscription linked-list
 void insert_in_sub_list(sub_list_t **first, uuid_t uuid);

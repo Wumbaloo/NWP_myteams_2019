@@ -29,6 +29,7 @@ void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team)
 
 void unsubscribe_cmd(myteams_t *teams, client_t *client, void *arg)
 {
+    client_t *client_tmp;
     team_t *to_unsubscribe;
     uuid_t temp;
 
@@ -45,8 +46,13 @@ void unsubscribe_cmd(myteams_t *teams, client_t *client, void *arg)
         //Error not subscribed to the team
         return;
     }
-    remove_in_sub_list(client->team_tab, temp);
-    unsubscribe_from_sub_channels(client->channel_tab, to_unsubscribe);
+    client_tmp = teams->client_head;
+    for (; client_tmp; client_tmp = client_tmp->next) {
+        if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
+            remove_in_sub_list(client_tmp->team_tab, temp);
+            unsubscribe_from_sub_channels(client_tmp->channel_tab, to_unsubscribe);
+        }
+    }
     //Announce the departure of the user ? Check Milanote
 }
 
@@ -60,6 +66,7 @@ void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team)
 
 void subscribe_cmd(myteams_t *teams, client_t *client, void *arg)
 {
+    client_t *client_tmp;
     team_t *to_subscribe;
     uuid_t temp;
 
@@ -76,7 +83,12 @@ void subscribe_cmd(myteams_t *teams, client_t *client, void *arg)
         //Error already subscribed
         return;
     }
-    insert_in_sub_list(&client->team_tab, temp);
-    subscribe_to_subchannels(client->channel_tab, to_subscribe);
+    client_tmp = teams->client_head;
+    for (; client_tmp; client_tmp = client_tmp->next) {
+        if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
+            insert_in_sub_list(&client_tmp->team_tab, temp);
+            subscribe_to_subchannels(client->channel_tab, to_subscribe);
+        }
+    }
     //Announce the user entry in the group ? Check Milanote
 }

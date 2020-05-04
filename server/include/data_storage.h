@@ -13,6 +13,7 @@
 
 typedef struct comment_s
 {
+    time_t timestamp;
     char comment_body[DEFAULT_BODY_LENGTH];
     uuid_t comment_author;
     struct comment_s *next;
@@ -20,6 +21,7 @@ typedef struct comment_s
 
 typedef struct thread_s
 {
+    time_t timestamp;
     char *thread_title;
     char *thread_msg;
     uuid_t thread_author;

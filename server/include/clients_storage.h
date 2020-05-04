@@ -22,6 +22,7 @@ typedef enum
 
 typedef struct message_s
 {
+    time_t timestamp;
     uuid_t sender;
     uuid_t receiver;
     char body[DEFAULT_BODY_LENGTH];
