@@ -43,11 +43,11 @@ void help_cmd(myteams_t *teams, client_t *client, void *arg)
 
 void create_all_commands(command_t **head)
 {
-//    command_t *help = create_command("HELP", 0, help_cmd);
-//    command_t *login = create_command("LOGIN", 0, login_cmd);
-//    command_t *logout = create_command("LOGOUT", 0, logout_cmd);
+   command_t *help = create_command("HELP", 0, help_cmd);
+   command_t *login = create_command("LOGIN", 0, login_cmd);
+   command_t *logout = create_command("LOGOUT", 0, logout_cmd);
 
-//    insert_command(head, help);
-//    insert_command(head, login);
-//    insert_command(head, logout);
+   insert_command(head, help);
+   insert_command(head, login);
+   insert_command(head, logout);
 }

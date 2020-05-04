@@ -23,6 +23,6 @@ int analyze_log(log_t *head, char *buffer)
     code = strtol(code_str_array[0], &end_ptr, 10);
     current = get_log(head, code);
     if (!current)
-        return (1);
+        return (0);
     return (current->func(code_str_array));
 }

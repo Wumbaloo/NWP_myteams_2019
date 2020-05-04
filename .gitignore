@@ -9,6 +9,7 @@ myteams_cli
 myteams_server
 .vscode
 myteams
+lib
 boostrap*
 test_ftp.sh
 *.gc*

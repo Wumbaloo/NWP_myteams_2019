@@ -5,14 +5,11 @@
 ** Client side of My FTP
 */
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "logs.h"
+#include <sys/select.h>
 #include "client.h"
 
 char *read_from_server(int sockfd)
@@ -31,41 +28,41 @@ char *read_from_server(int sockfd)
     return (returnBuf);
 }
 
-int try_connect(char *ip, int port)
+void reset_update_set(int socket, fd_set *readset, fd_set *writeset)
 {
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    struct sockaddr_in config;
-    char *buffer;
-
-    if (sockfd == -1) {
-        perror("socket");
-        return (-1);
-    }
-    config.sin_family = AF_INET;
-    config.sin_port = htons(port);
-    if(inet_pton(AF_INET, ip, &config.sin_addr) <= 0) { 
-        write(2, "Invalid address.\n", 17);
-        return (-1);
-    }
-    if (connect(sockfd, (struct sockaddr *) &config, sizeof(config)) < 0) {
-        perror("connect");
-        return (-1);
-    }
-    buffer = read_from_server(sockfd);
-    printf("%s", buffer);
-    free(buffer);
-    return (sockfd);
+    FD_ZERO(readset);
+    FD_ZERO(writeset);
+    FD_SET(socket, readset);
+    FD_SET(0, readset);
 }
 
-int get_input(char **input)
+int is_server_readable(char *buffer, int sockfd, fd_set *readset,
+    log_t *log_head)
 {
-    size_t len = 0;
+    if (FD_ISSET(sockfd, readset)) {
+        buffer = read_from_server(sockfd);
+        printf("%s", buffer);
+        if (analyze_log(log_head, buffer)) {
+            free(buffer);
+            return (1);
+        }
+        free(buffer);
+    }
+    return (0);
+}
 
-    if (*input)
-        free(*input);
-    if (getline(&(*input), &len, stdin) == -1)
-        return (84);
-    (*input) = clean_string(*input);
+int is_server_writable(char *input, int sockfd, fd_set *readset)
+{
+    int input_return = 0;
+
+    if (FD_ISSET(0, readset)) {
+        input_return = get_input(&input);
+        if (input_return == 84)
+            return (2);
+        else if (input_return > 0)
+            return (1);
+        dprintf(sockfd, "%s\r\n", input);
+    }
     return (0);
 }
 
@@ -74,21 +71,21 @@ void manage_client(log_t *log_head, int sockfd)
     char *buffer = NULL;
     char *input = NULL;
     int input_return = 0;
+    fd_set readset;
+    fd_set writeset;
 
     while (1) {
-        input_return = get_input(&input);
-        if (input_return == 1)
+        reset_update_set(sockfd, &readset, &writeset);
+        if (select(sockfd + 1, &readset, &writeset,
+            NULL, NULL) == -1)
+            return;
+        if (is_server_readable(buffer, sockfd, &readset, log_head) == 1)
+            break;
+        input_return = is_server_writable(input, sockfd, &readset);
+        if (input_return == 2)
             continue;
-        else if (input_return > 0)
+        else if (input_return == 1)
             break;
-        dprintf(sockfd, "%s\r\n", input);
-        buffer = read_from_server(sockfd);
-        printf("%s", buffer);
-        if (analyze_log(log_head, buffer)) {
-            free(buffer);
-            break;
-        }
-        free(buffer);
     }
     free(input);
 }

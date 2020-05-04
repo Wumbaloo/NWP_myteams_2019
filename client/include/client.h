@@ -12,10 +12,13 @@
 
 int analyze_log(log_t *head, char *buffer);
 int get_array_length(char **array);
-int try_connect(char *ip, int port);
 void fill_commands(log_t **head);
 void manage_client(log_t *log_head, int sockfd);
+char *read_from_server(int sockfd);
+int return_with_perror(char *msg, int value);
+int get_input(char **input);
 char *clean_string(char *str);
+int launcher(int ac, char **av);
 char **my_str_to_word_array(char *av, char separate);
 
 #endif

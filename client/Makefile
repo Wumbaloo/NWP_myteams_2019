@@ -13,7 +13,10 @@ FILES	=	logs/fill.c						\
 			useful/array.c					\
 			useful/clean_str.c				\
 			useful/my_str_to_word_array.c	\
+			useful/get_input.c				\
+			errors/error.c					\
 			analyzer.c						\
+			init_connection.c				\
 			client.c						\
 
 MAIN_FILE	=	main.c
