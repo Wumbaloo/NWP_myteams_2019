@@ -8,8 +8,14 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
-void manage_client(int sockfd);
+#include "logs.h"
+
+int analyze_log(log_t *head, char *buffer);
+int get_array_length(char **array);
 int try_connect(char *ip, int port);
+void fill_commands(log_t **head);
+void manage_client(log_t *log_head, int sockfd);
 char *clean_string(char *str);
+char **my_str_to_word_array(char *av, char separate);
 
 #endif

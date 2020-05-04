@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "logs.h"
 #include "client.h"
 
 char *read_from_server(int sockfd)
@@ -68,7 +69,7 @@ int get_input(char **input)
     return (0);
 }
 
-void manage_client(int sockfd)
+void manage_client(log_t *log_head, int sockfd)
 {
     char *buffer = NULL;
     char *input = NULL;
@@ -83,8 +84,10 @@ void manage_client(int sockfd)
         dprintf(sockfd, "%s\r\n", input);
         buffer = read_from_server(sockfd);
         printf("%s", buffer);
-        if (strncasecmp(input, "/logout", 7) == 0)
+        if (analyze_log(log_head, buffer)) {
+            free(buffer);
             break;
+        }
         free(buffer);
     }
     free(input);

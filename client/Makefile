@@ -7,8 +7,14 @@
 
 SRC_DIR	=	src/
 
-FILES	=	clean_str.c	\
-			client.c
+FILES	=	logs/fill.c						\
+			logs/free.c						\
+			logs/linked_list.c				\
+			useful/array.c					\
+			useful/clean_str.c				\
+			useful/my_str_to_word_array.c	\
+			analyzer.c						\
+			client.c						\
 
 MAIN_FILE	=	main.c
 

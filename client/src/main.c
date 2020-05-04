@@ -8,12 +8,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "client.h"
+#include "logs.h"
 
 int main(int ac, char **av)
 {
     char *ip = NULL;
     int port = 8000;
     int sockfd = -1;
+    log_t *head = NULL;
 
     if (ac != 3)
         return (84);
@@ -22,6 +24,8 @@ int main(int ac, char **av)
     sockfd = try_connect(ip, port);
     if (sockfd < 0)
         return (84);
-    manage_client(sockfd);
+    fill_commands(&head);
+    manage_client(head, sockfd);
+    free_logs_list(head);
     return (0);
 }

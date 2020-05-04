@@ -69,7 +69,7 @@ client_t *get_client_by_username(client_t *head, char *username);
 void duplicate_client(client_t *src, client_t *dest);
 void insert_client(client_t **first, int fd);
 void remove_client(client_t *first, int fd);
-void send_replies(client_t *first, fd_set wr_set);
+void send_replies(myteams_t *teams, client_t *first, fd_set wr_set);
 
 //Clients->Messages linked-list
 void insert_message(message_t **first, uuid_t from, uuid_t to,

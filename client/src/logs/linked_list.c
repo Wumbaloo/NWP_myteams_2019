@@ -2,17 +2,17 @@
 ** EPITECH PROJECT, 2019
 ** My Teams
 ** File description:
-** Commands linked list
+** Logs linked list
 */
 
 #include <stdlib.h>
 #include <string.h>
-#include "structs.h"
-#include "prototypes.h"
+#include <stdio.h>
+#include "logs.h"
 
-void insert_command(command_t **head, command_t *node)
+void insert_log(log_t **head, log_t *node)
 {
-    command_t *tmp = (*head);
+    log_t *tmp = (*head);
 
     if (!(*head)) {
         *head = node;
@@ -22,30 +22,45 @@ void insert_command(command_t **head, command_t *node)
     tmp->next = node;
 }
 
-void remove_command(command_t *head, command_t *node)
+log_t *create_log(log_t **head, int code, int (*func)(char **))
 {
-    command_t *tmp = head;
+    log_t *new = malloc(sizeof(log_t));
+
+    if (!new) {
+        perror("malloc");
+        exit(84);
+    }
+    new->code = code;
+    new->func = func;
+    new->next = NULL;
+    insert_log(head, new);
+    return (new);
+}
+
+void remove_log(log_t *head, log_t *node)
+{
+    log_t *tmp = head;
 
     if (!head || !node)
         return;
     while (tmp->next) {
         if (tmp->next == node && tmp->next->next
             && tmp->next->next == node->next) {
-            free_command(node);
+            free_log(node);
             break;
         }
         tmp->next = node->next;
     }
 }
 
-command_t *get_command(command_t *head, char *cmd)
+log_t *get_log(log_t *head, int code)
 {
-    command_t *tmp = head;
+    log_t *tmp = head;
 
     if (!head)
         return (NULL);
     while (tmp) {
-        if (strcasecmp(tmp->command, cmd) == 0)
+        if (tmp->code == code)
             return (tmp);
         tmp = tmp->next;
     }

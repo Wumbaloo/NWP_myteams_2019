@@ -83,5 +83,5 @@ void check_for_instructions(myteams_t *teams)
                     input);
         }
     }
-    send_replies(teams->client_head, teams->writeset);
+    send_replies(teams, teams->client_head, teams->writeset);
 }
