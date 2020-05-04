@@ -29,6 +29,14 @@ command_t *get_command(command_t *head, char *cmd);
 command_t *create_command(char *txt, int login,
                             void (*ptr)(myteams_t *, client_t *, void *));
 void login_cmd(myteams_t *teams, client_t *client, void *arg);
+void logout_cmd(myteams_t *teams, client_t *client, void *arg);
+void specific_user_cmd(myteams_t *teams, client_t *client, void *arg);
+void specific_message_cmd(myteams_t *teams, client_t *client, void *arg);
+void subscribe_cmd(myteams_t *teams, client_t *client, void *arg);
+void unsubscribe_cmd(myteams_t *teams, client_t *client, void *arg);
+bool already_subscribed(sub_list_t *head, uuid_t team);
+
+
 //Useful functions ==> useful
 void perror_exit(char *err, int exit_code);
 void console_log(client_t *from, char *msg, log_type type, char *custom_color);
@@ -45,7 +53,7 @@ myteams_t *create_teams(int port);
 client_t *new_client(int fd);
 int launch_server(int ac, char **av);
 
-//    Server requests ==> core > monitoring.c
+//Server requests ==> core > monitoring.c
 void reset_update_set(myteams_t *teams);
 void connection_received(myteams_t *teams);
 void check_for_instructions(myteams_t *teams);
@@ -54,6 +62,7 @@ void check_for_instructions(myteams_t *teams);
 int manage_connection(myteams_t *teams, int fd, char *buffer);
 
 //Clients linked-list
+int nbr_clients(client_t *head);
 client_t *get_client_by_fd(client_t *head, int fd);
 client_t *get_client_by_uuid(client_t *head, uuid_t uuid);
 client_t *get_client_by_username(client_t *head, char *username);
@@ -66,9 +75,15 @@ void send_replies(client_t *first, fd_set wr_set);
 void insert_message(message_t **first, uuid_t from, uuid_t to,
     char body[DEFAULT_BODY_LENGTH]);
 
+
+//Subscription linked-list
+void insert_in_sub_list(sub_list_t **first, uuid_t uuid);
+void remove_in_sub_list(sub_list_t *first, uuid_t uuid);
+
 //Teams linked-list
 void insert_team(team_t **first, char name[DEFAULT_NAME_LENGTH],
     char desc[DEFAULT_DESCRIPTION_LENGTH]);
+team_t *get_team_by_uuid(team_t *head, uuid_t uuid);
 
 //Channels linked-list
 void insert_channel(channel_t **first, char name[DEFAULT_NAME_LENGTH],

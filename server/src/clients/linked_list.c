@@ -11,6 +11,16 @@
 #include "structs.h"
 #include "prototypes.h"
 
+int nbr_clients(client_t *head)
+{
+    int nbr = 0;
+    client_t *copy = head;
+
+    for (; copy; copy = copy->next)
+        nbr++;
+    return nbr;
+}
+
 client_t *new_client(int fd)
 {
     client_t *client = malloc(sizeof(client_t));
@@ -19,10 +29,9 @@ client_t *new_client(int fd)
         perror_exit("malloc", 84);
     memset(client->user_name, '\0', DEFAULT_NAME_LENGTH);
     client->depth = UNDEFINED;
-    client->group_tab = NULL;
+    client->team_tab = NULL;
     client->channel_tab = NULL;
     client->thread_tab = NULL;
-    uuid_clear(client->use_position);
     client->fd = fd;
     client->is_connected = false;
     client->reply = NULL;
@@ -38,6 +47,7 @@ void remove_client(client_t *first, int fd)
 
     if (!first)
         return;
+    //A changer: voir sub_list/linked_list.c
     for (; copy->next; copy = copy->next) {
         if (copy->next->fd == fd && copy->next->next) {
             tmp = copy->next;

@@ -1,0 +1,82 @@
+/*
+** EPITECH PROJECT, 2023
+** NWP_myteams_2019
+** File description:
+** Created by Anthony ANICOTTE,
+*/
+
+#include <stdlib.h>
+#include "prototypes.h"
+#include "structs.h"
+
+bool already_subscribed(sub_list_t *head, uuid_t team)
+{
+    sub_list_t *copy = head;
+
+    for (; copy; copy = copy->next)
+        if (!uuid_compare(copy->uuid, team))
+            return true;
+    return false;
+}
+
+void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team)
+{
+    channel_t *copy = team->channel_head;
+
+    for (; copy; copy = copy->next)
+        remove_in_sub_list(channel_list, copy->channel_uuid);
+}
+
+void unsubscribe_cmd(myteams_t *teams, client_t *client, void *arg)
+{
+    team_t *to_unsubscribe;
+    uuid_t temp;
+
+    if (client->is_connected == false) {
+        //Error not logged
+        return;
+    }
+    uuid_parse(arg, temp);
+    to_unsubscribe = get_team_by_uuid(teams->team_head, temp);
+    if (!to_unsubscribe) {
+        //Error team not found
+        return;
+    } else if (already_subscribed(client->team_tab, temp) == false) {
+        //Error not subscribed to the team
+        return;
+    }
+    remove_in_sub_list(client->team_tab, temp);
+    unsubscribe_from_sub_channels(client->channel_tab, to_unsubscribe);
+    //Announce the departure of the user ? Check Milanote
+}
+
+void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team)
+{
+    channel_t *copy = team->channel_head;
+
+    for (; copy; copy = copy->next)
+        insert_in_sub_list(&channel_list, copy->channel_uuid);
+}
+
+void subscribe_cmd(myteams_t *teams, client_t *client, void *arg)
+{
+    team_t *to_subscribe;
+    uuid_t temp;
+
+    if (client->is_connected == false) {
+        //Error not logged
+        return;
+    }
+    uuid_parse(arg, temp);
+    to_subscribe = get_team_by_uuid(teams->team_head, temp);
+    if (!to_subscribe) {
+        //Error unknown team
+        return;
+    } else if (already_subscribed(client->team_tab, temp)) {
+        //Error already subscribed
+        return;
+    }
+    insert_in_sub_list(&client->team_tab, temp);
+    subscribe_to_subchannels(client->channel_tab, to_subscribe);
+    //Announce the user entry in the group ? Check Milanote
+}

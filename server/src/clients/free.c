@@ -13,8 +13,8 @@ void free_client(client_t *client)
 {
     if (client->reply != NULL)
         free(client->reply);
-    if (client->group_tab)
-        free(client->group_tab);
+//    if (client->group_tab)
+//        free(client->group_tab);
     if (client->channel_tab)
         free(client->channel_tab);
     if (client->thread_tab)

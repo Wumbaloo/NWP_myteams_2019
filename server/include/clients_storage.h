@@ -17,8 +17,7 @@ typedef enum
     UNDEFINED,
     TEAM,
     CHANNEL,
-    THREAD,
-    COMMENT
+    THREAD
 } use_depth;
 
 typedef struct message_s
@@ -29,6 +28,12 @@ typedef struct message_s
     struct message_s *next;
 } message_t;
 
+typedef struct sub_list_s
+{
+    uuid_t uuid;
+    struct sub_list_s *next;
+} sub_list_t;
+
 typedef struct user_s
 {
     int fd;
@@ -38,9 +43,9 @@ typedef struct user_s
     uuid_t user_uuid;
     use_depth depth;
     uuid_t use_position;
-    uuid_t *group_tab;
-    uuid_t *channel_tab;
-    uuid_t *thread_tab;
+    sub_list_t *team_tab;
+    sub_list_t *channel_tab;
+    sub_list_t *thread_tab;
     message_t *message_head;
     struct user_s *next;
     struct command_s *command_head;
