@@ -34,7 +34,6 @@ FILES	=	free.c								\
 			teams/linked_list.c					\
 			threads/free.c						\
 			threads/linked_list.c				\
-			useful/array_size.c					\
 			useful/exit.c						\
 			useful/logs.c						\
 			useful/my_str_to_word_array.c		\
