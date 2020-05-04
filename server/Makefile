@@ -30,6 +30,7 @@ FILES	=	free.c								\
 			core/monitoring.c					\
 			errors/arguments.c					\
 			errors/commands.c					\
+			sub_list/linked_list.c 				\
 			teams/free.c						\
 			teams/linked_list.c					\
 			threads/free.c						\
