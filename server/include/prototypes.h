@@ -31,11 +31,21 @@ command_t *create_command(char *txt, int login,
 void login_cmd(myteams_t *teams, client_t *client, char **arg);
 void logout_cmd(myteams_t *teams, client_t *client, char **arg);
 
-void specific_user_cmd(myteams_t *teams, client_t *client, void *arg);
-void specific_message_cmd(myteams_t *teams, client_t *client, void *arg);
-void subscribe_cmd(myteams_t *teams, client_t *client, void *arg);
-void unsubscribe_cmd(myteams_t *teams, client_t *client, void *arg);
+void specific_user_cmd(myteams_t *teams, client_t *client, char **arg);
+void specific_message_cmd(myteams_t *teams, client_t *client, char **arg);
+void subscribe_cmd(myteams_t *teams, client_t *client, char **arg);
+void unsubscribe_cmd(myteams_t *teams, client_t *client, char **arg);
+void info_cmd(myteams_t *teams, client_t *client, char **input);
+void create_cmd(myteams_t *teams, client_t *client, char **input);
+void info_cmd(myteams_t *teams, client_t *client, char **input);
+void list_cmd(myteams_t *teams, client_t *client, char **input);
+void use_cmd(myteams_t *teams, client_t *client, char **input);
 bool already_subscribed(sub_list_t *head, uuid_t team);
+void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team);
+
+//Command utils
+int double_array_size(char **array);
+bool is_banned(sub_list_t *list, uuid_t uuid);
 
 //Parser functions ==> commandes/parser
 char **parse_arguments(char *input, char separator);
@@ -90,17 +100,24 @@ void remove_in_sub_list(sub_list_t *first, uuid_t uuid);
 void insert_team(team_t **first, char name[DEFAULT_NAME_LENGTH],
     char desc[DEFAULT_DESCRIPTION_LENGTH]);
 team_t *get_team_by_uuid(team_t *head, uuid_t uuid);
+team_t *get_team_by_name(team_t *head, char *name);
 
 //Channels linked-list
 void insert_channel(channel_t **first, char name[DEFAULT_NAME_LENGTH],
     char desc[DEFAULT_DESCRIPTION_LENGTH]);
+channel_t *get_channel_by_uuid(channel_t *head, uuid_t uuid);
+channel_t *get_channel_by_name(channel_t *head, char *name);
 
 //Thread linked-list
 void insert_thread(thread_t **first, char *title, char *content, uuid_t author);
+thread_t *new_thread(char *title, char *content, uuid_t author);
+thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid);
+thread_t *get_thread_by_title(thread_t *head, char *name);
 
 //Comments linked-list
 void insert_comment(comment_t **first, char body[DEFAULT_BODY_LENGTH],
     uuid_t author);
+comment_t *new_comment(char body[DEFAULT_BODY_LENGTH], uuid_t author);
 
 //Free Things
 void free_myteams(myteams_t *myteams);

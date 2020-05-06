@@ -43,13 +43,14 @@ typedef struct user_s
     char user_name[DEFAULT_NAME_LENGTH];
     uuid_t user_uuid;
     use_depth depth;
-    uuid_t use_position;
+    uuid_t team_chosen;
+    uuid_t channel_chosen;
+    uuid_t thread_chosen;
     sub_list_t *team_tab;
     sub_list_t *channel_tab;
     sub_list_t *thread_tab;
     message_t *message_head;
     struct user_s *next;
-    struct command_s *command_head;
 } client_t;
 
 #endif

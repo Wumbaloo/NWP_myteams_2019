@@ -10,6 +10,24 @@
 #include "prototypes.h"
 #include "data_storage.h"
 
+thread_t *get_thread_by_title(thread_t *head, char *name)
+{
+    thread_t *copy = head;
+
+    while (copy && strcmp(copy->thread_title, name))
+        copy = copy->next;
+    return copy;
+}
+
+thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid)
+{
+    thread_t *copy = head;
+
+    while (copy && uuid_compare(copy->thread_uuid, uuid))
+        copy = copy->next;
+    return copy;
+}
+
 thread_t *new_thread(char *title, char *content, uuid_t author)
 {
     thread_t *thread = malloc(sizeof(thread_t));

@@ -10,6 +10,18 @@
 #include "prototypes.h"
 #include "data_storage.h"
 
+team_t *get_team_by_name(team_t *head, char *name)
+{
+    team_t *copy = head;
+
+    while (copy) {
+        if (strcmp(copy->team_name, name) == 0)
+            return copy;
+        copy = copy->next;
+    }
+    return NULL;
+}
+
 team_t *get_team_by_uuid(team_t *head, uuid_t uuid)
 {
     team_t *copy = head;

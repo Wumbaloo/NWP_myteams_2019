@@ -17,6 +17,11 @@ FILES	=	free.c								\
 			clients/utils.c						\
 			clients/messages/free.c				\
 			clients/messages/linked_list.c		\
+			commands/create.c					\
+			commands/info.c						\
+			commands/list.c						\
+			commands/send_message.c				\
+			commands/utils.c					\
 			commands/free.c						\
 			commands/linked_list.c				\
 			commands/listing.c					\

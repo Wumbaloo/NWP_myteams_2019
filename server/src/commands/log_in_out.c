@@ -26,10 +26,15 @@ void answer_client_login(client_t *client, char uuid[36], int code)
 void login_cmd(myteams_t *teams, client_t *client, char **input)
 {
     char uuid[36];
-    client_t *temp = get_client_by_username(teams->client_head, input[1]);
+    client_t *temp;
 
-    if (!input)
+    if (!input[1])
+        //Error not enough args
         return;
+    if (client->is_connected == true)
+        //Already connected
+        return;
+    temp = get_client_by_username(teams->client_head, input[1]);
     //User déjà connecté
     if (temp && temp->is_connected == true)
         duplicate_client(temp, client);
@@ -57,7 +62,9 @@ void logout_cmd(myteams_t *teams, client_t *client, char **input)
         return;
     }
     client->is_connected = false;
-    uuid_clear(client->use_position);
+    uuid_clear(client->team_chosen);
+    uuid_clear(client->channel_chosen);
+    uuid_clear(client->thread_chosen);
     client->depth = UNDEFINED;
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_out(uuid);

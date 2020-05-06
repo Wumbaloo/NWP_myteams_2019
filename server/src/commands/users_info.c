@@ -9,7 +9,7 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void specific_user_cmd(myteams_t *teams, client_t *client, void *arg)
+void specific_user_cmd(myteams_t *teams, client_t *client, char  **input)
 {
     client_t *searched;
     uuid_t temp;
@@ -18,7 +18,10 @@ void specific_user_cmd(myteams_t *teams, client_t *client, void *arg)
         //Error not logged
         return;
     }
-    uuid_parse(arg, temp);
+    if (!input[1])
+        //Not enough arg
+        return;
+    uuid_parse(input[1], temp);
     searched = get_client_by_uuid(teams->client_head, temp);
     if (!searched) {
         //Error User Unknown
@@ -27,7 +30,7 @@ void specific_user_cmd(myteams_t *teams, client_t *client, void *arg)
     //Send to the user : uuid + user_name + user_status
 }
 
-void users_cmd(myteams_t *teams, client_t *client, void *arg)
+void users_cmd(myteams_t *teams, client_t *client, char **input)
 {
     int size = nbr_clients(teams->client_head);
     uuid_t *banned;

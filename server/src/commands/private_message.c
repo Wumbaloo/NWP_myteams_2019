@@ -9,7 +9,7 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void specific_message_cmd(myteams_t *teams, client_t *client, void *arg)
+void specific_message_cmd(myteams_t *teams, client_t *client, char **input)
 {
     client_t *searched;
     uuid_t temp;
@@ -19,7 +19,12 @@ void specific_message_cmd(myteams_t *teams, client_t *client, void *arg)
         //Error not logged
         return;
     }
-    uuid_parse(arg, temp);
+    if (double_array_size(input) != 2)
+        //Error bad args
+        return;
+    if (uuid_parse(input[1], temp) == -1)
+        //Error bad uuid
+        return;
     searched = get_client_by_uuid(teams->client_head, temp);
     if (!searched) {
         //Error unknown user

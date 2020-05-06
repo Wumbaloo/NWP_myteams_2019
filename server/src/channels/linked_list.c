@@ -10,6 +10,24 @@
 #include "data_storage.h"
 #include "prototypes.h"
 
+channel_t *get_channel_by_name(channel_t *head, char *name)
+{
+    channel_t *copy = head;
+
+    while (copy && strcmp(copy->channel_name, name))
+        copy = copy->next;
+    return copy;
+}
+
+channel_t *get_channel_by_uuid(channel_t *head, uuid_t uuid)
+{
+    channel_t *copy = head;
+
+    while (copy && uuid_compare(copy->channel_uuid, uuid))
+        copy = copy->next;
+    return copy;
+}
+
 channel_t *new_channel(char name[DEFAULT_NAME_LENGTH],
     char desc[DEFAULT_DESCRIPTION_LENGTH])
 {
