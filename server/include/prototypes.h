@@ -53,7 +53,7 @@ int uuid_tab_size(uuid_t *array);
 
 //Error handling ==> errors > error.c
 int error_handling(int ac, char **av);
-int return_with_msg(char *msg, int return_value);
+int return_and_msg(char *msg, int return_value);
 
 //Core prototypes in ==> core
 myteams_t *create_teams(int port);

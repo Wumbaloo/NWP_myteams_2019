@@ -21,7 +21,7 @@ Test(insert_client, insert_when_empty)
 
 Test(insert_client, basic_insert)
 {
-    client_t *head = new_node(2);
+    client_t *head = new_client(2);
 
     if (!head)
         exit(84);
@@ -41,7 +41,7 @@ Test(delete_node, delete_when_empty)
 
 Test(delete_node, basic_delete)
 {
-    client_t *head = new_node(1);
+    client_t *head = new_client(1);
 
     if (!head)
         exit(84);
@@ -54,8 +54,8 @@ Test(delete_node, basic_delete)
 
 Test(delete_node, delete_inexistant)
 {
-    client_t *head = new_node(1);
-    client_t *node = new_node(2);
+    client_t *head = new_client(1);
+    client_t *node = new_client(2);
 
     if (!head)
         exit(84);
@@ -69,37 +69,37 @@ Test(delete_node, delete_inexistant)
     free_clients_list(node);
 }
 
-Test(get_client, empty_getter)
+Test(get_client_fd, empty_fd_getter)
 {
     client_t *head = NULL;
 
-    cr_assert_eq(get_client(head, 1), NULL);
+    cr_assert_eq(get_client_by_fd(head, 1), NULL);
 }
 
-Test(get_client, normal_getter)
+Test(get_client_fd, normal_fd_getter)
 {
-    client_t *head = new_node(1);
-    client_t *node = new_node(2);
+    client_t *head = new_client(1);
+    client_t *node = new_client(2);
 
     if (!head || !node)
         exit(84);
     node->next = NULL;
     head->next = node;
-    cr_assert_eq(get_client(head, 2), node);
+    cr_assert_eq(get_client_by_fd(head, 2), node);
     free_clients_list(head);
 }
 
-Test(get_client, getter_inexistant)
+Test(get_client_fd, getter_fd_inexistant)
 {
-    client_t *head = new_node(1);
-    client_t *node = new_node(2);
+    client_t *head = new_client(1);
+    client_t *node = new_client(2);
 
     if (!head || !node)
         exit(84);
     node->next = NULL;
     head->next = NULL;
 
-    cr_assert_eq(get_client(head, 2), NULL);
+    cr_assert_eq(get_client_by_fd(head, 2), NULL);
     free_clients_list(head);
     free_clients_list(node);
 }

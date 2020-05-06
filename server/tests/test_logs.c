@@ -20,7 +20,7 @@ void redirect_all_stdout(void)
 
 Test(basic_command, basic, .init=redirect_all_stdout)
 {
-    client_t *client = new_node(2);
+    client_t *client = new_client(2);
 
     console_log(client, "Used a basic command", BASIC, NULL);
     console_log(client, "Used a command in a bad way", ERROR, NULL);

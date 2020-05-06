@@ -46,6 +46,7 @@ void remove_log(log_t *head, log_t *node)
     while (tmp->next) {
         if (tmp->next == node && tmp->next->next
             && tmp->next->next == node->next) {
+            tmp->next = node->next;
             free_log(node);
             break;
         }
