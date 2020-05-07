@@ -15,16 +15,15 @@
 char *read_from_server(int sockfd)
 {
     char buffer[1024];
-    char *returnBuf;
+    char *returnBuf = NULL;
     int valread = read(sockfd, buffer, 1024);
 
     if (valread == -1)
         exit(84);
-    returnBuf = malloc(sizeof(char) * (valread + 1));
+    buffer[valread] = '\0';
+    returnBuf = strdup(buffer);
     if (!returnBuf)
-        exit(84);
-    returnBuf = strcpy(returnBuf, buffer);
-    returnBuf[valread] = '\0';
+        exit(return_with_perror("malloc", 84));
     return (returnBuf);
 }
 
