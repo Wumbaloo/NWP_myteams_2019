@@ -65,6 +65,5 @@ char *clean_string(char *str)
         exit(84);
     }
     complete_string(str, new_str, begin_len, end_len);
-    free(str);
     return (new_str);
 }
