@@ -13,7 +13,7 @@
 
 int is_banned_char(char c)
 {
-    if (c == ' ' || c == '\t' || c == 10)
+    if (c == ' ' || c == '\t' || c == 10 || c == 13)
         return (1);
     return (0);
 }

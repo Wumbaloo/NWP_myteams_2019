@@ -39,16 +39,17 @@ void reset_update_set(int socket, fd_set *readset, fd_set *writeset)
 int is_server_readable(char *buffer, int sockfd, fd_set *readset,
     log_t *log_head)
 {
+    int result = 0;
+
     if (FD_ISSET(sockfd, readset)) {
         buffer = read_from_server(sockfd);
-        printf("%s", buffer);
-        if (analyze_log(log_head, buffer)) {
-            free(buffer);
+        if (!buffer)
             return (1);
-        }
-        free(buffer);
+        result = analyze_log(log_head, buffer);
+        if (result < 0)
+            printf("%s", buffer);
     }
-    return (0);
+    return (result);
 }
 
 int is_server_writable(char *input, int sockfd, fd_set *readset)
@@ -79,7 +80,7 @@ void manage_client(log_t *log_head, int sockfd)
         if (select(sockfd + 1, &readset, &writeset,
             NULL, NULL) == -1)
             return;
-        if (is_server_readable(buffer, sockfd, &readset, log_head) == 1)
+        else if (is_server_readable(buffer, sockfd, &readset, log_head) == 1)
             break;
         input_return = is_server_writable(input, sockfd, &readset);
         if (input_return == 2)

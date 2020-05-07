@@ -26,8 +26,15 @@ int logout_trigger(char **array)
     return (1);
 }
 
+void fill_errors(log_t **head)
+{
+    create_log(head, 601, &bad_cmd_trigger);
+    create_log(head, 602, &bad_params_trigger);
+}
+
 void fill_commands(log_t **head)
 {
-    create_log(head, 230, &login_trigger);
-    create_log(head, 231, &logout_trigger);
+    create_log(head, 42, &login_trigger);
+    create_log(head, 84, &logout_trigger);
+    fill_errors(head);
 }

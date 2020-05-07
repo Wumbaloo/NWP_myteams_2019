@@ -10,6 +10,10 @@
 
 #include "logs.h"
 
+int bad_cmd_trigger(char **array);
+int bad_params_trigger(char **array);
+int not_logged_in_trigger(char **array);
+int already_logged_in_trigger(char **array);
 int analyze_log(log_t *head, char *buffer);
 int get_array_length(char **array);
 void fill_commands(log_t **head);

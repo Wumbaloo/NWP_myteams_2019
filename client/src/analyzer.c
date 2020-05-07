@@ -19,10 +19,12 @@ int analyze_log(log_t *head, char *buffer)
 
     if (!buffer)
         return (1);
+    buffer = clean_string(buffer);
     code_str_array = my_str_to_word_array(buffer, ' ');
     code = strtol(code_str_array[0], &end_ptr, 10);
     current = get_log(head, code);
+    free(buffer);
     if (!current)
-        return (0);
+        return (-1);
     return (current->func(code_str_array));
 }
