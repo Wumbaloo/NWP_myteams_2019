@@ -24,7 +24,7 @@ int count_words(char *input, char separator)
     int len = strlen(input);
     int nb_args = 0;
 
-    if (input[0] == '/')
+    if (strlen(input) > 0)
         nb_args++;
     for (int index = 0; (index + 1) < len; index++) {
         if (input[index] == separator && input[index + 1] != separator) {
