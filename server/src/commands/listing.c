@@ -45,6 +45,17 @@ void create_all_commands(command_t **head)
    command_t *help = create_command("HELP", 0, help_cmd);
    command_t *login = create_command("LOGIN", 0, login_cmd);
    command_t *logout = create_command("LOGOUT", 0, logout_cmd);
+//    command_t *users = create_command("USERS", 0, users_cmd);
+//    command_t *user = create_command("USER", 0, user_cmd);
+//    command_t *send = create_command("SEND", 0, send_cmd);
+//    command_t *messages = create_command("MESSAGES", 0, messages_cmd);
+//    command_t *subscribe = create_command("SUBSCRIBE", 0, subscribe_cmd);
+//    command_t *subscribed = create_command("SUBSCRIBED", 0, subscribed_cmd);
+//    command_t *unsubscribe = create_command("SUBSCRIBE", 0, unsubscribe_cmd);
+//    command_t *use = create_command("USE", 0, use_cmd);
+//    command_t *create = create_command("CREATE", 0, create_cmd);
+//    command_t *list = create_command("LIST", 0, list_cmd);
+//    command_t *info = create_command("INFO", 0, info_cmd);
 
    insert_command(head, help);
    insert_command(head, login);

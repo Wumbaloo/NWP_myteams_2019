@@ -35,7 +35,8 @@ void list_team(myteams_t *teams, client_t *client)
 void list_channel(myteams_t *teams, client_t *client)
 {
     team_t *team = get_team_by_uuid(teams->team_head, client->team_chosen);
-    channel_t *channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
+    channel_t *channel = get_channel_by_uuid(team->channel_head,
+        client->channel_chosen);
     thread_t *copy = channel->thread_head;
     char thread_uuid[36];
     char author_uuid[36];
@@ -50,8 +51,10 @@ void list_channel(myteams_t *teams, client_t *client)
 void list_thread(myteams_t *teams, client_t *client)
 {
     team_t *team = get_team_by_uuid(teams->team_head, client->team_chosen);
-    channel_t *channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
-    thread_t *thread = get_thread_by_uuid(channel->thread_head, client->thread_chosen);
+    channel_t *channel = get_channel_by_uuid(team->channel_head,
+        client->channel_chosen);
+    thread_t *thread = get_thread_by_uuid(channel->thread_head,
+        client->thread_chosen);
     comment_t *copy = thread->comment_head;
     char thread_uuid[36];
     char author_uuid[36];

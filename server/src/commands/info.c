@@ -48,7 +48,8 @@ void info_thread(myteams_t *teams, client_t *client)
     team_t *team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel_t *channel = get_channel_by_uuid(team->channel_head,
         client->channel_chosen);
-    thread_t *thread = get_thread_by_uuid(channel->thread_head, client->thread_chosen);
+    thread_t *thread = get_thread_by_uuid(channel->thread_head,
+        client->thread_chosen);
     char uuid[36];
 
     uuid_unparse(thread->thread_uuid, uuid);

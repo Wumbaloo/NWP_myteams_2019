@@ -12,6 +12,8 @@ sub_list_t *new_in_sublist(uuid_t uuid)
 {
     sub_list_t *new = malloc(sizeof(sub_list_t));
 
+    if (!new)
+        perror_exit("malloc", 84);
     uuid_copy(new->uuid, uuid);
     new->next = NULL;
     return new;

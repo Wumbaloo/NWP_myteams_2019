@@ -35,12 +35,14 @@ void unsubscribe_cmd(myteams_t *teams, client_t *client, char **input)
     char uuid[36];
 
     if (client->is_connected == false) {
-        //Error not logged
+        uuid_unparse(client->user_uuid, uuid);
+        not_logged_in(client);
         return;
     }
-    if (!input[1])
-        //Error not enough arg
+    if (!input[1]) {
+        bad_cmd_parameters(client, input[0]);
         return;
+    }
     uuid_parse(input[1], temp);
     to_unsubscribe = get_team_by_uuid(teams->team_head, temp);
     if (!to_unsubscribe) {
@@ -54,7 +56,8 @@ void unsubscribe_cmd(myteams_t *teams, client_t *client, char **input)
     for (; client_tmp; client_tmp = client_tmp->next) {
         if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
             remove_in_sub_list(client_tmp->team_tab, temp);
-            unsubscribe_from_sub_channels(client_tmp->channel_tab, to_unsubscribe);
+            unsubscribe_from_sub_channels(client_tmp->channel_tab,
+                to_unsubscribe);
         }
     }
     uuid_unparse(client->user_uuid, uuid);
@@ -78,11 +81,11 @@ void subscribe_cmd(myteams_t *teams, client_t *client, char **input)
     char uuid[36];
 
     if (client->is_connected == false) {
-        //Error not logged
+        not_logged_in(client);
         return;
     }
     if (!input[1])
-        //Error not enough arg
+        bad_cmd_parameters(client, input[0]);
         return;
     uuid_parse(input[1], temp);
     to_subscribe = get_team_by_uuid(teams->team_head, temp);

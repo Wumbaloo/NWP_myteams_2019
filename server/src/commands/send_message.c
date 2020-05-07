@@ -8,17 +8,20 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void send_and_notify(client_t *from, client_t *receiver, char *msg, client_t *head)
+void send_and_notify(client_t *from, client_t *receiver, char *msg,
+    client_t *head)
 {
     client_t *copy = head;
 
     for (; copy; copy = copy->next) {
         if (uuid_compare(from->user_uuid, copy->user_uuid) == 0)
             //Set the reply
-            insert_message(&from->message_head, from->user_uuid, receiver->user_uuid, msg);
+            insert_message(&from->message_head, from->user_uuid,
+                receiver->user_uuid, msg);
         else if (uuid_compare(receiver->user_uuid, copy->user_uuid) == 0)
             //Set the reply
-            insert_message(&receiver->message_head, from->user_uuid, receiver->user_uuid, msg);
+            insert_message(&receiver->message_head, from->user_uuid,
+                receiver->user_uuid, msg);
     }
 }
 

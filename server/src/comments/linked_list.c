@@ -13,6 +13,8 @@ comment_t *new_comment(char body[DEFAULT_BODY_LENGTH], uuid_t author)
 {
     comment_t *comment = malloc(sizeof(comment_t));
 
+    if (!comment)
+        perror_exit("malloc", 84);
     memcpy(comment->comment_author, author, 16);
     memcpy(comment->comment_body, body, DEFAULT_BODY_LENGTH);
     comment->timestamp = time(NULL);

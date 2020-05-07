@@ -9,27 +9,37 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void specific_message_cmd(myteams_t *teams, client_t *client, char **input)
+int check_error_specific_msg(myteams_t *teams, client_t *client, char **input)
 {
-    client_t *searched;
     uuid_t temp;
-    message_t *copy = client->message_head;
+    client_t *searched;
 
     if (client->is_connected == false) {
-        //Error not logged
-        return;
+        not_logged_in(client);
+        return (1);
     }
-    if (double_array_size(input) != 2)
+    if (double_array_size(input) != 2) {
         //Error bad args
-        return;
-    if (uuid_parse(input[1], temp) == -1)
+        return (1);
+    }
+    if (uuid_parse(input[1], temp) == -1) {
         //Error bad uuid
-        return;
+        return (1);
+    }
     searched = get_client_by_uuid(teams->client_head, temp);
     if (!searched) {
         //Error unknown user
-        return;
+        return (1);
     }
+    return (0);
+}
+
+void specific_message_cmd(myteams_t *teams, client_t *client, char **input)
+{
+    message_t *copy = client->message_head;
+
+    if (check_error_specific_msg(teams, client, input) > 0)
+        return;
     while (copy) {
         if (uuid_compare(client->user_uuid, copy->sender) == 0 ||
         uuid_compare(client->user_uuid, copy->receiver)) {

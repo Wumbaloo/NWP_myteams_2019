@@ -38,25 +38,25 @@ void use_team(myteams_t *teams, client_t *client, char **input)
 
 void use_channel(myteams_t *teams, client_t *client, char **input)
 {
-        uuid_t team_uuid;
-        uuid_t channel_uuid;
-        team_t *team;
-        channel_t *channel;
+    uuid_t team_uuid;
+    uuid_t channel_uuid;
+    team_t *team;
+    channel_t *channel;
 
-        if (uuid_parse(input[1], team_uuid) == -1)
-            //Error bad uuid
-            return;
-        team = get_team_by_uuid(teams->team_head, team_uuid);
-        if (!team)
-            //Error : unknown team
-            return;
-        if (uuid_parse(input[2], channel_uuid) == -1)
-            //Error in channel
-            return;
-        channel = get_channel_by_uuid(team->channel_head, channel_uuid);
-        if (!channel)
-            //Error : unknow team
-            return;
+    if (uuid_parse(input[1], team_uuid) == -1)
+        //Error bad uuid
+        return;
+    team = get_team_by_uuid(teams->team_head, team_uuid);
+    if (!team)
+        //Error : unknown team
+        return;
+    if (uuid_parse(input[2], channel_uuid) == -1)
+        //Error in channel
+        return;
+    channel = get_channel_by_uuid(team->channel_head, channel_uuid);
+    if (!channel)
+        //Error : unknow team
+        return;
     uuid_copy(client->team_chosen, team_uuid);
     uuid_copy(client->channel_chosen, channel_uuid);
     uuid_clear(client->thread_chosen);
@@ -84,7 +84,7 @@ void use_thread(myteams_t *teams, client_t *client, char **input)
         return;
     channel = get_channel_by_uuid(team->channel_head, channel_uuid);
     if (!channel)
-        //Error : unknow team
+        //Error : unknow channel
         return;
     if (uuid_parse(input[3], thread_uuid) == -1)
         //Error in channel
@@ -104,7 +104,7 @@ void use_cmd(myteams_t *teams, client_t *client, char **input)
     int nbr_arg;
 
     if (client->is_connected == false) {
-        //Error not logged
+        not_logged_in(client);
         return;
     }
     nbr_arg = double_array_size(input);
