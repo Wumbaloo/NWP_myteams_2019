@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "prototypes.h"
 #include "data_storage.h"
 
 comment_t *new_comment(char body[DEFAULT_BODY_LENGTH], uuid_t author)

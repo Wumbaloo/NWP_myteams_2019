@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include "prototypes.h"
 #include "clients_storage.h"
 
 sub_list_t *new_in_sublist(uuid_t uuid)
