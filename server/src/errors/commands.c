@@ -16,12 +16,11 @@ void not_logged_in(client_t *client)
     client->reply = strdup("600 Not logged in");
 }
 
-void bad_command(myteams_t *teams, client_t *client, char *cmd)
+void bad_command(client_t *client, char *cmd)
 {
     size_t len;
     char *msg = NULL;
 
-    (void)(teams);
     if (!cmd) {
         return;
     } else {

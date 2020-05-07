@@ -22,7 +22,7 @@ void manage_command(myteams_t *teams, client_t *client, char *input)
     cmd_tab = parse_arguments(input, '"');
     if (!cmd_tab) {
         console_log(client, "Wrong command formatting", ERROR, NULL);
-        bad_command(teams, client, NULL);
+        bad_command(client, NULL);
     } else if (cmd_tab[0] && cmd_tab[0][0] == '/') {
         cmd = get_command(teams->command_head, &cmd_tab[0][1]);
         if (cmd) {
@@ -30,8 +30,9 @@ void manage_command(myteams_t *teams, client_t *client, char *input)
                 not_logged_in(client);
             else
                 cmd->func(teams, client, cmd_tab);
-        }
+        } else
+            bad_command(client, cmd_tab[0]);
     } else
-        bad_command(teams, client, cmd_tab[0]);
+        bad_command(client, cmd_tab[0]);
     free_array(cmd_tab);
 }
