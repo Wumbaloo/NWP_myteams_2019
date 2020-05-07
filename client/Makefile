@@ -27,7 +27,7 @@ SRC_MAIN	=	$(addprefix $(SRC_DIR), $(MAIN_FILE))
 OBJ		=	$(SRC:.c=.o)
 OBJ_MAIN=	$(SRC_MAIN:.c=.o)
 
-LDFLAGS	=	-L ../lib -lmyteams -luuid
+LDFLAGS	=	-L ../libs -lmyteams -luuid
 CFLAGS	+=	-I include
 
 NAME	=	../myteams_cli
