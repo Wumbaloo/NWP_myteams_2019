@@ -10,7 +10,7 @@
 
 int return_with_perror(char *msg, int value)
 {
-    perror("msg");
+    perror(msg);
     return (value);
 }
 

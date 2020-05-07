@@ -37,7 +37,6 @@ int try_connect(char *ip, int port)
 
 int init_server_connection(char **av)
 {
-    int sockfd = -1;
     char *ip = NULL;
     int port = 8000;
 

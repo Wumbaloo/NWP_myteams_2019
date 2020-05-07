@@ -84,9 +84,10 @@ void subscribe_cmd(myteams_t *teams, client_t *client, char **input)
         not_logged_in(client);
         return;
     }
-    if (!input[1])
+    if (!input[1]) {
         bad_cmd_parameters(client, input[0]);
         return;
+    }
     uuid_parse(input[1], temp);
     to_subscribe = get_team_by_uuid(teams->team_head, temp);
     if (!to_subscribe) {
