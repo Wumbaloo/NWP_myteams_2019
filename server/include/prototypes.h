@@ -18,7 +18,10 @@
 char *read_from_client(int fd);
 
 //Commands prototypes ==> commands
-void bad_command(myteams_t *teams, client_t *client);
+void bad_command(myteams_t *teams, client_t *client, char *cmd);
+void bad_cmd_parameters(client_t *client, char *cmd);
+void not_logged_in(client_t *client);
+
 void create_all_commands(command_t **head);
 void insert_command(command_t **head, command_t *node);
 void remove_command(command_t *head, command_t *node);

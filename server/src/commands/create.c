@@ -13,9 +13,10 @@ void create_undefined(myteams_t *teams, client_t *client, char **input)
     team_t *team;
     client_t *copy;
 
-    if (double_array_size(input) != 3)
-        //Error bad nbr of args
+    if (double_array_size(input) != 3) {
+        bad_cmd_parameters(client, input[0]);
         return;
+    }
     team = get_team_by_name(teams->team_head, input[1]);
     if (team)
         //Error : Team already exists
@@ -38,9 +39,10 @@ void create_team(myteams_t *teams, client_t *client, char **input)
     client_t *copy;
     char uuid[36];
 
-    if (double_array_size(input) != 3)
-        //Error bad nbr of args
+    if (double_array_size(input) != 3) {
+        bad_cmd_parameters(client, input[0]);
         return;
+    }
     team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel = get_channel_by_name(team->channel_head, input[1]);
     if (channel)
@@ -64,12 +66,12 @@ void create_channel(myteams_t *teams, client_t *client, char **input)
     team_t *team;
     channel_t *channel;
     thread_t *thread;
-    client_t *copy;
     char uuid[36];
 
-    if (double_array_size(input) != 3)
-        //Error bad nbr of args
+    if (double_array_size(input) != 3) {
+        bad_cmd_parameters(client, input[0]);
         return;
+    }
     team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
     thread = get_thread_by_title(channel->thread_head, input[1]);
@@ -88,14 +90,14 @@ void create_thread(myteams_t *teams, client_t *client, char **input)
     channel_t *channel;
     thread_t *thread;
     comment_t *comment;
-    client_t *copy;
     char team_uuid[36];
     char thread_uuid[36];
     char user_uuid[36];
 
-    if (double_array_size(input) != 2)
-        //Error bad nbr of args
+    if (double_array_size(input) != 2) {
+        bad_cmd_parameters(client, input[0]);
         return;
+    }
     team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
     thread = get_thread_by_uuid(channel->thread_head, client->thread_chosen);
@@ -104,22 +106,29 @@ void create_thread(myteams_t *teams, client_t *client, char **input)
     uuid_unparse(team->team_uuid, team_uuid);
     uuid_unparse(thread->thread_uuid, thread_uuid);
     uuid_unparse(client->user_uuid, user_uuid);
+    (void)(comment);
     //Send to user : team_uuid + thread_uuid + user_uuid + message_body
 }
 
 void create_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    if (client->is_connected == false)
-        //Error not logged
+    if (!client->is_connected) {
+        not_logged_in(client);
         return;
+    }
     switch (client->depth) {
-        case UNDEFINED:
-            create_undefined(teams, client, input);
         case TEAM:
             create_team(teams, client, input);
+            break;
         case CHANNEL:
             create_channel(teams, client, input);
+            break;
         case THREAD:
             create_thread(teams, client, input);
+            break;
+        default:
+        case UNDEFINED:
+            create_undefined(teams, client, input);
+            break;
     }
 }

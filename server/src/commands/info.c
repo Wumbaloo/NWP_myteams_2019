@@ -13,6 +13,7 @@ void info_undefined(myteams_t *teams, client_t *client)
     client_t *copy;
     sub_list_t *banned = NULL;
 
+    (void)(client);
     copy = teams->client_head;
     for (; copy; copy = copy->next) {
         if (is_banned(banned, copy->user_uuid) || !copy->is_connected)

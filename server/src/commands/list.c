@@ -13,6 +13,7 @@ void list_undefined(myteams_t *teams, client_t *client)
     team_t *copy = teams->team_head;
     char uuid[36];
 
+    (void)(client);
     for (; copy; copy = copy->next) {
         uuid_unparse(copy->team_uuid, uuid);
         //Send to the user : uuid + team_name + team_desc

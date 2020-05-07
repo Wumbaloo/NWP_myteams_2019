@@ -11,6 +11,7 @@
 
 void use_undefined(myteams_t *teams, client_t *client)
 {
+    (void)(teams);
     uuid_clear(client->team_chosen);
     uuid_clear(client->channel_chosen);
     uuid_clear(client->thread_chosen);
@@ -110,12 +111,16 @@ void use_cmd(myteams_t *teams, client_t *client, char **input)
     switch (nbr_arg) {
         case 1:
             use_undefined(teams, client);
+            break;
         case 2:
             use_team(teams, client, input);
+            break;
         case 3:
             use_channel(teams, client, input);
+            break;
         case 4:
             use_thread(teams, client, input);
+            break;
         default:
             //Error too much args
             return;

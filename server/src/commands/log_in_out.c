@@ -14,7 +14,7 @@
 
 void answer_client_login(client_t *client, char uuid[36], int code)
 {
-    size_t len = snprintf(NULL, 0, "%d %s", code, uuid);
+    size_t len = snprintf(NULL, 0, "%d %s %s", code, uuid, client->user_name);
     char *msg = malloc(sizeof(char) * (len + 1));
 
     if (!msg)
@@ -28,37 +28,38 @@ void login_cmd(myteams_t *teams, client_t *client, char **input)
     char uuid[36];
     client_t *temp;
 
-    if (!input[1])
-        //Error not enough args
+    if (!input[1]) {
+        bad_cmd_parameters(client, input[0]);
         return;
-    if (client->is_connected == true)
-        //Already connected
+    } else if (client->is_connected) {
+        uuid_unparse(client->user_uuid, uuid);
+        answer_client_login(client, uuid, 42);
         return;
+    }
     temp = get_client_by_username(teams->client_head, input[1]);
-    //User déjà connecté
     if (temp && temp->is_connected == true)
         duplicate_client(temp, client);
-    //User reprend sa session
     else if (temp && temp->is_connected == false)
         temp->is_connected = true;
-    //User : première arrivée
     else {
         uuid_generate(client->user_uuid);
-        memcpy(client->user_name, input[1], DEFAULT_NAME_LENGTH);
+        memset(client->user_name, 0, DEFAULT_NAME_LENGTH);
+        memcpy(client->user_name, input[1], strlen(input[1]) + 1);
         client->is_connected = true;
     }
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_in(uuid);
-    answer_client_login(client, uuid, 230);
+    answer_client_login(client, uuid, 42);
 }
 
 void logout_cmd(myteams_t *teams, client_t *client, char **input)
 {
     char uuid[36];
 
+    (void)(teams);
     (void)(input);
     if (client->is_connected == false) {
-        //Error not logged in
+        not_logged_in(client);
         return;
     }
     client->is_connected = false;
@@ -68,5 +69,5 @@ void logout_cmd(myteams_t *teams, client_t *client, char **input)
     client->depth = UNDEFINED;
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_out(uuid);
-    answer_client_login(client, uuid, 231);
+    answer_client_login(client, uuid, 84);
 }

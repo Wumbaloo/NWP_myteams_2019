@@ -54,7 +54,7 @@ void send_replies(myteams_t *teams, client_t *first, fd_set wr_set)
     while (copy) {
         if (FD_ISSET(copy->fd, &wr_set) && copy->reply) {
             dprintf(copy->fd, "%s\r\n", copy->reply);
-            if (strstr(copy->reply, "231")) {
+            if (strstr(copy->reply, "84")) {
                 close(copy->fd);
                 teams->clients[teams->act_idx] = 0;
             }

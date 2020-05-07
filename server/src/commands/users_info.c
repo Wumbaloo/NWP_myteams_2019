@@ -15,7 +15,7 @@ void specific_user_cmd(myteams_t *teams, client_t *client, char  **input)
     uuid_t temp;
 
     if (client->is_connected == false) {
-        //Error not logged
+        not_logged_in(client);
         return;
     }
     if (!input[1])
@@ -36,11 +36,15 @@ void users_cmd(myteams_t *teams, client_t *client, char **input)
     uuid_t *banned;
     client_t *copy = teams->client_head;
 
+    (void)(teams);
+    (void)(input);
     if (client->is_connected == false) {
-        //Error not logged
+        not_logged_in(client);
         return;
     }
     banned = malloc(sizeof(uuid_t) * (size));
+    if (!banned)
+        perror_exit("malloc", 84);
     for (int i = 0; i < size; i++) {
         for (int idx = 0; idx < i; idx++)
             if (uuid_compare(banned[idx], copy->user_uuid) == 0)

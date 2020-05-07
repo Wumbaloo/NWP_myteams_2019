@@ -34,7 +34,7 @@ char *remove_crlf(char *string, int valread)
     return (string);
 }
 
-char *prepare_input(char **input, char end_buffer[1024], int len)
+void prepare_input(char **input, char end_buffer[1024], int len)
 {
     (*input) = malloc(sizeof(char) * (len + 1));
     if (*input == NULL)
