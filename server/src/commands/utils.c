@@ -11,7 +11,7 @@ int double_array_size(char **array)
 {
     int cpt = 0;
 
-    for (; array[cpt++];);
+    for (; array[cpt]; cpt++);
     return cpt;
 }
 

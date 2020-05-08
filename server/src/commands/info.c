@@ -58,12 +58,14 @@ void info_thread(myteams_t *teams, client_t *client)
 
 void info_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    if (client->is_connected == false)
-        //Error not logged
+    if (client->is_connected == false) {
+        not_logged_in(client);
         return;
-    if (double_array_size(input) != 1)
+    }
+    if (double_array_size(input) != 1) {
         //Error too much args
         return;
+    }
     switch (client->depth) {
         case UNDEFINED:
             info_undefined(teams, client);

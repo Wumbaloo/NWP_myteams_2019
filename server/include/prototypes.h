@@ -40,6 +40,7 @@ void subscribe_cmd(myteams_t *teams, client_t *client, char **arg);
 void unsubscribe_cmd(myteams_t *teams, client_t *client, char **arg);
 void info_cmd(myteams_t *teams, client_t *client, char **input);
 void create_cmd(myteams_t *teams, client_t *client, char **input);
+void users_cmd(myteams_t *teams, client_t *client, char **input);
 void info_cmd(myteams_t *teams, client_t *client, char **input);
 void list_cmd(myteams_t *teams, client_t *client, char **input);
 void use_cmd(myteams_t *teams, client_t *client, char **input);

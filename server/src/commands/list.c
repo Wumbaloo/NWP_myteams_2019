@@ -68,12 +68,14 @@ void list_thread(myteams_t *teams, client_t *client)
 
 void list_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    if (client->is_connected == false)
-        //Error not logged
+    if (client->is_connected == false) {
+        not_logged_in(client);
         return;
-    if (double_array_size(input) != 1)
+    }
+    if (double_array_size(input) != 1) {
         //Error too much args
         return;
+    }
     switch (client->depth) {
         case UNDEFINED:
             list_undefined(teams, client);
@@ -86,6 +88,8 @@ void list_cmd(myteams_t *teams, client_t *client, char **input)
             break;
         case THREAD:
             list_thread(teams, client);
+            break;
+        default:
             break;
     }
 }
