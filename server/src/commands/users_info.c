@@ -13,6 +13,7 @@ int specific_user_cmd(myteams_t *teams, client_t *client, char  **input)
 {
     client_t *searched;
     uuid_t temp;
+    char *reply;
 
     if (client->is_connected == false)
         return reply_unauthorized(client);
@@ -23,31 +24,32 @@ int specific_user_cmd(myteams_t *teams, client_t *client, char  **input)
     searched = get_client_by_uuid(teams->client_head, temp);
     if (!searched)
         return reply_unknown_user(client, input[1]);
-    //Send to the user : uuid + user_name + user_status
+    reply = format_response(4, INFO_USER, input[1], searched->user_name,
+        searched->is_connected ? "1" : "0");
+    insert_reply(&client->replies, reply);
+    free(reply);
     return 0;
 }
 
 int users_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    int size = nbr_clients(teams->client_head);
-    uuid_t *banned;
+    sub_list_t *banned;
     client_t *copy = teams->client_head;
+    char *reply;
+    char uuid[36];
 
     (void)(teams);
     (void)(input);
     if (client->is_connected == false)
         return reply_unauthorized(client);
-    banned = malloc(sizeof(uuid_t) * (size));
-    if (!banned)
-        perror_exit("malloc", 84);
-    for (int i = 0; i < size; i++) {
-        for (int idx = 0; idx < i; idx++)
-            if (uuid_compare(banned[idx], copy->user_uuid) == 0)
-                continue;
-        //Send user uuid (as char[]) + user_name + status (connected or not as int)
-        uuid_copy(banned[i], copy->user_uuid);
-        copy = copy->next;
+    for (; copy; copy = copy->next) {
+        if (already_subscribed(banned, copy->user_uuid))
+            continue;
+        uuid_unparse(copy->user_uuid, uuid);
+        reply = format_response(4, LIST_USERS, uuid, copy->user_name, copy->is_connected ? "1" : "0");
+        insert_reply(&client->replies, reply);
+        insert_in_sub_list(&banned, copy->user_uuid);
+        free(reply);
     }
-    free(banned);
     return 1;
 }

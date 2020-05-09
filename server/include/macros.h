@@ -40,6 +40,7 @@
 #define UNKNOWN_USER "635"
 #define UNAUTHORIZED "645"
 #define ALREADY_EXISTS "655"
+#define LIST_USERS "730"
 #define INFO_USER "740"
 
 
