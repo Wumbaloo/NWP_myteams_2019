@@ -82,6 +82,8 @@ void check_for_instructions(myteams_t *teams)
                 manage_command(teams, get_client_by_fd(teams->client_head,
                     act_fd), input);
         }
+        if (FD_ISSET(act_fd, &teams->writeset))
+            send_next_reply(teams, act_fd);
     }
-    send_replies(teams, teams->client_head, teams->writeset);
+//    send_replies(teams, teams->client_head, teams->writeset);
 }

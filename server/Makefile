@@ -8,6 +8,8 @@
 SRC_DIR	=	src/
 
 FILES	=	free.c								\
+			broadcast/broadcast_create.c		\
+			broadcast/broadcast_subscription.c	\
 			channels/free.c						\
 			channels/linked_list.c				\
 			clients/free.c						\
@@ -41,13 +43,17 @@ FILES	=	free.c								\
 			core/monitoring.c					\
 			errors/arguments.c					\
 			errors/commands.c					\
+			replies/linked_list.c				\
 			sub_list/linked_list.c 				\
 			teams/free.c						\
 			teams/linked_list.c					\
 			threads/free.c						\
 			threads/linked_list.c				\
 			useful/exit.c						\
+			useful/format_response.c			\
 			useful/logs.c						\
+			useful/preformated_replies.c		\
+			useful/preformated_unknown_error.c	\
 			useful/my_str_to_word_array.c		\
 
 MAIN_FILE	=	main.c

@@ -27,7 +27,8 @@ void manage_command(myteams_t *teams, client_t *client, char *input)
         cmd = get_command(teams->command_head, &cmd_tab[0][1]);
         if (cmd) {
             if (cmd->need_login && !client->is_connected)
-                not_logged_in(client);
+                reply_unauthorized(client);
+//                not_logged_in(client);
             else
                 cmd->func(teams, client, cmd_tab);
         } else

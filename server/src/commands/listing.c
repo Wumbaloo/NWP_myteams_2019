@@ -14,7 +14,7 @@
 #include "logs.h"
 
 command_t *create_command(char *txt, int login,
-                            void (*ptr)(myteams_t *, client_t *, char **))
+                            int (*ptr)(myteams_t *, client_t *, char **))
 {
     command_t *cmd = malloc(sizeof(command_t));
     int len = strlen(txt);
@@ -32,12 +32,15 @@ command_t *create_command(char *txt, int login,
     return (cmd);
 }
 
-void help_cmd(myteams_t *teams, client_t *client, char **arg)
+int help_cmd(myteams_t *teams, client_t *client, char **arg)
 {
+    char *temp_help = strdup("HELP command");
+
     (void)(teams);
-    (void)(client);
     (void)(arg);
-    client->reply = strdup("HELP command");
+    insert_reply(&client->replies, temp_help);
+    free(temp_help);
+    return 0;
 }
 
 void create_all_commands(command_t **head)

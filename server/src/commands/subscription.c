@@ -27,31 +27,25 @@ void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team)
         remove_in_sub_list(channel_list, copy->channel_uuid);
 }
 
-void unsubscribe_cmd(myteams_t *teams, client_t *client, char **input)
+int unsubscribe_cmd(myteams_t *teams, client_t *client, char **input)
 {
     client_t *client_tmp;
     team_t *to_unsubscribe;
     uuid_t temp;
     char uuid[36];
 
-    if (client->is_connected == false) {
-        uuid_unparse(client->user_uuid, uuid);
-        not_logged_in(client);
-        return;
-    }
-    if (!input[1]) {
-        bad_cmd_parameters(client, input[0]);
-        return;
-    }
-    uuid_parse(input[1], temp);
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
+    if (!input[1])
+        //Error not enough arg
+        return 1;
+    if (uuid_parse(input[1], temp) != 0)
+        return reply_unknown_team(client, input[1]);
     to_unsubscribe = get_team_by_uuid(teams->team_head, temp);
-    if (!to_unsubscribe) {
-        //Error team not found
-        return;
-    } else if (already_subscribed(client->team_tab, temp) == false) {
-        //Error not subscribed to the team
-        return;
-    }
+    if (!to_unsubscribe)
+        return reply_unknown_team(client, input[1]);
+    else if (already_subscribed(client->team_tab, temp) == false)
+        return reply_unauthorized(client);
     client_tmp = teams->client_head;
     for (; client_tmp; client_tmp = client_tmp->next) {
         if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
@@ -62,7 +56,8 @@ void unsubscribe_cmd(myteams_t *teams, client_t *client, char **input)
     }
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_leave_a_team(input[1], uuid);
-    //Announce the departure of the user ? Check Milanote
+    broadcast_unsubscription(client, input[1]);
+    return 0;
 }
 
 void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team)
@@ -73,30 +68,24 @@ void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team)
         insert_in_sub_list(&channel_list, copy->channel_uuid);
 }
 
-void subscribe_cmd(myteams_t *teams, client_t *client, char **input)
+int subscribe_cmd(myteams_t *teams, client_t *client, char **input)
 {
     client_t *client_tmp;
     team_t *to_subscribe;
     uuid_t temp;
     char uuid[36];
 
-    if (client->is_connected == false) {
-        not_logged_in(client);
-        return;
-    }
-    if (!input[1]) {
-        bad_cmd_parameters(client, input[0]);
-        return;
-    }
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
+    if (!input[1])
+        //Error not enough arg
+        return 1;
     uuid_parse(input[1], temp);
     to_subscribe = get_team_by_uuid(teams->team_head, temp);
-    if (!to_subscribe) {
-        //Error unknown team
-        return;
-    } else if (already_subscribed(client->team_tab, temp)) {
-        //Error already subscribed
-        return;
-    }
+    if (!to_subscribe)
+        return reply_unknown_user(client, input[1]);
+    else if (already_subscribed(client->team_tab, temp))
+        return reply_resource_already_exists(client);
     client_tmp = teams->client_head;
     for (; client_tmp; client_tmp = client_tmp->next) {
         if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
@@ -106,5 +95,6 @@ void subscribe_cmd(myteams_t *teams, client_t *client, char **input)
     }
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_join_a_team(input[1], uuid);
-    //Announce the user entry in the group ? Check Milanote
+    broadcast_subscription(client, input[1]);
+    return 0;
 }

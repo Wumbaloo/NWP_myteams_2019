@@ -4,50 +4,49 @@
 ** File description:
 ** Created by Anthony ANICOTTE,
 */
-
+#include <stdbool.h>
+#include "logging_server.h"
 #include "prototypes.h"
 #include "structs.h"
 
-void create_undefined(myteams_t *teams, client_t *client, char **input)
+int create_undefined(myteams_t *teams, client_t *client, char **input)
 {
     team_t *team;
-    client_t *copy;
-
-    if (double_array_size(input) != 3) {
-        bad_cmd_parameters(client, input[0]);
-        return;
-    }
-    team = get_team_by_name(teams->team_head, input[1]);
-    if (team)
-        //Error : Team already exists
-        return;
-    insert_team(&teams->team_head, input[1], input[2]);
-    team = get_team_by_name(teams->team_head, input[1]);
-    copy = teams->client_head;
-    for (; copy; copy = copy->next) {
-        if (uuid_compare(copy->user_uuid, client->user_uuid))
-            continue;
-        insert_in_sub_list(&copy->team_tab, team->team_uuid);
-        subscribe_to_subchannels(copy->channel_tab, team);
-    }
-}
-
-void create_team(myteams_t *teams, client_t *client, char **input)
-{
-    team_t *team;
-    channel_t *channel;
-    client_t *copy;
     char uuid[36];
 
     if (double_array_size(input) != 3) {
         bad_cmd_parameters(client, input[0]);
-        return;
+        return 1;
+    }
+    team = get_team_by_name(teams->team_head, input[1]);
+    if (team)
+        return reply_resource_already_exists(client);
+    insert_team(&teams->team_head, input[1], input[2]);
+    team = get_team_by_name(teams->team_head, input[1]);
+    uuid_unparse(team->team_uuid, uuid);
+    insert_in_sub_list(&client->team_tab, team->team_uuid);
+    subscribe_to_subchannels(client->channel_tab, team);
+    server_event_team_created(uuid, team->team_name, team->team_desc);
+    broadcast_team_created(teams, client, team);
+    return 0;
+}
+
+int create_team(myteams_t *teams, client_t *client, char **input)
+{
+    team_t *team;
+    channel_t *channel;
+    client_t *copy;
+    char channel_uuid[36];
+    char team_uuid[36];
+
+    if (double_array_size(input) != 3) {
+        bad_cmd_parameters(client, input[0]);
+        return 1;
     }
     team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel = get_channel_by_name(team->channel_head, input[1]);
     if (channel)
-        //Error: already exists
-        return;
+        return reply_resource_already_exists(client);
     insert_channel(&team->channel_head, input[1], input[2]);
     channel = get_channel_by_name(team->channel_head, input[1]);
     //Subscribe all the clients to the channel
@@ -57,31 +56,40 @@ void create_team(myteams_t *teams, client_t *client, char **input)
             continue;
         insert_in_sub_list(&copy->channel_tab, channel->channel_uuid);
     }
-    uuid_unparse(channel->channel_uuid, uuid);
-    //Send to user: channel_uuid + channel_name + channel_desc
+    uuid_unparse(channel->channel_uuid, channel_uuid);
+    uuid_unparse(team->team_uuid, team_uuid);
+    server_event_channel_created(team_uuid, channel_uuid, channel->channel_name);
+    broadcast_channel_created(teams, client, channel);
+    return 0;
 }
 
-void create_channel(myteams_t *teams, client_t *client, char **input)
+int create_channel(myteams_t *teams, client_t *client, char **input)
 {
     team_t *team;
     channel_t *channel;
     thread_t *thread;
-    char uuid[36];
+    char channel_uuid[36];
+    char thread_uuid[36];
+    char user_uuid[36];
 
     if (double_array_size(input) != 3) {
         bad_cmd_parameters(client, input[0]);
-        return;
+        return 1;
     }
     team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
     thread = get_thread_by_title(channel->thread_head, input[1]);
     if (thread)
-        //Error already exists
-        return;
+        return reply_resource_already_exists(client);
     insert_thread(&channel->thread_head, input[1], input[2], client->user_uuid);
     thread = new_thread(input[1], input[2], client->user_uuid);
-    uuid_unparse(thread->thread_uuid, uuid);
-    //Send to user: thread_uuid + author_uuid + timestamp + thread_title + thread_body
+    insert_in_sub_list(&client->thread_tab, thread->thread_uuid);
+    uuid_unparse(channel->channel_uuid, channel_uuid);
+    uuid_unparse(thread->thread_uuid, thread_uuid);
+    uuid_unparse(client->user_uuid, user_uuid);
+    server_event_thread_created(channel_uuid, thread_uuid, user_uuid, thread->thread_msg);
+    broadcast_thread_created(teams, client, thread);
+    return 0;
 }
 
 void create_thread(myteams_t *teams, client_t *client, char **input)
@@ -103,20 +111,21 @@ void create_thread(myteams_t *teams, client_t *client, char **input)
     thread = get_thread_by_uuid(channel->thread_head, client->thread_chosen);
     insert_comment(&thread->comment_head, input[1], client->user_uuid);
     comment = new_comment(input[1], client->user_uuid);
-    uuid_unparse(team->team_uuid, team_uuid);
+    if (!already_subscribed(client->thread_tab, thread->thread_uuid))
+        insert_in_sub_list(&client->thread_tab, thread->thread_uuid);
     uuid_unparse(thread->thread_uuid, thread_uuid);
     uuid_unparse(client->user_uuid, user_uuid);
-    (void)(comment);
-    //Send to user : team_uuid + thread_uuid + user_uuid + message_body
+    broadcast_comment_created(teams, client, comment);
+    server_event_thread_new_message(thread_uuid, user_uuid, input[1]);
 }
 
-void create_cmd(myteams_t *teams, client_t *client, char **input)
+int create_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    if (!client->is_connected) {
-        not_logged_in(client);
-        return;
-    }
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
     switch (client->depth) {
+        case UNDEFINED:
+            create_undefined(teams, client, input);
         case TEAM:
             create_team(teams, client, input);
             break;
@@ -125,10 +134,6 @@ void create_cmd(myteams_t *teams, client_t *client, char **input)
             break;
         case THREAD:
             create_thread(teams, client, input);
-            break;
-        default:
-        case UNDEFINED:
-            create_undefined(teams, client, input);
-            break;
     }
+    return 0;
 }

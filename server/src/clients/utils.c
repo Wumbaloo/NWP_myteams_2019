@@ -26,6 +26,17 @@ void copy_subscribed(client_t *src, client_t *dest)
         insert_in_sub_list(&dest->thread_tab, copy->uuid);
 }
 
+int nbr_duplicates(client_t *head, uuid_t uuid)
+{
+    client_t *copy = head;
+    int cpt = 0;
+
+    for (; copy; copy = copy->next)
+        if (uuid_compare(copy->user_uuid, uuid) == 0)
+            cpt++;
+    return cpt;
+}
+
 void duplicate_client(client_t *src, client_t *dest)
 {
     message_t *copy = src->message_head;
@@ -35,6 +46,9 @@ void duplicate_client(client_t *src, client_t *dest)
     memcpy(dest->user_name, src->user_name, DEFAULT_NAME_LENGTH);
     uuid_copy(dest->user_uuid, src->user_uuid);
     dest->depth = src->depth;
+    uuid_copy(dest->team_chosen, src->team_chosen);
+    uuid_copy(dest->channel_chosen, src->channel_chosen);
+    uuid_copy(dest->thread_chosen, src->thread_chosen);
     copy_subscribed(src, dest);
     dest->message_head = NULL;
     for (; copy; copy = copy->next)
@@ -44,23 +58,14 @@ void duplicate_client(client_t *src, client_t *dest)
     temp = src->message_head;
     for (; copy && temp; copy = copy->next, temp = temp->next)
         copy->timestamp = temp->timestamp;
-    //copie des commandes ?
 }
 
-void send_replies(myteams_t *teams, client_t *first, fd_set wr_set)
+void send_next_reply(myteams_t *team, int fd)
 {
-    client_t *copy = first;
+    client_t *client = get_client_by_fd(team->client_head, fd);
 
-    while (copy) {
-        if (FD_ISSET(copy->fd, &wr_set) && copy->reply) {
-            dprintf(copy->fd, "%s\r\n", copy->reply);
-            if (strstr(copy->reply, "84")) {
-                close(copy->fd);
-                teams->clients[teams->act_idx] = 0;
-            }
-            free(copy->reply);
-            copy->reply = NULL;
-        }
-        copy = copy->next;
+    if (client->is_connected && client->replies) {
+        dprintf(fd, "%s\r\n", client->replies->reply);
+        remove_reply(client->replies);
     }
 }

@@ -12,62 +12,103 @@
 #include "prototypes.h"
 #include "logging_server.h"
 
-void answer_client_login(client_t *client, char uuid[36], int code)
+void broadcast_login(client_t *head, char *uuid, char *user_name)
 {
-    size_t len = snprintf(NULL, 0, "%d %s %s", code, uuid, client->user_name);
-    char *msg = malloc(sizeof(char) * (len + 1));
+    client_t *copy = head;
+    char *reply = format_response(3, CONNECTED, uuid, user_name);
 
-    if (!msg)
-        return;
-    sprintf(msg, "%d %s %s", code, uuid, client->user_name);
-    client->reply = msg;
+    for (; copy; copy = copy->next) {
+        if (copy->is_connected)
+            insert_reply(&copy->replies, reply);
+    }
+    free(reply);
 }
 
-void login_cmd(myteams_t *teams, client_t *client, char **input)
+void broadcast_logout(client_t *head, char *uuid, char *user_name)
 {
-    char uuid[36];
-    client_t *temp;
+    client_t *copy = head;
+    char *reply = format_response(3, DISCONNECTED, uuid, user_name);
 
-    if (!input[1]) {
-        bad_cmd_parameters(client, input[0]);
-        return;
-    } else if (client->is_connected) {
-        uuid_unparse(client->user_uuid, uuid);
-        answer_client_login(client, uuid, 42);
-        return;
-    }
-    temp = get_client_by_username(teams->client_head, input[1]);
-    if (temp && temp->is_connected == true)
-        duplicate_client(temp, client);
-    else if (temp && temp->is_connected == false)
+    for (; copy; copy = copy->next)
+        if (copy->is_connected)
+            insert_reply(&copy->replies, reply);
+    free(reply);
+}
+
+int not_the_first_connection(myteams_t *teams, client_t *client, char *username)
+{
+    client_t *temp = get_client_by_username(teams->client_head, username);
+    int temp_fd;
+    char uuid[36];
+
+    if (temp->is_connected == false) {
+        temp_fd = client->fd;
+        remove_client(teams->client_head, client->fd);
         temp->is_connected = true;
-    else {
-        uuid_generate(client->user_uuid);
-        memset(client->user_name, 0, DEFAULT_NAME_LENGTH);
-        memcpy(client->user_name, input[1], strlen(input[1]) + 1);
-        client->is_connected = true;
-    }
+        temp->fd = temp_fd;
+    } else
+        duplicate_client(temp, client);
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_in(uuid);
-    answer_client_login(client, uuid, 42);
+    return 0;
 }
 
-void logout_cmd(myteams_t *teams, client_t *client, char **input)
+int login_cmd(myteams_t *teams, client_t *client, char **input)
 {
     char uuid[36];
 
-    (void)(teams);
-    (void)(input);
-    if (client->is_connected == false) {
-        not_logged_in(client);
-        return;
-    }
-    client->is_connected = false;
-    uuid_clear(client->team_chosen);
-    uuid_clear(client->channel_chosen);
-    uuid_clear(client->thread_chosen);
-    client->depth = UNDEFINED;
+    if (!input[1])
+        //Error not enough args
+        return 1;
+    if (client->is_connected == true)
+        return 1;
+    if (get_client_by_username(teams->client_head, input[1]))
+        return not_the_first_connection(teams, client, input[1]);
+    uuid_generate(client->user_uuid);
+    memcpy(client->user_name, input[1], DEFAULT_NAME_LENGTH);
+    client->is_connected = true;
     uuid_unparse(client->user_uuid, uuid);
+    server_event_user_created(uuid, client->user_name);
+    server_event_user_logged_in(uuid);
+    broadcast_login(teams->client_head, uuid, client->user_name);
+    return 0;
+}
+
+void ok_logout_and_close(myteams_t *teams, client_t *client, char *uuid)
+{
+    char *reply;
+
+    if (FD_ISSET(client->fd, &teams->writeset)) {
+        reply = format_response(3, DISCONNECTED, uuid, client->user_name);
+        dprintf(client->fd, "%s\r\n", reply);
+        free(reply);
+        close(client->fd);
+        teams->clients[teams->act_idx] = 0;
+    }
+}
+
+int logout_cmd(myteams_t *teams, client_t *client,
+    __attribute__((unused)) char **input)
+{
+    char uuid[36];
+    char name[DEFAULT_NAME_LENGTH];
+
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
+    ok_logout_and_close(teams, client, uuid);
+    uuid_unparse(client->user_uuid, uuid);
+    memcpy(name, client->user_name, DEFAULT_NAME_LENGTH);
+    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
+        remove_client(teams->client_head, client->fd);
+    else {
+        client->is_connected = false;
+        uuid_clear(client->team_chosen);
+        uuid_clear(client->channel_chosen);
+        uuid_clear(client->thread_chosen);
+        client->depth = UNDEFINED;
+        client->fd = -1;
+    }
     server_event_user_logged_out(uuid);
-    answer_client_login(client, uuid, 84);
+    broadcast_logout(teams->client_head, uuid, name);
+    return 0;
 }

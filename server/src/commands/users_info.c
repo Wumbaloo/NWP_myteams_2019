@@ -9,28 +9,25 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void specific_user_cmd(myteams_t *teams, client_t *client, char  **input)
+int specific_user_cmd(myteams_t *teams, client_t *client, char  **input)
 {
     client_t *searched;
     uuid_t temp;
 
-    if (client->is_connected == false) {
-        not_logged_in(client);
-        return;
-    }
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
     if (!input[1])
         //Not enough arg
-        return;
+        return 1;
     uuid_parse(input[1], temp);
     searched = get_client_by_uuid(teams->client_head, temp);
-    if (!searched) {
-        //Error User Unknown
-        return;
-    }
+    if (!searched)
+        return reply_unknown_user(client, input[1]);
     //Send to the user : uuid + user_name + user_status
+    return 0;
 }
 
-void users_cmd(myteams_t *teams, client_t *client, char **input)
+int users_cmd(myteams_t *teams, client_t *client, char **input)
 {
     int size = nbr_clients(teams->client_head);
     uuid_t *banned;
@@ -38,10 +35,8 @@ void users_cmd(myteams_t *teams, client_t *client, char **input)
 
     (void)(teams);
     (void)(input);
-    if (client->is_connected == false) {
-        not_logged_in(client);
-        return;
-    }
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
     banned = malloc(sizeof(uuid_t) * (size));
     if (!banned)
         perror_exit("malloc", 84);
@@ -54,4 +49,5 @@ void users_cmd(myteams_t *teams, client_t *client, char **input)
         copy = copy->next;
     }
     free(banned);
+    return 1;
 }

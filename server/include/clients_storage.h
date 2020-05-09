@@ -35,11 +35,17 @@ typedef struct sub_list_s
     struct sub_list_s *next;
 } sub_list_t;
 
+typedef struct replies_s
+{
+    char *reply;
+    struct replies_s *next;
+} replies_t;
+
 typedef struct user_s
 {
     int fd;
     bool is_connected;
-    char *reply;
+    replies_t *replies;
     char user_name[DEFAULT_NAME_LENGTH];
     uuid_t user_uuid;
     use_depth depth;

@@ -99,14 +99,12 @@ void use_thread(myteams_t *teams, client_t *client, char **input)
     client->depth = THREAD;
 }
 
-void use_cmd(myteams_t *teams, client_t *client, char **input)
+int use_cmd(myteams_t *teams, client_t *client, char **input)
 {
     int nbr_arg;
 
-    if (client->is_connected == false) {
-        not_logged_in(client);
-        return;
-    }
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
     nbr_arg = double_array_size(input);
     switch (nbr_arg) {
         case 1:
@@ -123,6 +121,7 @@ void use_cmd(myteams_t *teams, client_t *client, char **input)
             break;
         default:
             //Error too much args
-            return;
+            return 1;
     }
+    return 0;
 }

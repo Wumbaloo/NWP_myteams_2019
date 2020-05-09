@@ -5,6 +5,8 @@
 ** Created by Anthony ANICOTTE,
 */
 
+#include <stdlib.h>
+#include <stdio.h>
 #include "prototypes.h"
 #include "structs.h"
 
@@ -12,11 +14,13 @@ void list_undefined(myteams_t *teams, client_t *client)
 {
     team_t *copy = teams->team_head;
     char uuid[36];
+    char *reply;
 
-    (void)(client);
     for (; copy; copy = copy->next) {
         uuid_unparse(copy->team_uuid, uuid);
-        //Send to the user : uuid + team_name + team_desc
+        reply = format_response(4, LIST_TEAM, uuid, copy->team_name, copy->team_desc);
+        insert_reply(&client->replies, reply);
+        free(reply);
     }
 }
 
@@ -25,10 +29,14 @@ void list_team(myteams_t *teams, client_t *client)
     team_t *team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel_t *copy = team->channel_head;
     char uuid[36];
+    char *reply;
 
     for (; copy; copy = copy->next) {
         uuid_unparse(copy->channel_uuid, uuid);
-        //Send to user: uuid + channel_name + channel_desc
+        reply = format_response(4, LIST_CHANNEL, uuid, copy->channel_name,
+            copy->channel_desc);
+        insert_reply(&client->replies, reply);
+        free(reply);
     }
 }
 
@@ -40,11 +48,17 @@ void list_channel(myteams_t *teams, client_t *client)
     thread_t *copy = channel->thread_head;
     char thread_uuid[36];
     char author_uuid[36];
+    char *reply;
+    char timestamp[64];
 
     for (; copy; copy = copy->next) {
         uuid_unparse(copy->thread_uuid, thread_uuid);
         uuid_unparse(copy->thread_author, author_uuid);
-        //Send to user: thread_uuid + user_uuid + thread_timestamp + thread_title + thread_body
+        sprintf(timestamp, "%ld", copy->timestamp);
+        reply = format_response(6, LIST_THREAD, thread_uuid, author_uuid,
+            timestamp, copy->thread_title, copy->thread_msg);
+        insert_reply(&client->replies, reply);
+        free(reply);
     }
 }
 
@@ -58,24 +72,27 @@ void list_thread(myteams_t *teams, client_t *client)
     comment_t *copy = thread->comment_head;
     char thread_uuid[36];
     char author_uuid[36];
+    char timestamp[64];
+    char *reply;
 
     for (; copy; copy = copy->next) {
         uuid_unparse(thread->thread_uuid, thread_uuid);
         uuid_unparse(thread->thread_author, author_uuid);
-        //Send to user: thread_uuid + user_uuid + reply_timestamp + reply_body
+        sprintf(timestamp, "%ld", copy->timestamp);
+        reply = format_response(5, LIST_REPLY, thread_uuid, author_uuid,
+            timestamp, copy->comment_body);
+        insert_reply(&client->replies, reply);
+        free(reply);
     }
 }
 
-void list_cmd(myteams_t *teams, client_t *client, char **input)
+int list_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    if (client->is_connected == false) {
-        not_logged_in(client);
-        return;
-    }
-    if (double_array_size(input) != 1) {
+    if (client->is_connected == false)
+        return reply_unauthorized(client);
+    if (double_array_size(input) != 1)
         //Error too much args
-        return;
-    }
+        return 1;
     switch (client->depth) {
         case UNDEFINED:
             list_undefined(teams, client);
@@ -89,7 +106,6 @@ void list_cmd(myteams_t *teams, client_t *client, char **input)
         case THREAD:
             list_thread(teams, client);
             break;
-        default:
-            break;
     }
+    return 0;
 }

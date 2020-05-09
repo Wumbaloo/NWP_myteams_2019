@@ -30,20 +30,19 @@ void free_command(command_t *cmd);
 void free_commands_list(command_t *head);
 command_t *get_command(command_t *head, char *cmd);
 command_t *create_command(char *txt, int login,
-                            void (*ptr)(myteams_t *, client_t *, char **));
-void login_cmd(myteams_t *teams, client_t *client, char **arg);
-void logout_cmd(myteams_t *teams, client_t *client, char **arg);
+                            int (*ptr)(myteams_t *, client_t *, char **));
+int login_cmd(myteams_t *teams, client_t *client, char **arg);
+int logout_cmd(myteams_t *teams, client_t *client, char **arg);
 
-void specific_user_cmd(myteams_t *teams, client_t *client, char **arg);
-void specific_message_cmd(myteams_t *teams, client_t *client, char **arg);
-void subscribe_cmd(myteams_t *teams, client_t *client, char **arg);
-void unsubscribe_cmd(myteams_t *teams, client_t *client, char **arg);
-void info_cmd(myteams_t *teams, client_t *client, char **input);
-void create_cmd(myteams_t *teams, client_t *client, char **input);
-void users_cmd(myteams_t *teams, client_t *client, char **input);
-void info_cmd(myteams_t *teams, client_t *client, char **input);
-void list_cmd(myteams_t *teams, client_t *client, char **input);
-void use_cmd(myteams_t *teams, client_t *client, char **input);
+int specific_user_cmd(myteams_t *teams, client_t *client, char **arg);
+int specific_message_cmd(myteams_t *teams, client_t *client, char **arg);
+int subscribe_cmd(myteams_t *teams, client_t *client, char **arg);
+int unsubscribe_cmd(myteams_t *teams, client_t *client, char **arg);
+int info_cmd(myteams_t *teams, client_t *client, char **input);
+int create_cmd(myteams_t *teams, client_t *client, char **input);
+int info_cmd(myteams_t *teams, client_t *client, char **input);
+int list_cmd(myteams_t *teams, client_t *client, char **input);
+int use_cmd(myteams_t *teams, client_t *client, char **input);
 bool already_subscribed(sub_list_t *head, uuid_t team);
 void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team);
 
@@ -64,6 +63,13 @@ void console_log(client_t *from, char *msg, log_type type, char *custom_color);
 void free_array(char **arr);
 char **my_str_to_word_array(char *av, char separate);
 int uuid_tab_size(uuid_t *array);
+char *format_response(int nbr,  ...);
+int reply_unauthorized(client_t *client);
+int reply_resource_already_exists(client_t *client);
+int reply_unknown_user(client_t *client, char *user_uuid);
+int reply_unknown_thread(client_t *client, char *thread_uuid);
+int reply_unknown_channel(client_t *client, char *channel_uuid);
+int reply_unknown_team(client_t *client, char *team_uuid);
 
 //Error handling ==> errors > error.c
 int error_handling(int ac, char **av);
@@ -88,6 +94,7 @@ client_t *get_client_by_fd(client_t *head, int fd);
 client_t *get_client_by_uuid(client_t *head, uuid_t uuid);
 client_t *get_client_by_username(client_t *head, char *username);
 void duplicate_client(client_t *src, client_t *dest);
+int nbr_duplicates(client_t *head, uuid_t uuid);
 void insert_client(client_t **first, int fd);
 void remove_client(client_t *first, int fd);
 void send_replies(myteams_t *teams, client_t *first, fd_set wr_set);
@@ -122,6 +129,19 @@ thread_t *get_thread_by_title(thread_t *head, char *name);
 void insert_comment(comment_t **first, char body[DEFAULT_BODY_LENGTH],
     uuid_t author);
 comment_t *new_comment(char body[DEFAULT_BODY_LENGTH], uuid_t author);
+
+//Replies linked_list
+void insert_reply(replies_t **first, char *reply);
+void send_next_reply(myteams_t *team, int fd);
+void remove_reply(replies_t *replies_head);
+
+//Broadcast
+void broadcast_team_created(myteams_t *teams, client_t *client,  team_t *team);
+void broadcast_channel_created(myteams_t *teams, client_t *client, channel_t *channel);
+void broadcast_thread_created(myteams_t *teams, client_t *client, thread_t *thread);
+void broadcast_comment_created(myteams_t *teams, client_t *client, comment_t *comment);
+void broadcast_unsubscription(client_t *client, char *team_uuid);
+void broadcast_subscription(client_t *client, char *team_uuid);
 
 //Free Things
 void free_myteams(myteams_t *myteams);

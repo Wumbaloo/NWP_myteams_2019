@@ -29,6 +29,7 @@ client_t *new_client(int fd)
         perror_exit("malloc", 84);
     memset(client->user_name, '\0', DEFAULT_NAME_LENGTH);
     client->depth = UNDEFINED;
+    uuid_clear(client->user_uuid);
     uuid_clear(client->team_chosen);
     uuid_clear(client->channel_chosen);
     uuid_clear(client->thread_chosen);
@@ -37,7 +38,7 @@ client_t *new_client(int fd)
     client->thread_tab = NULL;
     client->fd = fd;
     client->is_connected = false;
-    client->reply = NULL;
+    client->replies = NULL;
     client->message_head = NULL;
     client->next = NULL;
     return (client);

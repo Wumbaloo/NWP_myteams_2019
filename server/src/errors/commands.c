@@ -11,11 +11,6 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void not_logged_in(client_t *client)
-{
-    client->reply = strdup("600 Not logged in");
-}
-
 void bad_command(client_t *client, char *cmd)
 {
     size_t len;
@@ -29,7 +24,7 @@ void bad_command(client_t *client, char *cmd)
         if (!msg)
             perror_exit("malloc", 84);
         sprintf(msg, "%d %s", 601, cmd);
-        client->reply = msg;
+        insert_reply(&client->replies, msg);
     }
 }
 
@@ -42,5 +37,5 @@ void bad_cmd_parameters(client_t *client, char *cmd)
     if (!msg)
         return;
     sprintf(msg, "%d %s", code, cmd);
-    client->reply = msg;
+    insert_reply(&client->replies, msg);
 }
