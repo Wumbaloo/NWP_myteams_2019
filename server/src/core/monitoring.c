@@ -85,5 +85,4 @@ void check_for_instructions(myteams_t *teams)
         if (FD_ISSET(act_fd, &teams->writeset))
             send_next_reply(teams, act_fd);
     }
-//    send_replies(teams, teams->client_head, teams->writeset);
 }

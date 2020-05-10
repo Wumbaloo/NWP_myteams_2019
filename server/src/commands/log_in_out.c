@@ -60,7 +60,7 @@ int login_cmd(myteams_t *teams, client_t *client, char **input)
 
     if (double_array_size(input) != 2 ||
         (input[1] && strlen(input[1]) > DEFAULT_NAME_LENGTH))
-        bad_cmd_parameters(client, "login");
+        return (bad_cmd_parameters(client, "login"));
     else if (client->is_connected == true)
         return (1);
     if (get_client_by_username(teams->client_head, input[1]))
@@ -98,8 +98,8 @@ int logout_cmd(myteams_t *teams, client_t *client,
 
     if (client->is_connected == false)
         return (reply_unauthorized(client));
-    ok_logout_and_close(teams, client, uuid);
     uuid_unparse(client->user_uuid, uuid);
+    ok_logout_and_close(teams, client, uuid);
     memcpy(name, client->user_name, DEFAULT_NAME_LENGTH);
     if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
         remove_client(teams->client_head, client->fd);
