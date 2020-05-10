@@ -6,27 +6,31 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "logging_server.h"
 #include "prototypes.h"
 #include "macros.h"
 #include "structs.h"
 
-void send_and_notify(client_t *from, client_t *receiver, char *msg, client_t *head)
+void send_and_notify(client_t *client, client_t *receiver, char *msg,
+    client_t *head
+)
 {
     client_t *copy = head;
     char sender_uuid[36];
     char *reply;
 
-    uuid_unparse(from->user_uuid, sender_uuid);
+    uuid_unparse(client->user_uuid, sender_uuid);
     reply = format_response(3, PM_RECEIVED, sender_uuid, msg);
+
     for (; copy; copy = copy->next) {
-        if (uuid_compare(from->user_uuid, copy->user_uuid) == 0)
-                    insert_message(&from->message_head, from->user_uuid,
-                receiver->user_uuid, msg);
-        else if (uuid_compare(receiver->user_uuid, copy->user_uuid) == 0) {
-            insert_message(&from->message_head, from->user_uuid,
+        if (uuid_compare(copy->user_uuid, receiver->user_uuid) == 0) {
+            insert_message(&copy->message_head, client->user_uuid,
                 receiver->user_uuid, msg);
             insert_reply(&copy->replies, reply);
+        } else if (uuid_compare(copy->user_uuid, client->user_uuid) == 0) {
+            insert_message(&copy->message_head, client->user_uuid,
+                receiver->user_uuid, msg);
         }
     }
     free(reply);
