@@ -48,7 +48,7 @@ int not_the_first_connection(myteams_t *teams, client_t *client, char *username)
         temp->fd = temp_fd;
     } else
         duplicate_client(temp, client);
-    uuid_unparse(client->user_uuid, uuid);
+    uuid_unparse(temp->user_uuid, uuid);
     server_event_user_logged_in(uuid);
     return (0);
 }

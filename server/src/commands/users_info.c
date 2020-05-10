@@ -33,7 +33,7 @@ int specific_user_cmd(myteams_t *teams, client_t *client, char  **input)
 
 int users_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    sub_list_t *banned;
+    sub_list_t *banned = NULL;
     client_t *copy = teams->client_head;
     char *reply;
     char uuid[36];
