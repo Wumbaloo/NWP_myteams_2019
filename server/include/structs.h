@@ -38,7 +38,7 @@ typedef struct command_s
 {
     int need_login;
     char *command;
-    void (*func)(myteams_t *, client_t *, char **);
+    int (*func)(myteams_t *, client_t *, char **);
     struct command_s *next;
 } command_t;
 

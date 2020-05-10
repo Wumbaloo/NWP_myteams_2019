@@ -18,8 +18,8 @@
 char *read_from_client(int fd);
 
 //Commands prototypes ==> commands
+int bad_cmd_parameters(client_t *client, char *cmd);
 void bad_command(client_t *client, char *cmd);
-void bad_cmd_parameters(client_t *client, char *cmd);
 void not_logged_in(client_t *client);
 
 void create_all_commands(command_t **head);
@@ -133,7 +133,7 @@ comment_t *new_comment(char body[DEFAULT_BODY_LENGTH], uuid_t author);
 //Replies linked_list
 void insert_reply(replies_t **first, char *reply);
 void send_next_reply(myteams_t *team, int fd);
-void remove_reply(replies_t *replies_head);
+void remove_reply(replies_t **replies_head);
 
 //Broadcast
 void broadcast_team_created(myteams_t *teams, client_t *client,  team_t *team);

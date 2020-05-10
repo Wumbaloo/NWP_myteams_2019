@@ -50,28 +50,31 @@ int not_the_first_connection(myteams_t *teams, client_t *client, char *username)
         duplicate_client(temp, client);
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_logged_in(uuid);
-    return 0;
+    return (0);
 }
 
 int login_cmd(myteams_t *teams, client_t *client, char **input)
 {
     char uuid[36];
+    int i = 0;
 
-    if (!input[1])
-        //Error not enough args
-        return 1;
-    if (client->is_connected == true)
-        return 1;
+    if (double_array_size(input) != 2 ||
+        (input[1] && strlen(input[1]) > DEFAULT_NAME_LENGTH))
+        bad_cmd_parameters(client, "login");
+    else if (client->is_connected == true)
+        return (1);
     if (get_client_by_username(teams->client_head, input[1]))
-        return not_the_first_connection(teams, client, input[1]);
+        return (not_the_first_connection(teams, client, input[1]));
     uuid_generate(client->user_uuid);
-    memcpy(client->user_name, input[1], DEFAULT_NAME_LENGTH);
+    for (; input[1][i] && i < 32; i++)
+        client->user_name[i] = input[1][i];
+    client->user_name[i] = '\0';
     client->is_connected = true;
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_created(uuid, client->user_name);
     server_event_user_logged_in(uuid);
     broadcast_login(teams->client_head, uuid, client->user_name);
-    return 0;
+    return (0);
 }
 
 void ok_logout_and_close(myteams_t *teams, client_t *client, char *uuid)
@@ -94,7 +97,7 @@ int logout_cmd(myteams_t *teams, client_t *client,
     char name[DEFAULT_NAME_LENGTH];
 
     if (client->is_connected == false)
-        return reply_unauthorized(client);
+        return (reply_unauthorized(client));
     ok_logout_and_close(teams, client, uuid);
     uuid_unparse(client->user_uuid, uuid);
     memcpy(name, client->user_name, DEFAULT_NAME_LENGTH);
@@ -110,5 +113,5 @@ int logout_cmd(myteams_t *teams, client_t *client,
     }
     server_event_user_logged_out(uuid);
     broadcast_logout(teams->client_head, uuid, name);
-    return 0;
+    return (0);
 }

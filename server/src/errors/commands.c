@@ -28,14 +28,15 @@ void bad_command(client_t *client, char *cmd)
     }
 }
 
-void bad_cmd_parameters(client_t *client, char *cmd)
+int bad_cmd_parameters(client_t *client, char *cmd)
 {
     int code = 602;
     size_t len = snprintf(NULL, 0, "%d %s", code, cmd);
     char *msg = malloc(sizeof(char) * (len + 1));
 
     if (!msg)
-        return;
+        perror_exit("malloc", 84);
     sprintf(msg, "%d %s", code, cmd);
     insert_reply(&client->replies, msg);
+    return (1);
 }

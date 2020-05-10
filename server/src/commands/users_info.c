@@ -41,7 +41,7 @@ int users_cmd(myteams_t *teams, client_t *client, char **input)
     (void)(teams);
     (void)(input);
     if (client->is_connected == false)
-        return reply_unauthorized(client);
+        return (reply_unauthorized(client));
     for (; copy; copy = copy->next) {
         if (already_subscribed(banned, copy->user_uuid))
             continue;
@@ -51,5 +51,5 @@ int users_cmd(myteams_t *teams, client_t *client, char **input)
         insert_in_sub_list(&banned, copy->user_uuid);
         free(reply);
     }
-    return 1;
+    return (1);
 }

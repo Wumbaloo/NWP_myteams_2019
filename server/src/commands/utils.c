@@ -11,8 +11,10 @@ int double_array_size(char **array)
 {
     int cpt = 0;
 
+    if (!array)
+        return (0);
     for (; array[cpt]; cpt++);
-    return cpt;
+    return (cpt);
 }
 
 bool is_banned(sub_list_t *list, uuid_t uuid)
@@ -21,6 +23,6 @@ bool is_banned(sub_list_t *list, uuid_t uuid)
 
     for (; copy; copy = copy->next)
         if (uuid_compare(copy->uuid, uuid) == 0)
-            return true;
-    return false;
+            return (true);
+    return (false);
 }

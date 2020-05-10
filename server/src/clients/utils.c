@@ -64,8 +64,8 @@ void send_next_reply(myteams_t *team, int fd)
 {
     client_t *client = get_client_by_fd(team->client_head, fd);
 
-    if (client->is_connected && client->replies) {
+    if (client->replies) {
         dprintf(fd, "%s\r\n", client->replies->reply);
-        remove_reply(client->replies);
+        remove_reply(&client->replies);
     }
 }

@@ -98,7 +98,6 @@ void create_thread(myteams_t *teams, client_t *client, char **input)
     channel_t *channel;
     thread_t *thread;
     comment_t *comment;
-    char team_uuid[36];
     char thread_uuid[36];
     char user_uuid[36];
 
@@ -124,8 +123,6 @@ int create_cmd(myteams_t *teams, client_t *client, char **input)
     if (client->is_connected == false)
         return reply_unauthorized(client);
     switch (client->depth) {
-        case UNDEFINED:
-            create_undefined(teams, client, input);
         case TEAM:
             create_team(teams, client, input);
             break;
@@ -134,6 +131,11 @@ int create_cmd(myteams_t *teams, client_t *client, char **input)
             break;
         case THREAD:
             create_thread(teams, client, input);
+            break;
+        default:
+        case UNDEFINED:
+            create_undefined(teams, client, input);
+            break;
     }
     return 0;
 }

@@ -8,23 +8,31 @@
 #include <zconf.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "prototypes.h"
 #include "macros.h"
 
 char *format_response(int nbr,  ...)
 {
     va_list list;
-    char *response = malloc(sizeof(char) * RESPONSE_SIZE);
+    char *answer = NULL;
     unsigned long size = 0;
     char *buffer = NULL;
 
-    memset(response, 0, RESPONSE_SIZE   );
     va_start(list, nbr);
-    for (int cpt = 0; cpt < nbr; cpt++) {
+    for (int i = 0; i < nbr; i++) {
         buffer = va_arg(list, char *);
-        size = strlen(response) + strlen(buffer);
-        strcat(response, buffer);
-        response[size] = ' ';
+        if (!buffer)
+            break;
+        else if (answer)
+            answer[size++] = ' ';
+        size += strlen(buffer);
+        answer = realloc(answer, sizeof(char) * (size + (i < nbr - 1 ? 2 : 1)));
+        if (!answer)
+            perror_exit("realloc", 84);
+        else
+            memcpy(answer + size - strlen(buffer), buffer, strlen(buffer) + 1);
     }
     va_end(list);
-    return response;
+    return (answer);
 }
