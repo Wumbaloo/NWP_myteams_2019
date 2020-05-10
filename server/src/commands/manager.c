@@ -22,13 +22,12 @@ void manage_command(myteams_t *teams, client_t *client, char *input)
     cmd_tab = parse_arguments(input, '"');
     if (!cmd_tab) {
         console_log(client, "Wrong command formatting", ERROR, NULL);
-        bad_command(client, NULL);
+        bad_cmd_parameters(client, input);
     } else if (cmd_tab[0] && cmd_tab[0][0] == '/') {
         cmd = get_command(teams->command_head, &cmd_tab[0][1]);
         if (cmd) {
             if (cmd->need_login && !client->is_connected)
                 reply_unauthorized(client);
-//                not_logged_in(client);
             else
                 cmd->func(teams, client, cmd_tab);
         } else

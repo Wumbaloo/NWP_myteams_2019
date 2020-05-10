@@ -36,5 +36,6 @@ void fill_commands(log_t **head)
 {
     create_log(head, 42, &login_trigger);
     create_log(head, 84, &logout_trigger);
+    create_log(head, 645, &unauthorized_trigger);
     fill_errors(head);
 }

@@ -71,7 +71,7 @@ int count_occurences_letter(char *input, char separator)
 {
     int count = 0;
 
-    for (int i = 0; input[i] == '\0'; i++) {
+    for (int i = 0; input[i] != '\0'; i++) {
         if (input[i] == separator)
             count++;
     }
