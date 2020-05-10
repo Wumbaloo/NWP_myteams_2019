@@ -40,5 +40,7 @@ void fill_commands(log_t **head)
     create_log(head, 730, &users_list_trigger);
     create_log(head, 740, &specific_user_trigger);
     create_log(head, 635, &unknown_user_trigger);
+    create_log(head, 510, &private_message_trigger);
+    create_log(head, 530, &list_private_messages_trigger);
     fill_errors(head);
 }

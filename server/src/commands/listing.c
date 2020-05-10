@@ -50,8 +50,8 @@ void create_all_commands(command_t **head)
    command_t *logout = create_command("LOGOUT", 0, logout_cmd);
    command_t *users = create_command("USERS", 1, users_cmd);
    command_t *user = create_command("USER", 1, specific_user_cmd);
-//    command_t *send = create_command("SEND", 0, send_cmd);
-//    command_t *messages = create_command("MESSAGES", 0, messages_cmd);
+   command_t *send = create_command("SEND", 1, send_cmd);
+   command_t *messages = create_command("MESSAGES", 1, specific_message_cmd);
 //    command_t *subscribe = create_command("SUBSCRIBE", 0, subscribe_cmd);
 //    command_t *subscribed = create_command("SUBSCRIBED", 0, subscribed_cmd);
 //    command_t *unsubscribe = create_command("SUBSCRIBE", 0, unsubscribe_cmd);
@@ -65,4 +65,6 @@ void create_all_commands(command_t **head)
    insert_command(head, logout);
    insert_command(head, users);
    insert_command(head, user);
+   insert_command(head, send);
+   insert_command(head, messages);
 }

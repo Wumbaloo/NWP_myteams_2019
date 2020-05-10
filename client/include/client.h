@@ -18,6 +18,8 @@ int already_logged_in_trigger(char **array);
 int users_list_trigger(char **array);
 int specific_user_trigger(char **array);
 int unknown_user_trigger(char **array);
+int private_message_trigger(char **array);
+int list_private_messages_trigger(char **array);
 int analyze_log(log_t *head, char *buffer);
 int get_array_length(char **array);
 void fill_commands(log_t **head);

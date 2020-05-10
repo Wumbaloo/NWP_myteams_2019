@@ -8,6 +8,28 @@
 #include <stdlib.h>
 #include "logging_client.h"
 #include "client.h"
+#include <stdio.h>
+
+int list_private_messages_trigger(char **array)
+{
+    long int timestamp;
+    char *endptr = NULL;
+
+    if (get_array_length(array) != 4)
+        return (0);
+    timestamp = strtol(array[2], &endptr, 10);
+    client_private_message_print_messages(array[1], (time_t) timestamp,
+        array[3]);
+    return (0);
+}
+
+int private_message_trigger(char **array)
+{
+    if (get_array_length(array) != 3)
+        return (0);
+    client_event_private_message_received(array[1], array[2]);
+    return (0);
+}
 
 int users_list_trigger(char **array)
 {

@@ -31,15 +31,14 @@ void free_commands_list(command_t *head);
 command_t *get_command(command_t *head, char *cmd);
 command_t *create_command(char *txt, int login,
                             int (*ptr)(myteams_t *, client_t *, char **));
-int login_cmd(myteams_t *teams, client_t *client, char **arg);
-int logout_cmd(myteams_t *teams, client_t *client, char **arg);
+int login_cmd(myteams_t *teams, client_t *client, char **input);
+int logout_cmd(myteams_t *teams, client_t *client, char **input);
 int users_cmd(myteams_t *teams, client_t *client, char **input);
 int specific_user_cmd(myteams_t *teams, client_t *client, char **input);
-
-int specific_user_cmd(myteams_t *teams, client_t *client, char **arg);
-int specific_message_cmd(myteams_t *teams, client_t *client, char **arg);
-int subscribe_cmd(myteams_t *teams, client_t *client, char **arg);
-int unsubscribe_cmd(myteams_t *teams, client_t *client, char **arg);
+int send_cmd(myteams_t *teams, client_t *from, char **input);
+int specific_message_cmd(myteams_t *teams, client_t *client, char **input);
+int subscribe_cmd(myteams_t *teams, client_t *client, char **input);
+int unsubscribe_cmd(myteams_t *teams, client_t *client, char **input);
 int info_cmd(myteams_t *teams, client_t *client, char **input);
 int create_cmd(myteams_t *teams, client_t *client, char **input);
 int info_cmd(myteams_t *teams, client_t *client, char **input);
