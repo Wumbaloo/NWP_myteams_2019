@@ -19,7 +19,8 @@ int specific_user_cmd(myteams_t *teams, client_t *client, char **input)
         return (reply_unauthorized(client));
     else if (!input[1])
         return (bad_cmd_parameters(client, input[0]));
-    uuid_parse(input[1], temp);
+    if (uuid_parse(input[1], temp) == -1)
+        return reply_unknown_user(client, input[1]);
     searched = get_client_by_uuid(teams->client_head, temp);
     if (!searched)
         return (reply_unknown_user(client, input[1]));
