@@ -49,7 +49,7 @@ void create_all_commands(command_t **head)
    command_t *login = create_command("LOGIN", 0, login_cmd);
    command_t *logout = create_command("LOGOUT", 0, logout_cmd);
    command_t *users = create_command("USERS", 1, users_cmd);
-//    command_t *user = create_command("USER", 0, user_cmd);
+   command_t *user = create_command("USER", 1, specific_user_cmd);
 //    command_t *send = create_command("SEND", 0, send_cmd);
 //    command_t *messages = create_command("MESSAGES", 0, messages_cmd);
 //    command_t *subscribe = create_command("SUBSCRIBE", 0, subscribe_cmd);
@@ -64,4 +64,5 @@ void create_all_commands(command_t **head)
    insert_command(head, login);
    insert_command(head, logout);
    insert_command(head, users);
+   insert_command(head, user);
 }

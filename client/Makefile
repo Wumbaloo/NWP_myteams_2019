@@ -10,6 +10,7 @@ SRC_DIR	=	src/
 FILES	=	logs/fill.c						\
 			logs/free.c						\
 			logs/linked_list.c				\
+			logs/users.c					\
 			useful/array.c					\
 			useful/clean_str.c				\
 			useful/my_str_to_word_array.c	\

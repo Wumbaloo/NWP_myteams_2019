@@ -34,6 +34,7 @@ command_t *create_command(char *txt, int login,
 int login_cmd(myteams_t *teams, client_t *client, char **arg);
 int logout_cmd(myteams_t *teams, client_t *client, char **arg);
 int users_cmd(myteams_t *teams, client_t *client, char **input);
+int specific_user_cmd(myteams_t *teams, client_t *client, char **input);
 
 int specific_user_cmd(myteams_t *teams, client_t *client, char **arg);
 int specific_message_cmd(myteams_t *teams, client_t *client, char **arg);

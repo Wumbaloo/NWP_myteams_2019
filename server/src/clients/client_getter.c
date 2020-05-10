@@ -21,7 +21,8 @@ client_t *get_client_by_uuid(client_t *head, uuid_t uuid)
 {
     client_t *copy = head;
 
-    while (copy && uuid_compare(uuid, copy->user_uuid))
+    while (copy && !uuid_is_null(copy->user_uuid)
+        && uuid_compare(uuid, copy->user_uuid))
         copy = copy->next;
     return copy;
 }
