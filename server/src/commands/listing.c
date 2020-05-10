@@ -34,7 +34,7 @@ command_t *create_command(char *txt, int login,
 
 int help_cmd(myteams_t *teams, client_t *client, char **arg)
 {
-    char *temp_help = strdup("HELP command");
+    char *temp_help = strdup("Send a command by using /{commandName}\nAvailable commands are:\n-/help\n/login");
 
     (void)(teams);
     (void)(arg);
@@ -48,7 +48,7 @@ void create_all_commands(command_t **head)
    command_t *help = create_command("HELP", 0, help_cmd);
    command_t *login = create_command("LOGIN", 0, login_cmd);
    command_t *logout = create_command("LOGOUT", 0, logout_cmd);
-//    command_t *users = create_command("USERS", 0, users_cmd);
+   command_t *users = create_command("USERS", 1, users_cmd);
 //    command_t *user = create_command("USER", 0, user_cmd);
 //    command_t *send = create_command("SEND", 0, send_cmd);
 //    command_t *messages = create_command("MESSAGES", 0, messages_cmd);
@@ -63,4 +63,5 @@ void create_all_commands(command_t **head)
    insert_command(head, help);
    insert_command(head, login);
    insert_command(head, logout);
+   insert_command(head, users);
 }

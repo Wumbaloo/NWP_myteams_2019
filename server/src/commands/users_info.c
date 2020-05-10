@@ -38,18 +38,20 @@ int users_cmd(myteams_t *teams, client_t *client, char **input)
     char *reply;
     char uuid[36];
 
-    (void)(teams);
     (void)(input);
     if (client->is_connected == false)
         return (reply_unauthorized(client));
+    else if (!copy)
+        return (0);
     for (; copy; copy = copy->next) {
         if (already_subscribed(banned, copy->user_uuid))
             continue;
         uuid_unparse(copy->user_uuid, uuid);
-        reply = format_response(4, LIST_USERS, uuid, copy->user_name, copy->is_connected ? "1" : "0");
+        reply = format_response(4, LIST_USERS, uuid, copy->user_name,
+            copy->is_connected ? "1" : "0");
         insert_reply(&client->replies, reply);
         insert_in_sub_list(&banned, copy->user_uuid);
         free(reply);
     }
-    return (1);
+    return (0);
 }

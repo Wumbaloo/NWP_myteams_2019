@@ -13,10 +13,12 @@ bool already_subscribed(sub_list_t *head, uuid_t team)
 {
     sub_list_t *copy = head;
 
+    if (!head)
+        return (false);
     for (; copy; copy = copy->next)
         if (!uuid_compare(copy->uuid, team))
-            return true;
-    return false;
+            return (true);
+    return (false);
 }
 
 void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team)
