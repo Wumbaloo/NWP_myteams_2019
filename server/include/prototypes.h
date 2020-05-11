@@ -98,7 +98,6 @@ void duplicate_client(client_t *src, client_t *dest);
 int nbr_duplicates(client_t *head, uuid_t uuid);
 void insert_client(client_t **first, int fd);
 void remove_client(client_t *first, int fd);
-void send_replies(myteams_t *teams, client_t *first, fd_set wr_set);
 
 //Clients->Messages linked-list
 void insert_message(message_t **first, uuid_t from, uuid_t to,

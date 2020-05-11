@@ -8,6 +8,7 @@
 TEST_FILES	=	test_client_linked_list.c	\
 				test_commands_linked_list.c	\
 				test_logs.c					\
+				test_reply_linked_list.c	\
 
 NAME = unit_tests
 
@@ -18,7 +19,7 @@ $(NAME): tests_run
 tests_run:
 ifdef files
 ifdef from
-	$(CC) -o $(NAME) $(addprefix $(subst ${space} ,\ ,$(from)/), $(files)) $(TEST_FILES) -I $(subst ${space} ,\ ,$(from)/include) --coverage -lcriterion -L ../../lib -lmyteams -luuid
+	$(CC) -o $(NAME) $(addprefix $(subst ${space} ,\ ,$(from)/), $(files)) $(TEST_FILES) -I $(subst ${space} ,\ ,$(from)/include) --coverage -lcriterion -L ../../libs -lmyteams -luuid
 	./$(NAME)
 else
 	@echo 'No from directory for unit tests.'
