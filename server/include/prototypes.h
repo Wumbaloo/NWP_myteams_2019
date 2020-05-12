@@ -64,7 +64,7 @@ void console_log(client_t *from, char *msg, log_type type, char *custom_color);
 void free_array(char **arr);
 char **my_str_to_word_array(char *av, char separate);
 int uuid_tab_size(uuid_t *array);
-char *format_response(int nbr,  ...);
+char *format_response(int nbr, ...);
 int reply_unauthorized(client_t *client);
 int reply_resource_already_exists(client_t *client);
 int reply_unknown_user(client_t *client, char *user_uuid);
@@ -136,7 +136,7 @@ void send_next_reply(myteams_t *team, int fd);
 void remove_reply(replies_t **replies_head);
 
 //Broadcast
-void broadcast_team_created(myteams_t *teams, client_t *client,  team_t *team);
+void broadcast_team_created(myteams_t *teams, client_t *client, team_t *team);
 void broadcast_channel_created(myteams_t *teams, client_t *client, channel_t *channel);
 void broadcast_thread_created(myteams_t *teams, client_t *client, thread_t *thread);
 void broadcast_comment_created(myteams_t *teams, client_t *client, comment_t *comment);

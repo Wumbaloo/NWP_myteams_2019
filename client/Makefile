@@ -20,6 +20,7 @@ FILES	=	logs/fill.c						\
 			client.c						\
 			creations.c						\
 			init_connection.c				\
+			parser.c						\
 
 MAIN_FILE	=	main.c
 

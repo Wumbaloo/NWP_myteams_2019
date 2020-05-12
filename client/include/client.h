@@ -33,5 +33,12 @@ char *clean_string(char *str);
 int launcher(int ac, char **av);
 char **my_str_to_word_array(char *av, char separate);
 char *concat_array(char **array, int begin);
+char *get_arg_array(char **array, int index);
+char **parse_arguments(char *input, char separator);
+
+// Parser utils
+int char_array_length(char **array);
+int count_words(char *input, char separator);
+int is_parser_char(char c);
 
 #endif

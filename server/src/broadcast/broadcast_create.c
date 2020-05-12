@@ -10,7 +10,7 @@
 #include "prototypes.h"
 #include "structs.h"
 
-void broadcast_team_created(myteams_t *teams, client_t *client,  team_t *team)
+void broadcast_team_created(myteams_t *teams, client_t *client, team_t *team)
 {
     client_t *copy = teams->client_head;
     char uuid[36];

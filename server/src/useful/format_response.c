@@ -12,7 +12,18 @@
 #include "prototypes.h"
 #include "macros.h"
 
-char *format_response(int nbr,  ...)
+char *put_char_around(char *buffer, char around)
+{
+    size_t len = snprintf(NULL, 0, "%c%s%c", around, buffer, around);
+    char *new_buffer = malloc(sizeof(char) * (len + 1));
+
+    if (!new_buffer)
+        perror_exit("malloc", 84);
+    sprintf(new_buffer, "%c%s%c", around, buffer, around);
+    return (new_buffer);
+}
+
+char *format_response(int nbr, ...)
 {
     va_list list;
     char *answer = NULL;
@@ -26,12 +37,12 @@ char *format_response(int nbr,  ...)
             break;
         else if (answer)
             answer[size++] = ' ';
+        buffer = put_char_around(buffer, '\"');
         size += strlen(buffer);
         answer = realloc(answer, sizeof(char) * (size + (i < nbr - 1 ? 2 : 1)));
         if (!answer)
             perror_exit("realloc", 84);
-        else
-            memcpy(answer + size - strlen(buffer), buffer, strlen(buffer) + 1);
+        memcpy(answer + size - strlen(buffer), buffer, strlen(buffer) + 1);
     }
     va_end(list);
     return (answer);
