@@ -56,7 +56,7 @@ void create_all_commands(command_t **head)
 //    command_t *subscribed = create_command("SUBSCRIBED", 0, subscribed_cmd);
 //    command_t *unsubscribe = create_command("SUBSCRIBE", 0, unsubscribe_cmd);
 //    command_t *use = create_command("USE", 0, use_cmd);
-//    command_t *create = create_command("CREATE", 0, create_cmd);
+   command_t *create = create_command("CREATE", 1, create_cmd);
 //    command_t *list = create_command("LIST", 0, list_cmd);
 //    command_t *info = create_command("INFO", 0, info_cmd);
 
@@ -67,4 +67,5 @@ void create_all_commands(command_t **head)
    insert_command(head, user);
    insert_command(head, send);
    insert_command(head, messages);
+   insert_command(head, create);
 }

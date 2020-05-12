@@ -17,8 +17,9 @@ FILES	=	logs/fill.c						\
 			useful/get_input.c				\
 			errors/error.c					\
 			analyzer.c						\
-			init_connection.c				\
 			client.c						\
+			creations.c						\
+			init_connection.c				\
 
 MAIN_FILE	=	main.c
 
