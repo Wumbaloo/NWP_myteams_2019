@@ -30,5 +30,6 @@ int get_input(char **input);
 char *clean_string(char *str);
 int launcher(int ac, char **av);
 char **my_str_to_word_array(char *av, char separate);
+char *concat_array(char **array, int begin);
 
 #endif
