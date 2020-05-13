@@ -38,6 +38,7 @@ int specific_user_cmd(myteams_t *teams, client_t *client, char **input);
 int send_cmd(myteams_t *teams, client_t *from, char **input);
 int specific_message_cmd(myteams_t *teams, client_t *client, char **input);
 int subscribe_cmd(myteams_t *teams, client_t *client, char **input);
+int subscribed_cmd(myteams_t *teams, client_t *client, char **input);
 int unsubscribe_cmd(myteams_t *teams, client_t *client, char **input);
 int info_cmd(myteams_t *teams, client_t *client, char **input);
 int create_cmd(myteams_t *teams, client_t *client, char **input);

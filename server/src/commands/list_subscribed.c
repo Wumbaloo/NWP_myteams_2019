@@ -28,27 +28,26 @@ void list_users_subscribed(client_t *head, uuid_t uuid)
     }
 }
 
-void subscribed_cmd(myteams_t *teams, client_t *client, void *arg)
+int subscribed_cmd(myteams_t *teams, client_t *client, char **arg)
 {
     uuid_t temp;
     team_t *team_to_look;
 
-    if (client->is_connected == false) {
-        //Error not logged
-        return;
-    }
-    if (!arg) {
+    if (!client->is_connected)
+        return (reply_unauthorized(client));
+    if (!arg || double_array_size(arg) != 2) {
         list_teams_subscribed(client->team_tab);
-        return;
+        return (0);
     }
-    uuid_parse(arg, temp);
+    uuid_parse(arg[0], temp);
     team_to_look = get_team_by_uuid(teams->team_head, temp);
     if (!team_to_look) {
         //Error unknown team
-        return;
+        return (0);
     } else if (!already_subscribed(client->team_tab, temp)) {
         //Error not subscribed unauthorized
-        return;
+        return (0);
     }
     list_users_subscribed(teams->client_head, temp);
+    return (0);
 }

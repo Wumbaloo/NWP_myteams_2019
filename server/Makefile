@@ -26,6 +26,7 @@ FILES	=	free.c								\
 			commands/utils.c					\
 			commands/free.c						\
 			commands/linked_list.c				\
+			commands/list_subscribed.c			\
 			commands/listing.c					\
 			commands/log_in_out.c				\
 			commands/manager.c					\

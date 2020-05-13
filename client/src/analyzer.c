@@ -23,7 +23,8 @@ int analyze_log(log_t *head, char *buffer)
         return (1);
     for (str = strtok(buffer, "\r\n"); str;) {
         str = clean_string(str);
-        split_array = parse_arguments(buffer, '"');
+        split_array = (strstr(str, "\"") ? parse_arguments(buffer, '"')
+            : my_str_to_word_array(buffer, ' ');
         code = strtol(split_array[0], NULL, 10);
         current = get_log(head, code);
         free(str);
