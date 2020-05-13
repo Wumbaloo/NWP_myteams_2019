@@ -10,6 +10,7 @@
 
 #include "logs.h"
 
+// Simple triggers
 int bad_cmd_trigger(char **array);
 int bad_params_trigger(char **array);
 int not_logged_in_trigger(char **array);
@@ -22,6 +23,11 @@ int private_message_trigger(char **array);
 int list_private_messages_trigger(char **array);
 int create_team_specific_trigger(char **array);
 int create_team_trigger(char **array);
+int user_join_team_trigger(char **array);
+
+// Events
+int create_channel_event_trigger(char **array);
+
 int analyze_log(log_t *head, char *buffer);
 int get_array_length(char **array);
 void fill_commands(log_t **head);

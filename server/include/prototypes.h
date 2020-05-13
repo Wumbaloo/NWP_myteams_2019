@@ -46,6 +46,8 @@ int info_cmd(myteams_t *teams, client_t *client, char **input);
 int list_cmd(myteams_t *teams, client_t *client, char **input);
 int use_cmd(myteams_t *teams, client_t *client, char **input);
 bool already_subscribed(sub_list_t *head, uuid_t team);
+bool already_subscribed(sub_list_t *head, uuid_t team);
+void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team);
 void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team);
 
 //Command utils

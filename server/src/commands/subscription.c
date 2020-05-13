@@ -6,8 +6,8 @@
 */
 
 #include "logging_server.h"
-#include "prototypes.h"
 #include "structs.h"
+#include "prototypes.h"
 
 bool already_subscribed(sub_list_t *head, uuid_t team)
 {
@@ -29,74 +29,10 @@ void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team)
         remove_in_sub_list(channel_list, copy->channel_uuid);
 }
 
-int unsubscribe_cmd(myteams_t *teams, client_t *client, char **input)
-{
-    client_t *client_tmp;
-    team_t *to_unsubscribe;
-    uuid_t temp;
-    char uuid[36];
-
-    if (client->is_connected == false)
-        return reply_unauthorized(client);
-    if (!input[1])
-        //Error not enough arg
-        return 1;
-    if (uuid_parse(input[1], temp) != 0)
-        return reply_unknown_team(client, input[1]);
-    to_unsubscribe = get_team_by_uuid(teams->team_head, temp);
-    if (!to_unsubscribe)
-        return reply_unknown_team(client, input[1]);
-    else if (already_subscribed(client->team_tab, temp) == false)
-        return reply_unauthorized(client);
-    client_tmp = teams->client_head;
-    for (; client_tmp; client_tmp = client_tmp->next) {
-        if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
-            remove_in_sub_list(client_tmp->team_tab, temp);
-            unsubscribe_from_sub_channels(client_tmp->channel_tab,
-                to_unsubscribe);
-        }
-    }
-    uuid_unparse(client->user_uuid, uuid);
-    server_event_user_leave_a_team(input[1], uuid);
-    broadcast_unsubscription(client, input[1]);
-    return 0;
-}
-
 void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team)
 {
     channel_t *copy = team->channel_head;
 
     for (; copy; copy = copy->next)
         insert_in_sub_list(&channel_list, copy->channel_uuid);
-}
-
-int subscribe_cmd(myteams_t *teams, client_t *client, char **input)
-{
-    client_t *client_tmp;
-    team_t *to_subscribe;
-    uuid_t temp;
-    char uuid[36];
-
-    if (client->is_connected == false)
-        return reply_unauthorized(client);
-    if (!input[1])
-        //Error not enough arg
-        return 1;
-    uuid_parse(input[1], temp);
-    to_subscribe = get_team_by_uuid(teams->team_head, temp);
-    if (!to_subscribe)
-        return reply_unknown_user(client, input[1]);
-    else if (already_subscribed(client->team_tab, temp))
-        return reply_resource_already_exists(client);
-    client_tmp = teams->client_head;
-    for (; client_tmp; client_tmp = client_tmp->next) {
-        if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
-            insert_in_sub_list(&client_tmp->team_tab, temp);
-            subscribe_to_subchannels(client->channel_tab, to_subscribe);
-        }
-    }
-    uuid_unparse(client->user_uuid, uuid);
-    server_event_user_join_a_team(input[1], uuid);
-    broadcast_subscription(client, input[1]);
-    return 0;
 }

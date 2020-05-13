@@ -7,9 +7,12 @@
 
 SRC_DIR	=	src/
 
-FILES	=	logs/fill.c						\
+FILES	=	logs/creations.c					\
+			logs/events.c					\
+			logs/fill.c						\
 			logs/free.c						\
 			logs/linked_list.c				\
+			logs/miscellaneous.c			\
 			logs/users.c					\
 			useful/array.c					\
 			useful/clean_str.c				\
@@ -18,7 +21,6 @@ FILES	=	logs/fill.c						\
 			errors/error.c					\
 			analyzer.c						\
 			client.c						\
-			creations.c						\
 			init_connection.c				\
 			parser.c						\
 

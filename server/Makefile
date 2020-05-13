@@ -34,6 +34,7 @@ FILES	=	free.c								\
 			commands/parser_utils.c				\
 			commands/parser.c					\
 			commands/private_message.c			\
+			commands/subscribe_cmds.c			\
 			commands/subscription.c				\
 			commands/use_threads.c				\
 			commands/use.c						\
