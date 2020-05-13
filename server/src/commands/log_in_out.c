@@ -12,29 +12,6 @@
 #include "prototypes.h"
 #include "logging_server.h"
 
-void broadcast_login(client_t *head, char *uuid, char *user_name)
-{
-    client_t *copy = head;
-    char *reply = format_response(3, CONNECTED, uuid, user_name);
-
-    for (; copy; copy = copy->next) {
-        if (copy->is_connected)
-            insert_reply(&copy->replies, reply);
-    }
-    free(reply);
-}
-
-void broadcast_logout(client_t *head, char *uuid, char *user_name)
-{
-    client_t *copy = head;
-    char *reply = format_response(3, DISCONNECTED, uuid, user_name);
-
-    for (; copy; copy = copy->next)
-        if (copy->is_connected)
-            insert_reply(&copy->replies, reply);
-    free(reply);
-}
-
 int not_the_first_connection(myteams_t *teams, client_t *client, char *username)
 {
     client_t *temp = get_client_by_username(teams->client_head, username);

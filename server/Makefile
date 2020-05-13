@@ -19,6 +19,7 @@ FILES	=	free.c								\
 			clients/utils.c						\
 			clients/messages/free.c				\
 			clients/messages/linked_list.c		\
+			commands/broadcast_login.c			\
 			commands/create.c					\
 			commands/info.c						\
 			commands/list.c						\
@@ -34,6 +35,7 @@ FILES	=	free.c								\
 			commands/parser.c					\
 			commands/private_message.c			\
 			commands/subscription.c				\
+			commands/use_threads.c				\
 			commands/use.c						\
 			commands/users_info.c				\
 			comments/free.c						\

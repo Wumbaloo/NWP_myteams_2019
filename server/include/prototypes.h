@@ -51,6 +51,7 @@ void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team);
 //Command utils
 int double_array_size(char **array);
 bool is_banned(sub_list_t *list, uuid_t uuid);
+int use_thread(myteams_t *teams, client_t *client, char **input);
 
 //Parser functions ==> commandes/parser
 char **parse_arguments(char *input, char separator);
@@ -143,6 +144,8 @@ void broadcast_thread_created(myteams_t *teams, client_t *client, thread_t *thre
 void broadcast_comment_created(myteams_t *teams, client_t *client, comment_t *comment);
 void broadcast_unsubscription(client_t *client, char *team_uuid);
 void broadcast_subscription(client_t *client, char *team_uuid);
+void broadcast_login(client_t *head, char *uuid, char *user_name);
+void broadcast_logout(client_t *head, char *uuid, char *user_name);
 
 //Free Things
 void free_myteams(myteams_t *myteams);
