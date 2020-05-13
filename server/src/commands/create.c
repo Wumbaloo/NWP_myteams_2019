@@ -13,6 +13,7 @@ int create_undefined(myteams_t *teams, client_t *client, char **input)
 {
     team_t *team;
     char uuid[36];
+    char user_uuid[36];
 
     if (double_array_size(input) != 3)
         return (bad_cmd_parameters(client, input[0]));
@@ -22,9 +23,10 @@ int create_undefined(myteams_t *teams, client_t *client, char **input)
     insert_team(&teams->team_head, input[1], input[2]);
     team = get_team_by_name(teams->team_head, input[1]);
     uuid_unparse(team->team_uuid, uuid);
+    uuid_unparse(client->user_uuid, user_uuid);
     insert_in_sub_list(&client->team_tab, team->team_uuid);
     subscribe_to_subchannels(client->channel_tab, team);
-    server_event_team_created(uuid, team->team_name, team->team_desc);
+    server_event_team_created(uuid, team->team_name, user_uuid);
     broadcast_team_created(teams, client, team);
     return (0);
 }

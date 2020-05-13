@@ -56,7 +56,6 @@ int not_the_first_connection(myteams_t *teams, client_t *client, char *username)
 int login_cmd(myteams_t *teams, client_t *client, char **input)
 {
     char uuid[36];
-    int i = 0;
 
     if (double_array_size(input) != 2 ||
         (input[1] && strlen(input[1]) > DEFAULT_NAME_LENGTH))
@@ -66,9 +65,8 @@ int login_cmd(myteams_t *teams, client_t *client, char **input)
     if (get_client_by_username(teams->client_head, input[1]))
         return (not_the_first_connection(teams, client, input[1]));
     uuid_generate(client->user_uuid);
-    for (; input[1][i] && i < 32; i++)
+    for (int i = 0; input[1][i] && i < DEFAULT_NAME_LENGTH; i++)
         client->user_name[i] = input[1][i];
-    client->user_name[i] = '\0';
     client->is_connected = true;
     uuid_unparse(client->user_uuid, uuid);
     server_event_user_created(uuid, client->user_name);
@@ -94,13 +92,15 @@ int logout_cmd(myteams_t *teams, client_t *client,
     __attribute__((unused)) char **input)
 {
     char uuid[36];
-    char name[DEFAULT_NAME_LENGTH];
+    char name[DEFAULT_NAME_LENGTH + 1];
 
     if (client->is_connected == false)
         return (reply_unauthorized(client));
     uuid_unparse(client->user_uuid, uuid);
     ok_logout_and_close(teams, client, uuid);
-    memcpy(name, client->user_name, DEFAULT_NAME_LENGTH);
+    memset(name, '\0', DEFAULT_NAME_LENGTH + 1);
+    for (int i = 0; client->user_name[i] && i < DEFAULT_NAME_LENGTH; i++)
+        name[i] = client->user_name[i];
     if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
         remove_client(teams->client_head, client->fd);
     else {

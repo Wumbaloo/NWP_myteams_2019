@@ -25,7 +25,7 @@ typedef struct message_s
     time_t timestamp;
     uuid_t sender;
     uuid_t receiver;
-    char body[DEFAULT_BODY_LENGTH];
+    char body[DEFAULT_BODY_LENGTH + 1];
     struct message_s *next;
 } message_t;
 
@@ -46,7 +46,7 @@ typedef struct user_s
     int fd;
     bool is_connected;
     replies_t *replies;
-    char user_name[DEFAULT_NAME_LENGTH];
+    char user_name[DEFAULT_NAME_LENGTH + 1];
     uuid_t user_uuid;
     use_depth depth;
     uuid_t team_chosen;

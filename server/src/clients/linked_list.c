@@ -27,7 +27,7 @@ client_t *new_client(int fd)
 
     if (!client)
         perror_exit("malloc", 84);
-    memset(client->user_name, '\0', DEFAULT_NAME_LENGTH);
+    memset(client->user_name, '\0', DEFAULT_NAME_LENGTH + 1);
     client->depth = UNDEFINED;
     uuid_clear(client->user_uuid);
     uuid_clear(client->team_chosen);

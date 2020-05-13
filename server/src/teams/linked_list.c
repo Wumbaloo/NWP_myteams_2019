@@ -34,23 +34,27 @@ team_t *get_team_by_uuid(team_t *head, uuid_t uuid)
     return NULL;
 }
 
-team_t *new_team(char name[DEFAULT_NAME_LENGTH],
-    char desc[DEFAULT_DESCRIPTION_LENGTH])
+team_t *new_team(char name[DEFAULT_NAME_LENGTH + 1],
+    char desc[DEFAULT_DESCRIPTION_LENGTH + 1])
 {
     team_t *team = malloc(sizeof(team_t));
 
     if (!team)
         perror_exit("malloc", 84);
     uuid_generate(team->team_uuid);
-    memcpy(team->team_name, name, DEFAULT_NAME_LENGTH);
-    memcpy(team->team_desc, desc, DEFAULT_DESCRIPTION_LENGTH);
+    memset(team->team_name, '\0', DEFAULT_NAME_LENGTH + 1);
+    for (int i = 0; name[i] && i < DEFAULT_NAME_LENGTH; i++)
+        team->team_name[i] = name[i];
+    memset(team->team_desc, '\0', DEFAULT_DESCRIPTION_LENGTH + 1);
+    for (int i = 0; desc[i] && i < DEFAULT_DESCRIPTION_LENGTH; i++)
+        team->team_desc[i] = desc[i];
     team->channel_head = NULL;
     team->next = NULL;
     return team;
 }
 
-void insert_team(team_t **first, char name[DEFAULT_NAME_LENGTH],
-    char desc[DEFAULT_DESCRIPTION_LENGTH])
+void insert_team(team_t **first, char name[DEFAULT_NAME_LENGTH + 1],
+    char desc[DEFAULT_DESCRIPTION_LENGTH + 1])
 {
     team_t *copy = *first;
     team_t *team = new_team(name, desc);
