@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "client.h"
 
 int get_input(char **input)
@@ -18,5 +19,7 @@ int get_input(char **input)
     if (getline(&(*input), &len, stdin) == -1)
         return (84);
     (*input) = clean_string(*input);
+    if (strcmp((*input), "/logout") == 0)
+        return (1);
     return (0);
 }

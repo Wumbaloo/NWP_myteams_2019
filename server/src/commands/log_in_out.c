@@ -71,7 +71,7 @@ int logout_cmd(myteams_t *teams, client_t *client,
     char uuid[36];
     char name[DEFAULT_NAME_LENGTH + 1];
 
-    if (client->is_connected == false)
+    if (!client->is_connected)
         return (reply_unauthorized(client));
     uuid_unparse(client->user_uuid, uuid);
     ok_logout_and_close(teams, client, uuid);
