@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "client.h"
 
 int count_words(char *input, char separator)
 {
@@ -56,31 +57,43 @@ int fill_words(char **array, char *input, char separator, int from)
     return (0);
 }
 
-int count_occurences_letter(char *input, char separator)
+void fill_code(char **array, char *input)
 {
-    int count = 0;
+    size_t len = 0;
+    size_t from = 0;
 
-    for (int i = 0; input[i] != '\0'; i++) {
-        if (input[i] == separator)
-            count++;
-    }
-    return (count);
+    for (; input[len] && input[len] != ' '; len++);
+    array[0] = malloc(sizeof(char) * (len + 1));
+    if (!array[0])
+        exit(84);
+    array[0][len] = '\0';
+    for (; input[from] && from < len; from++)
+        array[0][from] = input[from];
+    len++;
+    for (; input[len] && input[len] != ' '; len++);
+    from++;
+    array[1] = malloc(sizeof(char) * ((len - from) + 1));
+    if (!array[1])
+        exit(84);
+    array[1][len - from] = '\0';
+    for (int i = 0; input[from] && from < len; from++)
+        array[1][i++] = input[from];
 }
 
 char **parse_arguments(char *input, char separator)
 {
     char **array = NULL;
     int nb_args = 0;
+    int error = count_occurences_letter(input, separator) % 2;
 
-    if (!input)
-        return (NULL);
-    else if (count_occurences_letter(input, separator) % 2 != 0)
-        return (NULL);
-    nb_args = count_words(input, separator);
+    nb_args = ((error != 0) ? 2 : count_words(input, separator));
     array = malloc(sizeof(char *) * (nb_args + 1));
     if (!array)
-        return (NULL);
+        exit(84);
     array[nb_args] = NULL;
-    fill_words(array, input, separator, 0);
+    if (error != 0)
+        fill_code(array, input);
+    else
+        fill_words(array, input, separator, 0);
     return (array);
 }

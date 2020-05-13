@@ -23,3 +23,14 @@ int get_input(char **input)
         return (1);
     return (0);
 }
+
+int count_occurences_letter(char *input, char separator)
+{
+    int count = 0;
+
+    for (int i = 0; input[i] != '\0'; i++) {
+        if (input[i] == separator)
+            count++;
+    }
+    return (count);
+}
