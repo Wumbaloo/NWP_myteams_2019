@@ -43,6 +43,7 @@ FILES	=	free.c								\
 			comments/linked_list.c				\
 			core/free.c							\
 			core/initialization.c				\
+			core/save.c							\
 			core/launcher.c						\
 			core/monitoring.c					\
 			errors/arguments.c					\

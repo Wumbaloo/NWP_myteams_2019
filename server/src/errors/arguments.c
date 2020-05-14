@@ -7,13 +7,23 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "prototypes.h"
 
 int return_and_msg(char *msg, int return_value)
 {
     fprintf(stderr, "%s\n", msg);
     return (return_value);
+}
+
+void catch_ctrl_c(int sig)
+{
+    signal(sig, SIG_IGN);
+    printf("\n");
+    stop = 1;
+    // exit(0);
 }
 
 int check_port(char *port_str)
@@ -33,6 +43,8 @@ int check_port(char *port_str)
 
 int error_handling(int ac, char **av)
 {
+    if (signal(SIGINT, catch_ctrl_c) == SIG_ERR)
+        printf("\ncannot catch SIGINT\n");
     if (ac != 2)
         return (return_and_msg("The program should have only 1 argument.", -1));
     if (strlen(av[1]) == 0)

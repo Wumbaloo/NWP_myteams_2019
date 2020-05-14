@@ -14,6 +14,8 @@
 #include "logs.h"
 #include "structs.h"
 
+int stop;
+
 //Clients prototypes ==> clients
 char *read_from_client(int fd);
 
@@ -63,6 +65,7 @@ int count_words(char *input, char separator);
 int is_banned_char(char c);
 
 //Useful functions ==> useful
+void quit(int sig);
 void perror_exit(char *err, int exit_code);
 void console_log(client_t *from, char *msg, log_type type, char *custom_color);
 void free_array(char **arr);
@@ -81,6 +84,7 @@ int error_handling(int ac, char **av);
 int return_and_msg(char *msg, int return_value);
 
 //Core prototypes in ==> core
+void save(myteams_t *teams, client_t *client);
 myteams_t *create_teams(int port);
 client_t *new_client(int fd);
 int launch_server(int ac, char **av);
