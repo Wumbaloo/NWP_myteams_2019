@@ -68,8 +68,8 @@ SRC_MAIN	=	$(addprefix $(SRC_DIR), $(MAIN_FILE))
 OBJ		=	$(SRC:.c=.o)
 OBJ_MAIN=	$(SRC_MAIN:.c=.o)
 
-LDFLAGS	=	-L ../libs -lmyteams -luuid
-CFLAGS	=	-I include
+LDFLAGS	=	-L ../libs/myteams -lmyteams -luuid
+CFLAGS	+=	-I include -I ../libs/myteams
 
 NAME	=	../myteams_server
 
