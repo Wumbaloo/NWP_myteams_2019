@@ -43,6 +43,7 @@ char *format_response(int nbr, ...)
         if (!answer)
             perror_exit("realloc", 84);
         memcpy(answer + size - strlen(buffer), buffer, strlen(buffer) + 1);
+        //Willy : Memory leak au niveau du buffer (à free(sbie mdr))
     }
     va_end(list);
     return (answer);

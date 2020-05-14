@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "prototypes.h"
 #include "structs.h"
 
@@ -81,6 +82,7 @@ void check_for_instructions(myteams_t *teams)
             } else
                 manage_command(teams, get_client_by_fd(teams->client_head,
                     act_fd), input);
+            free(input);
         }
         if (FD_ISSET(act_fd, &teams->writeset))
             send_next_reply(teams, act_fd);

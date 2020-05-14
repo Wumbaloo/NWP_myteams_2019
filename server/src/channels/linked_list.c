@@ -36,8 +36,12 @@ channel_t *new_channel(char name[DEFAULT_NAME_LENGTH],
     if (!channel)
         perror_exit("malloc", 84);
     uuid_generate(channel->channel_uuid);
-    memcpy(channel->channel_name, name, DEFAULT_NAME_LENGTH);
-    memcpy(channel->channel_desc, desc, DEFAULT_DESCRIPTION_LENGTH);
+    memset(channel->channel_name, '\0', DEFAULT_NAME_LENGTH + 1);
+    for (int i = 0; name[i] && i < DEFAULT_NAME_LENGTH; i++)
+        channel->channel_name[i] = name[i];
+    memset(channel->channel_desc, '\0', DEFAULT_NAME_LENGTH + 1);
+    for (int i = 0; desc[i] && i < DEFAULT_DESCRIPTION_LENGTH; i++)
+        channel->channel_desc[i] = desc[i];
     channel->thread_head = NULL;
     channel->next = NULL;
     return channel;
