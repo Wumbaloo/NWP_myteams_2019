@@ -11,8 +11,6 @@
 
 #define CLIENTS_MAX 128
 
-#define RESPONSE_SIZE 2048
-
 #define CONNECTED "042"
 #define DISCONNECTED "084"
 #define TEAM_CREATED "110"
@@ -42,5 +40,6 @@
 #define ALREADY_EXISTS "655"
 #define LIST_USERS "730"
 #define INFO_USER "740"
-
 #define HELLO "999 Welcome on our teams server"
+
+#define SAVE_FILE "data.save"

@@ -23,7 +23,6 @@ FILES	=	free.c								\
 			commands/create.c					\
 			commands/info.c						\
 			commands/list.c						\
-			commands/send_message.c				\
 			commands/utils.c					\
 			commands/free.c						\
 			commands/linked_list.c				\
@@ -34,6 +33,8 @@ FILES	=	free.c								\
 			commands/parser_utils.c				\
 			commands/parser.c					\
 			commands/private_message.c			\
+			commands/send_message.c				\
+			commands/shutdown.c					\
 			commands/subscribe_cmds.c			\
 			commands/subscription.c				\
 			commands/use_threads.c				\
@@ -43,12 +44,14 @@ FILES	=	free.c								\
 			comments/linked_list.c				\
 			core/free.c							\
 			core/initialization.c				\
-			core/save.c							\
 			core/launcher.c						\
 			core/monitoring.c					\
 			errors/arguments.c					\
 			errors/commands.c					\
 			replies/linked_list.c				\
+			save_load/main_save.c				\
+			save_load/save_server_data.c		\
+			save_load/save_user_data.c			\
 			sub_list/linked_list.c 				\
 			teams/free.c						\
 			teams/linked_list.c					\

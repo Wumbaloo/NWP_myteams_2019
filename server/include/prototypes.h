@@ -84,7 +84,7 @@ int error_handling(int ac, char **av);
 int return_and_msg(char *msg, int return_value);
 
 //Core prototypes in ==> core
-void save(myteams_t *teams, client_t *client);
+void save(myteams_t *teams);
 myteams_t *create_teams(int port);
 client_t *new_client(int fd);
 int launch_server(int ac, char **av);
@@ -155,6 +155,11 @@ void broadcast_unsubscription(client_t *client, char *team_uuid);
 void broadcast_subscription(client_t *client, char *team_uuid);
 void broadcast_login(client_t *head, char *uuid, char *user_name);
 void broadcast_logout(client_t *head, char *uuid, char *user_name);
+
+//Save
+void save(myteams_t *teams);
+void save_team(myteams_t *teams, int file);
+void save_users(myteams_t *teams, int file);
 
 //Free Things
 void free_myteams(myteams_t *myteams);

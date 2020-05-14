@@ -5,6 +5,7 @@
 ** Where subscribe methods are handled
 */
 
+#include <stdio.h>
 #include "logging_server.h"
 #include "structs.h"
 #include "prototypes.h"
@@ -70,7 +71,8 @@ int subscribe_cmd(myteams_t *teams, client_t *client, char **input)
         return (reply_unauthorized(client));
     else if (!input[1])
         return (bad_cmd_parameters(client, input[0]));
-    uuid_parse(input[1], temp);
+    if (uuid_parse(input[1], temp) == -1)
+        return (reply_unknown_team(client, input[1]));
     to_subscribe = get_team_by_uuid(teams->team_head, temp);
     if (!to_subscribe)
         return (reply_unknown_team(client, input[1]));
