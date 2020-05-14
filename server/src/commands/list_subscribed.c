@@ -41,13 +41,10 @@ int subscribed_cmd(myteams_t *teams, client_t *client, char **arg)
     }
     uuid_parse(arg[0], temp);
     team_to_look = get_team_by_uuid(teams->team_head, temp);
-    if (!team_to_look) {
-        //Error unknown team
-        return (0);
-    } else if (!already_subscribed(client->team_tab, temp)) {
-        //Error not subscribed unauthorized
-        return (0);
-    }
+    if (!team_to_look)
+        return (reply_unknown_team(client, arg[0]));
+    else if (!already_subscribed(client->team_tab, temp))
+        return (reply_unauthorized(client));
     list_users_subscribed(teams->client_head, temp);
     return (0);
 }

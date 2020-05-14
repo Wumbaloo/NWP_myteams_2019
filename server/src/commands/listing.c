@@ -34,13 +34,30 @@ command_t *create_command(char *txt, int login,
 
 int help_cmd(myteams_t *teams, client_t *client, char **arg)
 {
-    char *temp_help = strdup("Send a command by using /{commandName}\nAvailable commands are:\n-/help\n/login");
+    char *temp_help = strdup("Send a command by using /{commandName}");
 
     (void)(teams);
     (void)(arg);
     insert_reply(&client->replies, temp_help);
     free(temp_help);
     return 0;
+}
+
+void create_others_commands(command_t **head)
+{
+   command_t *subscribed = create_command("SUBSCRIBED", 1, subscribed_cmd);
+   command_t *unsubscribe = create_command("SUBSCRIBE", 1, unsubscribe_cmd);
+   command_t *use = create_command("USE", 1, use_cmd);
+   command_t *create = create_command("CREATE", 1, create_cmd);
+   command_t *list = create_command("LIST", 1, list_cmd);
+   command_t *info = create_command("INFO", 1, info_cmd);
+
+   insert_command(head, subscribed);
+   insert_command(head, unsubscribe);
+   insert_command(head, use);
+   insert_command(head, create);
+   insert_command(head, list);
+   insert_command(head, info);
 }
 
 void create_all_commands(command_t **head)
@@ -53,12 +70,6 @@ void create_all_commands(command_t **head)
    command_t *send = create_command("SEND", 1, send_cmd);
    command_t *messages = create_command("MESSAGES", 1, specific_message_cmd);
    command_t *subscribe = create_command("SUBSCRIBE", 1, subscribe_cmd);
-   command_t *subscribed = create_command("SUBSCRIBED", 1, subscribed_cmd);
-   command_t *unsubscribe = create_command("SUBSCRIBE", 1, unsubscribe_cmd);
-   command_t *use = create_command("USE", 1, use_cmd);
-   command_t *create = create_command("CREATE", 1, create_cmd);
-   command_t *list = create_command("LIST", 1, list_cmd);
-   command_t *info = create_command("INFO", 1, info_cmd);
 
    insert_command(head, help);
    insert_command(head, login);
@@ -68,10 +79,5 @@ void create_all_commands(command_t **head)
    insert_command(head, send);
    insert_command(head, messages);
    insert_command(head, subscribe);
-   insert_command(head, subscribed);
-   insert_command(head, unsubscribe);
-   insert_command(head, use);
-   insert_command(head, create);
-   insert_command(head, list);
-   insert_command(head, info);
+   create_others_commands(head);
 }

@@ -18,7 +18,8 @@ void list_undefined(myteams_t *teams, client_t *client)
 
     for (; copy; copy = copy->next) {
         uuid_unparse(copy->team_uuid, uuid);
-        reply = format_response(4, LIST_TEAM, uuid, copy->team_name, copy->team_desc);
+        reply = format_response(4, LIST_TEAM, uuid, copy->team_name,
+            copy->team_desc);
         insert_reply(&client->replies, reply);
         free(reply);
     }
@@ -88,11 +89,10 @@ void list_thread(myteams_t *teams, client_t *client)
 
 int list_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    if (client->is_connected == false)
-        return reply_unauthorized(client);
-    if (double_array_size(input) != 1)
-        //Error too much args
-        return 1;
+    if (!client->is_connected)
+        return (reply_unauthorized(client));
+    else if (double_array_size(input) != 1)
+        return (bad_cmd_parameters(client, input[0]));
     switch (client->depth) {
         case UNDEFINED:
             list_undefined(teams, client);

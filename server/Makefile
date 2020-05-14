@@ -9,6 +9,7 @@ SRC_DIR	=	src/
 
 FILES	=	free.c								\
 			broadcast/broadcast_create.c		\
+			broadcast/broadcast_login.c			\
 			broadcast/broadcast_subscription.c	\
 			channels/free.c						\
 			channels/linked_list.c				\
@@ -19,7 +20,6 @@ FILES	=	free.c								\
 			clients/utils.c						\
 			clients/messages/free.c				\
 			clients/messages/linked_list.c		\
-			commands/broadcast_login.c			\
 			commands/create.c					\
 			commands/info.c						\
 			commands/list.c						\

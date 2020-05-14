@@ -28,7 +28,8 @@ void info_team(myteams_t *teams, client_t *client)
     char *reply;
 
     uuid_unparse(team->team_uuid, uuid);
-    reply = format_response(4, INFO_TEAM, uuid, team->team_name, team->team_desc);
+    reply = format_response(4, INFO_TEAM, uuid, team->team_name,
+        team->team_desc);
     insert_reply(&client->replies, reply);
     free(reply);
 }

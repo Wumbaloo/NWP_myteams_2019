@@ -141,9 +141,12 @@ void remove_reply(replies_t **replies_head);
 
 //Broadcast
 void broadcast_team_created(myteams_t *teams, client_t *client, team_t *team);
-void broadcast_channel_created(myteams_t *teams, client_t *client, channel_t *channel);
-void broadcast_thread_created(myteams_t *teams, client_t *client, thread_t *thread);
-void broadcast_comment_created(myteams_t *teams, client_t *client, comment_t *comment);
+void broadcast_channel_created(myteams_t *teams, client_t *client,
+    channel_t *channel);
+void broadcast_thread_created(myteams_t *teams, client_t *client,
+    thread_t *thread);
+void broadcast_comment_created(myteams_t *teams, client_t *client,
+    comment_t *comment);
 void broadcast_unsubscription(client_t *client, char *team_uuid);
 void broadcast_subscription(client_t *client, char *team_uuid);
 void broadcast_login(client_t *head, char *uuid, char *user_name);

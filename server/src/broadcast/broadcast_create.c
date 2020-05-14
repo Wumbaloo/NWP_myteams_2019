@@ -81,7 +81,8 @@ void broadcast_thread_created(myteams_t *teams, client_t *client,
     free(reply_user);
 }
 
-void broadcast_comment_created(myteams_t *teams, client_t *client, comment_t *comment)
+void broadcast_comment_created(myteams_t *teams, client_t *client,
+    comment_t *comment)
 {
     client_t *copy = teams->client_head;
     char *reply_user;
