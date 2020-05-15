@@ -36,10 +36,16 @@ void fill_commands(log_t **head)
 {
     create_log(head, 42, &login_trigger);
     create_log(head, 84, &logout_trigger);
-    create_log(head, 110, &create_team_trigger);
+    create_log(head, 110, &create_team_event_trigger);
     create_log(head, 120, &create_team_specific_trigger);
     create_log(head, 142, &user_join_team_trigger);
+    create_log(head, 184, &unsubscribe_trigger);
     create_log(head, 210, &create_channel_event_trigger);
+    create_log(head, 220, &create_channel_specific_trigger);
+    create_log(head, 310, &create_thread_event_trigger);
+    create_log(head, 220, &create_thread_specific_trigger);
+    create_log(head, 410, &create_reply_event_trigger);
+    create_log(head, 420, &create_reply_specific_trigger);
     create_log(head, 645, &unauthorized_trigger);
     create_log(head, 730, &users_list_trigger);
     create_log(head, 740, &specific_user_trigger);

@@ -22,11 +22,17 @@ int unknown_user_trigger(char **array);
 int private_message_trigger(char **array);
 int list_private_messages_trigger(char **array);
 int create_team_specific_trigger(char **array);
-int create_team_trigger(char **array);
+int create_channel_specific_trigger(char **array);
+int create_thread_specific_trigger(char **array);
+int create_reply_specific_trigger(char **array);
 int user_join_team_trigger(char **array);
+int unsubscribe_trigger(char **array);
 
 // Events
 int create_channel_event_trigger(char **array);
+int create_team_event_trigger(char **array);
+int create_thread_event_trigger(char **array);
+int create_reply_event_trigger(char **array);
 
 int analyze_log(log_t *head, char *buffer);
 int get_array_length(char **array);

@@ -19,7 +19,7 @@ $(NAME): tests_run
 tests_run:
 ifdef files
 ifdef from
-	$(CC) -o $(NAME) $(addprefix $(subst ${space} ,\ ,$(from)/), $(files)) $(TEST_FILES) -I $(subst ${space} ,\ ,$(from)/include) --coverage -lcriterion -L ../../libs -lmyteams -luuid
+	$(CC) -o $(NAME) $(addprefix $(subst ${space} ,\ ,$(from)/), $(files)) $(TEST_FILES) -I $(subst ${space} ,\ ,$(from)/include) -I ../../libs/myteams -L ../../libs/myteams --coverage -lcriterion -lmyteams -luuid
 	./$(NAME)
 else
 	@echo 'No from directory for unit tests.'
