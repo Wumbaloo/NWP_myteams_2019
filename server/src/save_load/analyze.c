@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <fcntl.h>
 #include "structs.h"
 #include "prototypes.h"
 
@@ -51,4 +52,23 @@ void analyze_save(myteams_t *teams, char *line)
     if (!type || !line)
         return;
     execute_save(teams, line, save_types, type);
+}
+
+int open_save_file(myteams_t *teams)
+{
+    FILE *fd = fopen(SAVE_FILE, "r");
+    char *s = NULL;
+    ssize_t len = 0;
+
+    if (fd == NULL)
+        return_and_msg("Error opening the file", 84);
+    while (getline(&s, &len, fd) != -1) {
+        for (int i = 0; i < strlen(s); i++) {
+            if (s[i] == '\n')
+                s[i] = '\0';
+            analyze_save(teams, s);
+        }
+    }
+    fclose(fd);
+    return (0);
 }

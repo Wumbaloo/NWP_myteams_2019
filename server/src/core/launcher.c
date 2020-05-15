@@ -22,8 +22,7 @@ int start_teams(myteams_t *teams)
             if (stop)
                 break;
             return (return_and_msg("Error on select", 1));
-        }
-        else if (FD_ISSET(teams->server->control_socket, &teams->readset))
+        } else if (FD_ISSET(teams->server->control_socket, &teams->readset))
             connection_received(teams);
         check_for_instructions(teams);
     }
@@ -47,6 +46,7 @@ int launch_server(int ac, char **av)
     else if (errors == 0)
         return (display_help());
     teams = create_teams(errors);
+    open_save_file(teams);
     if (!teams || start_teams(teams) != 0)
         return (84);
     save(teams);
