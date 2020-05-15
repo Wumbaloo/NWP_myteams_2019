@@ -27,11 +27,10 @@ char *format_response(int nbr, ...)
 {
     va_list list;
     char *answer = NULL;
-    unsigned long size = 0;
     char *buffer = NULL;
 
     va_start(list, nbr);
-    for (int i = 0; i < nbr; i++) {
+    for (size_t i = 0, size = 0; i < nbr; i++) {
         buffer = va_arg(list, char *);
         if (!buffer)
             break;
@@ -43,7 +42,7 @@ char *format_response(int nbr, ...)
         if (!answer)
             perror_exit("realloc", 84);
         memcpy(answer + size - strlen(buffer), buffer, strlen(buffer) + 1);
-        //Willy : Memory leak au niveau du buffer (à free(sbie mdr))
+        free(buffer);
     }
     va_end(list);
     return (answer);
