@@ -49,10 +49,12 @@ FILES	=	free.c								\
 			errors/arguments.c					\
 			errors/commands.c					\
 			replies/linked_list.c				\
+			save_load/analyze_parser.c			\
+			save_load/analyze.c					\
+			save_load/load_server_data.c		\
+			save_load/load_user_data.c			\
 			save_load/main_save.c				\
 			save_load/save_server_data.c		\
-			save_load/analyze.c					\
-			save_load/analyze_parser.c			\
 			save_load/save_user_data.c			\
 			sub_list/linked_list.c 				\
 			teams/free.c						\

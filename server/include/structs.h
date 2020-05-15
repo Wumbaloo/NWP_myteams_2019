@@ -45,7 +45,7 @@ typedef struct command_s
 typedef struct save_type_s
 {
     char *type;
-    int (*func)(myteams_t *, char **);
+    void (*func)(myteams_t *, char **);
 } save_type_t;
 
 #endif

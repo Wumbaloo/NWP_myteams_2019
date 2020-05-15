@@ -163,6 +163,11 @@ void broadcast_logout(client_t *head, char *uuid, char *user_name);
 void save(myteams_t *teams);
 void save_team(myteams_t *teams, int file);
 void save_users(myteams_t *teams, int file);
+void load_comment(myteams_t *teams, char **array);
+void load_thread(myteams_t *teams, char **array);
+void load_channel(myteams_t *teams, char **array);
+void load_team(myteams_t *teams, char **array);
+void load_user(myteams_t *teams, char **array);
 void analyze_save(myteams_t *teams, char *line);
 int open_save_file(myteams_t *teams);
 //Save parser

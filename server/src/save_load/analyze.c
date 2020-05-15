@@ -41,12 +41,12 @@ void analyze_save(myteams_t *teams, char *line)
 {
     char *type = get_saved_type(line);
     save_type_t save_types[7] = {
-        {"TEAM", &team_trigger},
-        {"CHANNEL", &team_trigger},
-        {"THREAD", &team_trigger},
-        {"COMMENT", &team_trigger},
-        {"USER", &team_trigger},
-        {"PRIVATE_MESSAGE", &team_trigger},
+        {"TEAM", &load_team},
+        {"CHANNEL", &load_channel},
+        {"THREAD", &load_thread},
+        {"COMMENT", &load_comment},
+        {"USER", &load_user},
+        {"PRIVATE_MESSAGE", &load_team},
     };
 
     if (!type || !line)
