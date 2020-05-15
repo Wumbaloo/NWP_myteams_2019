@@ -18,6 +18,8 @@ char *read_from_server(int sockfd)
     char *returnBuf = NULL;
     int valread = read(sockfd, buffer, 1024);
 
+    if (valread == 0)
+        return (NULL);
     if (valread == -1)
         exit(84);
     buffer[valread] = '\0';
