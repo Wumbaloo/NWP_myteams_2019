@@ -62,6 +62,7 @@ char **parse_arguments(char *input, char separator);
 int remove_quotes_args(char **cmd_tab);
 int char_array_length(char **array);
 int count_words(char *input, char separator);
+int count_occurences_letter(char *input, char separator);
 int is_banned_char(char c);
 
 //Useful functions ==> useful
