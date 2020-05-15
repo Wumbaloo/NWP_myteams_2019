@@ -21,9 +21,10 @@ void load(myteams_t *teams)
         dprintf(2, "Failed to open the file\n");
         return;
     }
-    line_size = getline(&buffer, &len, file);
-    while (line_size >= 0) {
-        
-        line_size = getline(&buffer, &len, file);
-    }
+//    line_size = getline(&buffer, &len, file);
+//    while (line_size >= 0) {
+//
+//        line_size = getline(&buffer, &len, file);
+//    }
+    fclose(file);
 }

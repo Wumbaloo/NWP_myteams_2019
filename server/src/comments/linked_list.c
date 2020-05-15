@@ -10,6 +10,19 @@
 #include "prototypes.h"
 #include "data_storage.h"
 
+comment_t *get_comment(comment_t *head, uuid_t author, char *body, time_t timestamp)
+{
+    comment_t *copy = head;
+
+    while (copy) {
+        if (uuid_compare(copy->comment_author, author) == 0 &&
+        strcmp(body, copy->comment_body) == 0 && timestamp == copy->timestamp)
+            return copy;
+        copy = copy->next;
+    }
+    return NULL;
+}
+
 comment_t *new_comment(char body[DEFAULT_BODY_LENGTH], uuid_t author)
 {
     comment_t *comment = malloc(sizeof(comment_t));

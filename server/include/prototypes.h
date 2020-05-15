@@ -137,6 +137,7 @@ thread_t *get_thread_by_title(thread_t *head, char *name);
 void insert_comment(comment_t **first, char body[DEFAULT_BODY_LENGTH],
     uuid_t author);
 comment_t *new_comment(char body[DEFAULT_BODY_LENGTH], uuid_t author);
+comment_t *get_comment(comment_t *head, uuid_t author, char *body, time_t timestamp);
 
 //Replies linked_list
 void insert_reply(replies_t **first, char *reply);
