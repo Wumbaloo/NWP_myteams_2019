@@ -7,18 +7,22 @@
 
 SRC_DIR	=	src/
 
-FILES	=	logs/creations.c					\
+FILES	=	errors/error.c					\
+			errors/unknown.c				\
+			logs/client_log.c				\
+			logs/creations.c				\
 			logs/events.c					\
 			logs/fill.c						\
 			logs/free.c						\
+			logs/info.c						\
 			logs/linked_list.c				\
+			logs/list.c						\
 			logs/miscellaneous.c			\
 			logs/users.c					\
 			useful/array.c					\
 			useful/clean_str.c				\
 			useful/my_str_to_word_array.c	\
 			useful/get_input.c				\
-			errors/error.c					\
 			analyzer.c						\
 			client.c						\
 			init_connection.c				\

@@ -43,14 +43,6 @@ int users_list_trigger(char **array)
     return (0);
 }
 
-int unknown_user_trigger(char **array)
-{
-    if (get_array_length(array) != 2)
-        return (0);
-    client_error_unknown_user(array[1]);
-    return (0);
-}
-
 int specific_user_trigger(char **array)
 {
     char *endptr = NULL;
@@ -61,4 +53,10 @@ int specific_user_trigger(char **array)
     status = strtol(array[3], &endptr, 10);
     client_print_user(array[1], array[2], status);
     return (0);
+}
+
+int already_exists_trigger(char **array)
+{
+    (void)(array);
+    client_error_already_exist();
 }
