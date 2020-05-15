@@ -163,6 +163,9 @@ void broadcast_logout(client_t *head, char *uuid, char *user_name);
 void save(myteams_t *teams);
 void save_team(myteams_t *teams, int file);
 void save_users(myteams_t *teams, int file);
+//Save parser
+char **get_parameters(char *line, char separator);
+char *get_saved_type(char *line);
 
 //Free Things
 void free_myteams(myteams_t *myteams);

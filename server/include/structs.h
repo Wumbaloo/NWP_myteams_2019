@@ -42,4 +42,10 @@ typedef struct command_s
     struct command_s *next;
 } command_t;
 
+typedef struct save_type_s
+{
+    char *type;
+    int (*func)(myteams_t *, char **);
+} save_type_t;
+
 #endif
