@@ -9,5 +9,5 @@
 
 void load_user(myteams_t *teams, char **array)
 {
-    
+
 }

@@ -29,8 +29,8 @@ void save_private_messages(message_t *messages, int file)
     for (; tmp; tmp = tmp->next) {
         uuid_unparse(tmp->sender, sender_uuid);
         uuid_unparse(tmp->receiver, receiver_uuid);
-        dprintf(file, "PRIVATE_MESSAGE \"%ld\" \"%s\" \"%s\" \"%s\"\n", tmp->timestamp,
-            sender_uuid, receiver_uuid, tmp->body);
+        dprintf(file, "PRIVATE_MESSAGE \"%ld\" \"%s\" \"%s\" \"%s\"\n",
+            tmp->timestamp, sender_uuid, receiver_uuid, tmp->body);
     }
 }
 

@@ -10,7 +10,8 @@
 #include "prototypes.h"
 #include "data_storage.h"
 
-comment_t *get_comment(comment_t *head, uuid_t author, char *body, time_t timestamp)
+comment_t *get_comment(comment_t *head, uuid_t author, char *body,
+    time_t timestamp)
 {
     comment_t *copy = head;
 
