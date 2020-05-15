@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include "structs.h"
 
+
+
 void save_sub_list(char *list_type, sub_list_t *sub_list, int file)
 {
     sub_list_t *tmp = sub_list;
@@ -20,7 +22,7 @@ void save_sub_list(char *list_type, sub_list_t *sub_list, int file)
     }
 }
 
-void save_private_messages(message_t *messages, int file)
+void save_private_messages(message_t *messages, int file, char uuid[36])
 {
     message_t *tmp = messages;
     char sender_uuid[36];
@@ -29,8 +31,8 @@ void save_private_messages(message_t *messages, int file)
     for (; tmp; tmp = tmp->next) {
         uuid_unparse(tmp->sender, sender_uuid);
         uuid_unparse(tmp->receiver, receiver_uuid);
-        dprintf(file, "PRIVATE_MESSAGE \"%ld\" \"%s\" \"%s\" \"%s\"\n",
-            tmp->timestamp, sender_uuid, receiver_uuid, tmp->body);
+        dprintf(file, "PRIVATE_MESSAGE \"%ld\" \"%s\" \"%s\" \"%s\" \"%s\"\n",
+            tmp->timestamp, sender_uuid, receiver_uuid, tmp->body, uuid);
     }
 }
 
@@ -46,7 +48,7 @@ void save_users(myteams_t *teams, int file)
         save_sub_list("CHANNEL_SUB", tmp->channel_tab, file);
         save_sub_list("CHANNEL_SUB", tmp->channel_tab, file);
         dprintf(file, "\n");
-        save_private_messages(tmp->message_head, file);
+        save_private_messages(tmp->message_head, file, uuid);
         tmp = tmp->next;
     }
 }

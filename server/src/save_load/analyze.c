@@ -39,7 +39,7 @@ void analyze_save(myteams_t *teams, char *line)
         {"THREAD", &load_thread},
         {"COMMENT", &load_comment},
         {"USER", &load_user},
-        {"PRIVATE_MESSAGE", &load_team},
+        {"PRIVATE_MESSAGE", &load_private_message},
     };
 
     if (!type || !line)

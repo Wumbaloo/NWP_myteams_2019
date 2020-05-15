@@ -4,6 +4,8 @@
 ** File description:
 ** Created by Anthony ANICOTTE,
 */
+
+#include <stdio.h>
 #include <stdbool.h>
 #include "logging_server.h"
 #include "prototypes.h"
@@ -99,6 +101,7 @@ void create_thread(myteams_t *teams, client_t *client, char **input)
     char user_uuid[36];
 
     if (double_array_size(input) != 2) {
+        printf("Array size = %d\n", double_array_size(input));
         bad_cmd_parameters(client, input[0]);
         return;
     }
@@ -120,18 +123,19 @@ int create_cmd(myteams_t *teams, client_t *client, char **input)
     if (!client->is_connected)
         return (reply_unauthorized(client));
     switch (client->depth) {
+        case UNDEFINED:
+            create_undefined(teams, client, input);
+            break;
         case TEAM:
             create_team(teams, client, input);
             break;
         case CHANNEL:
+            printf("Creating a thread\n");
             create_channel(teams, client, input);
             break;
         case THREAD:
+            printf("Creating a reply\n");
             create_thread(teams, client, input);
-            break;
-        default:
-        case UNDEFINED:
-            create_undefined(teams, client, input);
             break;
     }
     return (0);

@@ -111,6 +111,8 @@ void remove_client(client_t *first, int fd);
 //Clients->Messages linked-list
 void insert_message(message_t **first, uuid_t from, uuid_t to,
     char body[DEFAULT_BODY_LENGTH]);
+message_t *get_message(message_t *messages, uuid_t sender, uuid_t receiver,
+    char body[DEFAULT_BODY_LENGTH + 1]);
 
 //Subscription linked-list
 void insert_in_sub_list(sub_list_t **first, uuid_t uuid);
@@ -159,7 +161,7 @@ void broadcast_subscription(client_t *client, char *team_uuid);
 void broadcast_login(client_t *head, char *uuid, char *user_name);
 void broadcast_logout(client_t *head, char *uuid, char *user_name);
 
-//Save
+//Save & Load
 void save(myteams_t *teams);
 void save_team(myteams_t *teams, int file);
 void save_users(myteams_t *teams, int file);
@@ -168,6 +170,7 @@ void load_thread(myteams_t *teams, char **array);
 void load_channel(myteams_t *teams, char **array);
 void load_team(myteams_t *teams, char **array);
 void load_user(myteams_t *teams, char **array);
+void load_private_message(myteams_t *teams, char **array);
 void analyze_save(myteams_t *teams, char *line);
 int open_save_file(myteams_t *teams);
 //Save parser

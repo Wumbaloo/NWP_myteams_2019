@@ -5,6 +5,7 @@
 ** Created by Anthony ANICOTTE,
 */
 
+#include <stdio.h>
 #include "prototypes.h"
 #include "clients_storage.h"
 #include "structs.h"
@@ -65,15 +66,19 @@ int use_cmd(myteams_t *teams, client_t *client, char **input)
         return (reply_unauthorized(client));
     switch (double_array_size(input)) {
         case 1:
+            printf("Switched to the undefined\n");
             use_undefined(teams, client);
             break;
         case 2:
+            printf("Switched to the team\n");
             use_team(teams, client, input);
             break;
         case 3:
+            printf("Switched to the channel\n");
             use_channel(teams, client, input);
             break;
         case 4:
+            printf("Switched to the thread\n");
             use_thread(teams, client, input);
             break;
         default:

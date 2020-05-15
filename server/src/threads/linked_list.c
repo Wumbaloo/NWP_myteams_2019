@@ -23,7 +23,7 @@ thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid)
 {
     thread_t *copy = head;
 
-    while (copy && uuid_compare(copy->thread_uuid, uuid))
+    while (copy && uuid_compare(copy->thread_uuid, uuid) == 0)
         copy = copy->next;
     return copy;
 }
