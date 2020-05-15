@@ -12,13 +12,6 @@
 #include "structs.h"
 #include "prototypes.h"
 
-int team_trigger(myteams_t *teams, char **array)
-{
-    printf("I'm in the TEAM trigger with :\n");
-    for (int i = 0; array[i]; i++)
-        printf("%s\n", array[i]);
-}
-
 void execute_save(myteams_t *teams, char *line, save_type_t *save_types,
     char *type)
 {
@@ -58,16 +51,19 @@ int open_save_file(myteams_t *teams)
 {
     FILE *fd = fopen(SAVE_FILE, "r");
     char *s = NULL;
-    ssize_t len = 0;
+    size_t len = 0;
 
-    if (fd == NULL)
-        return_and_msg("Error opening the file", 84);
+    if (fd == NULL) {
+        printf("FILE %s: Not found.\n", SAVE_FILE);
+        return (84);
+    }
     while (getline(&s, &len, fd) != -1) {
-        for (int i = 0; i < strlen(s); i++) {
+        for (size_t i = 0; i < strlen(s); i++) {
             if (s[i] == '\n')
                 s[i] = '\0';
-            analyze_save(teams, s);
         }
+        analyze_save(teams, s);
+        free(s);
     }
     fclose(fd);
     return (0);
