@@ -11,16 +11,6 @@
 #include "structs.h"
 #include "prototypes.h"
 
-int nbr_clients(client_t *head)
-{
-    int nbr = 0;
-    client_t *copy = head;
-
-    for (; copy; copy = copy->next)
-        nbr++;
-    return nbr;
-}
-
 client_t *new_client(int fd)
 {
     client_t *client = malloc(sizeof(client_t));
@@ -51,15 +41,20 @@ void remove_client(client_t *first, int fd)
 
     if (!first)
         return;
-    //A changer: voir sub_list/linked_list.c
-    for (; copy->next; copy = copy->next) {
-        if (copy->next->fd == fd && copy->next->next) {
-            tmp = copy->next;
-            copy->next = copy->next->next;
-            free_client(tmp);
-            break;
-        }
+    if (copy != NULL && copy->fd == fd) {
+        first = copy->next;
+        free(copy);
+        return;
     }
+    while (copy != NULL && copy->fd != fd) {
+        tmp = copy;
+        copy = copy->next;
+    }
+    if (!copy)
+        return;
+    tmp->next = copy->next;
+    free_client(copy);
+    free(copy);
 }
 
 void insert_client(client_t **first, int fd)

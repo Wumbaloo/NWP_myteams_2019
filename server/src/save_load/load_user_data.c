@@ -25,6 +25,7 @@ void re_subscribe(char **array, client_t *client)
 {
     uuid_t uuid;
 
+    printf("%d %d %d\n", get_sub_pos(array, "TEAM_SUB"), get_sub_pos(array, "CHANNEL_SUB"), get_sub_pos(array, "THREAD_SUB"));
     for (int i = get_sub_pos(array, "TEAM_SUB") + 1;
         strcmp(array[i], "CHANNEL_SUB"); i++) {
         uuid_parse(array[i], uuid);
