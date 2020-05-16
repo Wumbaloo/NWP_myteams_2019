@@ -50,11 +50,9 @@ int users_cmd(myteams_t *teams, client_t *client, char **input)
         uuid_unparse(copy->user_uuid, uuid);
         reply = format_response(4, LIST_USERS, uuid, copy->user_name,
             copy->is_connected ? "1" : "0");
-        printf("Sent : %s\n", reply);
         insert_reply(&client->replies, reply);
         insert_in_sub_list(&banned, copy->user_uuid);
         free(reply);
     }
-
     return (0);
 }

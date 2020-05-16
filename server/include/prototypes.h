@@ -51,6 +51,8 @@ bool already_subscribed(sub_list_t *head, uuid_t team);
 bool already_subscribed(sub_list_t *head, uuid_t team);
 void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team);
 void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team);
+int create_team(myteams_t *teams, client_t *client, char **input);
+int create_channel(myteams_t *teams, client_t *client, char **input);
 
 //Command utils
 int double_array_size(char **array);
@@ -72,7 +74,7 @@ void console_log(client_t *from, char *msg, log_type type, char *custom_color);
 void free_array(char **arr);
 char **my_str_to_word_array(char *av, char separate);
 int uuid_tab_size(uuid_t *array);
-char *format_response(int nbr, ...);
+char *format_response(size_t nbr, ...);
 int reply_unauthorized(client_t *client);
 int reply_resource_already_exists(client_t *client);
 int reply_unknown_user(client_t *client, char *user_uuid);

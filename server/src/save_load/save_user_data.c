@@ -8,8 +8,6 @@
 #include <stdio.h>
 #include "structs.h"
 
-
-
 void save_sub_list(char *list_type, sub_list_t *sub_list, int file)
 {
     sub_list_t *tmp = sub_list;

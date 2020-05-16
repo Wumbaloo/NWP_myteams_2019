@@ -25,11 +25,13 @@ void re_subscribe(char **array, client_t *client)
 {
     uuid_t uuid;
 
-    for (int i = get_sub_pos(array, "TEAM_SUB") + 1; strcmp(array[i], "CHANNEL_SUB"); i++) {
+    for (int i = get_sub_pos(array, "TEAM_SUB") + 1;
+        strcmp(array[i], "CHANNEL_SUB"); i++) {
         uuid_parse(array[i], uuid);
         insert_in_sub_list(&client->team_tab, uuid);
     }
-    for (int i = get_sub_pos(array, "CHANNEL_SUB") + 1; strcmp(array[i], "THREAD_SUB"); i++) {
+    for (int i = get_sub_pos(array, "CHANNEL_SUB") + 1;
+        strcmp(array[i], "THREAD_SUB"); i++) {
         uuid_parse(array[i], uuid);
         insert_in_sub_list(&client->channel_tab, uuid);
     }

@@ -72,15 +72,11 @@ void info_thread(myteams_t *teams, client_t *client)
 
 int info_cmd(myteams_t *teams, client_t *client, char **input)
 {
-    if (client->is_connected == false)
-        return reply_unauthorized(client);
+    if (!client->is_connected)
+        return (reply_unauthorized(client));
     if (double_array_size(input) != 1)
-        //Error too much args
-        return 1;
+        return (bad_cmd_parameters(client, input[0]));
     switch (client->depth) {
-        case UNDEFINED:
-            info_undefined(client);
-            break;
         case TEAM:
             info_team(teams, client);
             break;
@@ -90,6 +86,10 @@ int info_cmd(myteams_t *teams, client_t *client, char **input)
         case THREAD:
             info_thread(teams, client);
             break;
+        default:
+        case UNDEFINED:
+            info_undefined(client);
+            break;
     }
-    return 0;
+    return (0);
 }

@@ -23,7 +23,7 @@ char *put_char_around(char *buffer, char around)
     return (new_buffer);
 }
 
-char *format_response(int nbr, ...)
+char *format_response(size_t nbr, ...)
 {
     va_list list;
     char *answer = NULL;

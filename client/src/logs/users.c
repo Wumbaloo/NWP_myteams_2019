@@ -59,4 +59,5 @@ int already_exists_trigger(char **array)
 {
     (void)(array);
     client_error_already_exist();
+    return (0);
 }

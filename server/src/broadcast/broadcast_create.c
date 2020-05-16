@@ -81,10 +81,22 @@ void broadcast_thread_created(myteams_t *teams, client_t *client,
     free(reply_user);
 }
 
+void insert_comment_replies(client_t *copy, client_t *client, char *reply_user,
+    char *reply_specific)
+{
+    for (; copy; copy = copy->next) {
+        if (copy == client)
+            insert_reply(&copy->replies, reply_specific);
+        else if (already_subscribed(copy->thread_tab, client->thread_chosen))
+            insert_reply(&copy->replies, reply_user);
+    }
+    free(reply_user);
+    free(reply_specific);
+}
+
 void broadcast_comment_created(myteams_t *teams, client_t *client,
     comment_t *comment)
 {
-    client_t *copy = teams->client_head;
     char *reply_user;
     char *reply_specific;
     char team_uuid[36];
@@ -100,11 +112,6 @@ void broadcast_comment_created(myteams_t *teams, client_t *client,
         user_uuid, timestamp, comment->comment_body);
     reply_user = format_response(5, REPLY_POSTED, team_uuid, thread_uuid,
         user_uuid, comment->comment_body);
-    for (; copy; copy = copy->next)
-        if (copy == client)
-            insert_reply(&copy->replies, reply_specific);
-        else if (already_subscribed(copy->thread_tab, client->thread_chosen))
-            insert_reply(&copy->replies, reply_user);
-    free(reply_user);
-    free(reply_specific);
+    insert_comment_replies(teams->client_head, client, reply_user,
+        reply_specific);
 }

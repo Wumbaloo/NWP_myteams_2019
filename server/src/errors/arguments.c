@@ -23,7 +23,6 @@ void catch_ctrl_c(int sig)
     signal(sig, SIG_IGN);
     printf("\n");
     stop = 1;
-    // exit(0);
 }
 
 int check_port(char *port_str)

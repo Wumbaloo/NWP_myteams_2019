@@ -20,6 +20,7 @@ FILES	=	free.c								\
 			clients/utils.c						\
 			clients/messages/free.c				\
 			clients/messages/linked_list.c		\
+			commands/create_other.c				\
 			commands/create.c					\
 			commands/info.c						\
 			commands/list.c						\

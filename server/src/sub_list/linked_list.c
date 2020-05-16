@@ -28,7 +28,6 @@ void remove_in_sub_list(sub_list_t *first, uuid_t uuid)
     if (!first)
         return;
     if (copy != NULL && !uuid_compare(uuid, copy->uuid)) {
-        //Première node = à supprimer
         first = copy->next;
         free(copy);
         return;

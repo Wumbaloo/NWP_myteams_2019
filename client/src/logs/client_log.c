@@ -28,6 +28,7 @@ int logout_trigger(char **array)
 
 int already_logged_in_trigger(char **array)
 {
+    (void)(array);
     printf("Client already logged in.\r\n");
     return (1);
 }
