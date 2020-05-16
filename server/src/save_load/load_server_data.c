@@ -18,9 +18,13 @@ void load_comment(myteams_t *teams, char **array)
     uuid_t uuid;
     comment_t *comment;
 
-    uuid_parse(array[0], uuid);
+    if (double_array_size(array) != 6)
+        return;
+    else if (uuid_parse(array[0], uuid) == -1)
+        return;
     team = get_team_by_uuid(teams->team_head, uuid);
-    uuid_parse(array[1], uuid);
+    if (uuid_parse(array[1], uuid) == -1)
+        return;
     channel = get_channel_by_uuid(team->channel_head, uuid);
     uuid_parse(array[2], uuid);
     thread = get_thread_by_uuid(channel->thread_head, uuid);
@@ -38,6 +42,8 @@ void load_thread(myteams_t *teams, char **array)
     thread_t *thread;
     uuid_t uuid;
 
+    if (double_array_size(array) != 7)
+        return;
     uuid_parse(array[0], uuid);
     team = get_team_by_uuid(teams->team_head, uuid);
     uuid_parse(array[1], uuid);
@@ -56,6 +62,8 @@ void load_channel(myteams_t *teams, char **array)
     channel_t *channel;
     uuid_t uuid;
 
+    if (double_array_size(array) != 4)
+        return;
     uuid_parse(array[0], uuid);
     team = get_team_by_uuid(teams->team_head, uuid);
     insert_channel(&team->channel_head, array[1], array[3]);
@@ -69,6 +77,8 @@ void load_team(myteams_t *teams, char **array)
     team_t *team;
     uuid_t uuid;
 
+    if (double_array_size(array) != 3)
+        return;
     insert_team(&teams->team_head, array[0], array[2]);
     team = get_team_by_name(teams->team_head, array[0]);
     uuid_parse(array[1], uuid);

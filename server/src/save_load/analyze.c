@@ -63,8 +63,8 @@ int open_save_file(myteams_t *teams)
                 s[i] = '\0';
         }
         analyze_save(teams, s);
-        free(s);
     }
+    free(s);
     fclose(fd);
     return (0);
 }
