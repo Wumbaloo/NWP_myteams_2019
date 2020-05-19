@@ -16,17 +16,22 @@ void broadcast_login(client_t *head, char *uuid, char *user_name)
 
     for (; copy; copy = copy->next) {
         if (copy->is_connected == true)
-        insert_reply(&copy->replies, reply);
+            insert_reply(&copy->replies, reply);
     }
     free(reply);
 }
 
-void broadcast_logout(client_t *head, char *uuid, char *user_name)
+void broadcast_logout(client_t *head, char *uuid, char *user_name, int fd)
 {
     client_t *copy = head;
     char *reply = format_response(3, DISCONNECTED, uuid, user_name);
+    char *specific = format_response(4, DISCONNECTED, uuid, user_name, "1");
 
     for (; copy; copy = copy->next)
-        insert_reply(&copy->replies, reply);
+        if (copy->fd == fd && copy->is_connected == true)
+            insert_reply(&copy->replies, specific);
+        else if (copy->is_connected == true)
+            insert_reply(&copy->replies, reply);
     free(reply);
+    free(specific);
 }

@@ -161,7 +161,7 @@ void broadcast_comment_created(myteams_t *teams, client_t *client,
 void broadcast_unsubscription(client_t *client, char *team_uuid);
 void broadcast_subscription(client_t *client, char *team_uuid);
 void broadcast_login(client_t *head, char *uuid, char *user_name);
-void broadcast_logout(client_t *head, char *uuid, char *user_name);
+void broadcast_logout(client_t *head, char *uuid, char *user_name, int fd);
 
 //Save & Load
 void save(myteams_t *teams);

@@ -61,6 +61,7 @@ void ok_logout_and_close(myteams_t *teams, client_t *client, char *uuid)
         dprintf(client->fd, "%s\r\n", reply);
         free(reply);
         close(client->fd);
+        printf("Closing %s\n", client->user_name);
         teams->clients[teams->act_idx] = 0;
     }
 }
@@ -78,8 +79,10 @@ int logout_cmd(myteams_t *teams, client_t *client,
     memset(name, '\0', DEFAULT_NAME_LENGTH + 1);
     for (int i = 0; client->user_name[i] && i < DEFAULT_NAME_LENGTH; i++)
         name[i] = client->user_name[i];
-    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
+    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1) {
         remove_client(teams->client_head, client->fd);
+        printf("Removed duplicated client (n = %d)\n", nbr_duplicates(teams->client_head, client->user_uuid));
+    }
     else {
         client->is_connected = false;
         uuid_clear(client->team_chosen);
