@@ -20,10 +20,12 @@ int login_trigger(char **array)
 
 int logout_trigger(char **array)
 {
-    if (get_array_length(array) < 2)
+    if (get_array_length(array) < 3)
         return (1);
     client_event_loggedout(array[1], array[2]);
-    return (1);
+    if (array[3] && array[3][0] == '1')
+        return (1);
+    return (0);
 }
 
 int already_logged_in_trigger(char **array)
