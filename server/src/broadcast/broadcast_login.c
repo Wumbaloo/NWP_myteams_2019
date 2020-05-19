@@ -24,7 +24,7 @@ void broadcast_login(client_t *head, char *uuid, char *user_name)
 void broadcast_logout(client_t *head, char *uuid, char *user_name, int fd)
 {
     client_t *copy = head;
-    char *reply = format_response(3, DISCONNECTED, uuid, user_name);
+    char *reply = format_response(4, DISCONNECTED, uuid, user_name, "0");
     char *specific = format_response(4, DISCONNECTED, uuid, user_name, "1");
 
     for (; copy; copy = copy->next)
