@@ -92,6 +92,6 @@ int logout_cmd(myteams_t *teams, client_t *client,
         client->fd = -1;
     }
     server_event_user_logged_out(uuid);
-    broadcast_logout(teams->client_head, uuid, name);
+    broadcast_logout(teams->client_head, uuid, name, client->fd);
     return (0);
 }
