@@ -182,7 +182,6 @@ char *get_saved_type(char *line);
 void free_myteams(myteams_t *myteams);
 void free_client(client_t *client);
 void free_clients_list(client_t *head);
-void free_teams(myteams_t *teams);
 void free_messages_list(message_t *head);
 void free_comments_list(comment_t *head);
 void free_threads_list(thread_t *head);
