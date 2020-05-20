@@ -54,5 +54,6 @@ int users_cmd(myteams_t *teams, client_t *client, char **input)
         insert_in_sub_list(&banned, copy->user_uuid);
         free(reply);
     }
+    free_sub_list(banned);
     return (0);
 }

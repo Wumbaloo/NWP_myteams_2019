@@ -6,6 +6,7 @@
 */
 
 #include <stdio.h>
+#include "prototypes.h"
 #include "structs.h"
 
 void save_sub_list(char *list_type, sub_list_t *sub_list, int file)
@@ -38,15 +39,20 @@ void save_users(myteams_t *teams, int file)
 {
     client_t *tmp = teams->client_head;
     char uuid[36];
+    sub_list_t *banned = NULL;
 
     while (tmp) {
-        uuid_unparse(tmp->user_uuid, uuid);
-        dprintf(file, "USER \"%s\" \"%s\" ", tmp->user_name, uuid);
-        save_sub_list("TEAM_SUB", tmp->team_tab, file);
-        save_sub_list("CHANNEL_SUB", tmp->channel_tab, file);
-        save_sub_list("THREAD_SUB", tmp->channel_tab, file);
-        dprintf(file, "\n");
-        save_private_messages(tmp->message_head, file, uuid);
+        if (!uuid_is_null(tmp->user_uuid) && !is_banned(banned, tmp->user_uuid)) {
+            uuid_unparse(tmp->user_uuid, uuid);
+            dprintf(file, "USER \"%s\" \"%s\" ", tmp->user_name, uuid);
+            save_sub_list("TEAM_SUB", tmp->team_tab, file);
+            save_sub_list("CHANNEL_SUB", tmp->channel_tab, file);
+            save_sub_list("THREAD_SUB", tmp->channel_tab, file);
+            dprintf(file, "\n");
+            save_private_messages(tmp->message_head, file, uuid);
+            insert_in_sub_list(&banned, tmp->user_uuid);
+        }
         tmp = tmp->next;
     }
+    free_sub_list(banned);
 }

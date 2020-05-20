@@ -189,5 +189,6 @@ void free_comments_list(comment_t *head);
 void free_threads_list(thread_t *head);
 void free_channels_list(channel_t *head);
 void free_teams_list(team_t *head);
+void free_sub_list(sub_list_t *list);
 
 #endif
