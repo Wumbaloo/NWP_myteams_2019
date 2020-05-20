@@ -27,6 +27,7 @@ int not_the_first_connection(myteams_t *teams, client_t *client, char *username)
         duplicate_client(temp, client);
     uuid_unparse(temp->user_uuid, uuid);
     server_event_user_logged_in(uuid);
+    broadcast_login(teams->client_head, uuid, client->user_name);
     return (0);
 }
 
