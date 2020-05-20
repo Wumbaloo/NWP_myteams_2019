@@ -54,7 +54,7 @@ void load_user(myteams_t *teams, char **array)
     uuid_copy(client->user_uuid, uuid);
     re_subscribe(array, client);
     client->fd = -1;
-    server_event_user_loaded(array[4], client->user_name);
+    server_event_user_loaded(array[1], client->user_name);
 }
 
 void load_private_message(myteams_t *teams, char **array)

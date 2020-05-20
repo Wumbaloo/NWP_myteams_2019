@@ -66,6 +66,22 @@ void connection_received(myteams_t *teams)
     }
 }
 
+void logout_stuff(client_t *client, myteams_t *teams)
+{
+    close(client->fd);
+    teams->clients[teams->act_idx] = 0;
+    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
+        remove_client(teams->client_head, client->fd);
+    else {
+        client->is_connected = false;
+        uuid_clear(client->team_chosen);
+        uuid_clear(client->channel_chosen);
+        uuid_clear(client->thread_chosen);
+        client->depth = UNDEFINED;
+        client->fd = -1;
+    }
+}
+
 void check_for_instructions(myteams_t *teams)
 {
     int act_fd;
@@ -77,8 +93,11 @@ void check_for_instructions(myteams_t *teams)
             teams->act_idx = i;
             input = read_from_client(act_fd);
             if (!input) {
+                printf("Oh shit it's closing\n");
                 close(act_fd);
                 teams->clients[i] = 0;
+                logout_stuff(get_client_by_fd(teams->client_head,
+                    act_fd), teams);
             } else
                 manage_command(teams, get_client_by_fd(teams->client_head,
                     act_fd), input);
