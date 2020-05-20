@@ -80,10 +80,9 @@ int logout_cmd(myteams_t *teams, client_t *client,
     memset(name, '\0', DEFAULT_NAME_LENGTH + 1);
     for (int i = 0; client->user_name[i] && i < DEFAULT_NAME_LENGTH; i++)
         name[i] = client->user_name[i];
-    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1) {
+    broadcast_logout(teams->client_head, uuid, name, client->fd);
+    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
         remove_client(teams->client_head, client->fd);
-        printf("Removed duplicated client (n = %d)\n", nbr_duplicates(teams->client_head, client->user_uuid));
-    }
     else {
         client->is_connected = false;
         uuid_clear(client->team_chosen);
@@ -93,6 +92,5 @@ int logout_cmd(myteams_t *teams, client_t *client,
         client->fd = -1;
     }
     server_event_user_logged_out(uuid);
-    broadcast_logout(teams->client_head, uuid, name, client->fd);
     return (0);
 }

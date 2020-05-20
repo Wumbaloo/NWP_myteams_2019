@@ -101,7 +101,6 @@ void check_for_instructions(myteams_t *teams);
 int manage_connection(myteams_t *teams, int fd, char *buffer);
 
 //Clients linked-list
-int nbr_clients(client_t *head);
 client_t *get_client_by_fd(client_t *head, int fd);
 client_t *get_client_by_uuid(client_t *head, uuid_t uuid);
 client_t *get_client_by_username(client_t *head, char *username);

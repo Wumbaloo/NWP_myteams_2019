@@ -43,6 +43,7 @@ void remove_client(client_t *first, int fd)
         return;
     if (copy != NULL && copy->fd == fd) {
         first = copy->next;
+        free_client(copy);
         free(copy);
         return;
     }
