@@ -62,7 +62,6 @@ void ok_logout_and_close(myteams_t *teams, client_t *client, char *uuid)
         dprintf(client->fd, "%s\r\n", reply);
         free(reply);
         close(client->fd);
-        printf("Closing %s\n", client->user_name);
         teams->clients[teams->act_idx] = 0;
     }
 }
