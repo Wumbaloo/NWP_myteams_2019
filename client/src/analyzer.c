@@ -32,6 +32,7 @@ int analyze_log(log_t *head, char *buffer)
         str = strtok(NULL, "\r\n");
         for (int i = 0; split_array[i]; i++)
             free(split_array[i]);
+        free(split_array);
     }
     return (result);
 }

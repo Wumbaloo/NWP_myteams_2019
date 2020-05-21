@@ -49,6 +49,7 @@ int is_server_readable(char *buffer, int sockfd, fd_set *readset,
         result = analyze_log(log_head, buffer);
         if (result < 0)
             printf("%s", buffer);
+        free(buffer);
     }
     return (result);
 }
