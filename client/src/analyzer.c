@@ -19,8 +19,6 @@ int analyze_log(log_t *head, char *buffer)
     char *str = NULL;
     int result = 0;
 
-    if (!buffer)
-        return (1);
     for (str = strtok(buffer, "\r\n"); str;) {
         str = clean_string(str);
         split_array = (strstr(str, "\"") ? parse_arguments(buffer, '"')

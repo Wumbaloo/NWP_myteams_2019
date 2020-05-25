@@ -42,7 +42,8 @@ void save_users(myteams_t *teams, int file)
     sub_list_t *banned = NULL;
 
     while (tmp) {
-        if (!uuid_is_null(tmp->user_uuid) && !is_banned(banned, tmp->user_uuid)) {
+        if (!uuid_is_null(tmp->user_uuid) &&
+            !is_banned(banned, tmp->user_uuid)) {
             uuid_unparse(tmp->user_uuid, uuid);
             dprintf(file, "USER \"%s\" \"%s\" ", tmp->user_name, uuid);
             save_sub_list("TEAM_SUB", tmp->team_tab, file);
