@@ -60,12 +60,31 @@ void duplicate_client(client_t *src, client_t *dest)
         copy->timestamp = temp->timestamp;
 }
 
-void send_next_reply(myteams_t *team, int fd)
+void proceed_logout(myteams_t *teams, client_t *client)
 {
-    client_t *client = get_client_by_fd(team->client_head, fd);
+    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
+        remove_client(teams->client_head, client->fd);
+    else {
+        client->is_connected = false;
+        uuid_clear(client->team_chosen);
+        uuid_clear(client->channel_chosen);
+        uuid_clear(client->thread_chosen);
+        client->depth = UNDEFINED;
+        client->fd = -1;
+    }
+    close(client->fd);
+    teams->clients[teams->act_idx] = 0;
+}
+
+void send_next_reply(myteams_t *teams, int fd)
+{
+    client_t *client = get_client_by_fd(teams->client_head, fd);
 
     if (client && client->replies) {
         dprintf(fd, "%s\r\n", client->replies->reply);
+        if (strncmp(client->replies->reply, DISCONNECTED,
+            strlen(DISCONNECTED)) == 0)
+            proceed_logout(teams, client);
         remove_reply(&client->replies);
     }
 }

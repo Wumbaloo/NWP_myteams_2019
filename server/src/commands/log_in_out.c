@@ -27,7 +27,7 @@ int not_the_first_connection(myteams_t *teams, client_t *client, char *username)
         duplicate_client(temp, client);
     uuid_unparse(temp->user_uuid, uuid);
     server_event_user_logged_in(uuid);
-    broadcast_login(teams->client_head, uuid, client->user_name);
+    broadcast_login(teams->client_head, uuid, temp->user_name);
     return (0);
 }
 
@@ -53,19 +53,6 @@ int login_cmd(myteams_t *teams, client_t *client, char **input)
     return (0);
 }
 
-void ok_logout_and_close(myteams_t *teams, client_t *client, char *uuid)
-{
-    char *reply;
-
-    if (FD_ISSET(client->fd, &teams->writeset)) {
-        reply = format_response(3, DISCONNECTED, uuid, client->user_name);
-        dprintf(client->fd, "%s\r\n", reply);
-        free(reply);
-        close(client->fd);
-        teams->clients[teams->act_idx] = 0;
-    }
-}
-
 int logout_cmd(myteams_t *teams, client_t *client,
     __attribute__((unused)) char **input)
 {
@@ -75,21 +62,10 @@ int logout_cmd(myteams_t *teams, client_t *client,
     if (!client->is_connected)
         return (reply_unauthorized(client));
     uuid_unparse(client->user_uuid, uuid);
-    ok_logout_and_close(teams, client, uuid);
     memset(name, '\0', DEFAULT_NAME_LENGTH + 1);
     for (int i = 0; client->user_name[i] && i < DEFAULT_NAME_LENGTH; i++)
         name[i] = client->user_name[i];
     broadcast_logout(teams->client_head, uuid, name, client->fd);
-    if (nbr_duplicates(teams->client_head, client->user_uuid) > 1)
-        remove_client(teams->client_head, client->fd);
-    else {
-        client->is_connected = false;
-        uuid_clear(client->team_chosen);
-        uuid_clear(client->channel_chosen);
-        uuid_clear(client->thread_chosen);
-        client->depth = UNDEFINED;
-        client->fd = -1;
-    }
     server_event_user_logged_out(uuid);
     return (0);
 }

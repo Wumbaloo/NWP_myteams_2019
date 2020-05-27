@@ -96,5 +96,4 @@ void manage_client(log_t *log_head, int sockfd)
         else if (input_return == 1)
             break;
     }
-    free(input);
 }
