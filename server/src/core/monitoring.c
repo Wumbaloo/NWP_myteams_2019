@@ -28,6 +28,8 @@ void reset_update_set(myteams_t *teams)
 
     FD_ZERO(&teams->readset);
     FD_ZERO(&teams->writeset);
+    FD_CLR(teams->server->control_socket, &teams->readset);
+    FD_CLR(teams->server->control_socket, &teams->writeset);
     FD_SET(teams->server->control_socket, &teams->readset);
     teams->maxfd = teams->server->control_socket;
     for (int i = 0; i < CLIENTS_MAX; i++) {

@@ -33,6 +33,8 @@ void reset_update_set(int socket, fd_set *readset, fd_set *writeset)
 {
     FD_ZERO(readset);
     FD_ZERO(writeset);
+    FD_CLR(socket, readset);
+    FD_CLR(socket, writeset);
     FD_SET(socket, readset);
     FD_SET(0, readset);
 }
@@ -54,17 +56,20 @@ int is_server_readable(char *buffer, int sockfd, fd_set *readset,
     return (result);
 }
 
-int is_server_writable(char *input, int sockfd, fd_set *readset)
+int is_server_writable(char **input, int sockfd, fd_set *readset)
 {
     int input_return = 0;
 
+    (*input) = NULL;
     if (FD_ISSET(0, readset)) {
-        input_return = get_input(&input);
+        if ((*input))
+            free((*input));
+        input_return = get_input(input);
         if (input_return == 84)
             return (2);
         else if (input_return > 0)
             return (1);
-        dprintf(sockfd, "%s\r\n", input);
+        dprintf(sockfd, "%s\r\n", (*input));
     }
     return (0);
 }
@@ -84,7 +89,8 @@ void manage_client(log_t *log_head, int sockfd)
             return;
         else if (is_server_readable(buffer, sockfd, &readset, log_head) == 1)
             break;
-        input_return = is_server_writable(input, sockfd, &readset);
+        input_return = is_server_writable(&input, sockfd, &readset);
+        free(input);
         if (input_return == 2)
             continue;
         else if (input_return == 1)

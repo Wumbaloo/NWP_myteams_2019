@@ -13,12 +13,14 @@
 int get_input(char **input)
 {
     size_t len = 0;
+    char *buffer = NULL;
 
-    if (*input)
+    if ((*input))
         free(*input);
-    if (getline(&(*input), &len, stdin) == -1)
+    if (getline(&buffer, &len, stdin) == -1)
         return (84);
-    (*input) = clean_string(*input);
+    (*input) = clean_string(buffer);
+    free(buffer);
     return (0);
 }
 
