@@ -14,6 +14,7 @@
 void save(myteams_t *teams)
 {
     int file = open(SAVE_FILE, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    client_t *client = teams->client_head;
 
     if (file == -1) {
         printf("Error opening the file\n");
@@ -25,4 +26,8 @@ void save(myteams_t *teams)
     printf("Writing finished.\n");
     close(file);
     printf("File closed.\n");
+    while (client) {
+        logout_cmd(teams, client, NULL);
+        client = client->next;
+    }
 }
