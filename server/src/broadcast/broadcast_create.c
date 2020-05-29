@@ -68,9 +68,9 @@ void broadcast_thread_created(myteams_t *teams, client_t *client,
     uuid_unparse(client->user_uuid, user_uuid);
     uuid_unparse(thread->thread_uuid, thread_uuid);
     sprintf(timestamp, "%ld", thread->timestamp);
-    reply_specific = format_response(5, SUCCESS_CREATED_THREAD, thread_uuid,
+    reply_specific = format_response(6, SUCCESS_CREATED_THREAD, thread_uuid,
         user_uuid, timestamp, thread->thread_title, thread->thread_msg);
-    reply_user = format_response(5, THREAD_CREATED, thread_uuid,
+    reply_user = format_response(6, THREAD_CREATED, thread_uuid,
         user_uuid, timestamp, thread->thread_title, thread->thread_msg);
     for (; copy; copy = copy->next)
         if (copy == client)
