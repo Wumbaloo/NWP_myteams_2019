@@ -70,7 +70,7 @@ int create_channel(myteams_t *teams, client_t *client, char **input)
         return (bad_cmd_parameters(client, input[0]));
     team = get_team_by_uuid(teams->team_head, client->team_chosen);
     channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
-    if (!create_channel_next(&thread, channel, client, input))
+    if (create_channel_next(&thread, channel, client, input))
         return (reply_resource_already_exists(client));
     uuid_unparse(channel->channel_uuid, channel_uuid);
     uuid_unparse(thread->thread_uuid, thread_uuid);

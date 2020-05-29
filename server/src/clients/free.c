@@ -32,7 +32,6 @@ void free_replies(replies_t *head)
 
 void free_client(client_t *client)
 {
-
     free_sub_list(client->team_tab);
     free_sub_list(client->channel_tab);
     free_sub_list(client->thread_tab);
