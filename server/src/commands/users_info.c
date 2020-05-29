@@ -45,7 +45,8 @@ int users_cmd(myteams_t *teams, client_t *client,
     else if (!copy)
         return (0);
     for (; copy; copy = copy->next) {
-        if (already_subscribed(banned, copy->user_uuid))
+        if (already_subscribed(banned, copy->user_uuid) ||
+        uuid_is_null(copy->user_uuid))
             continue;
         uuid_unparse(copy->user_uuid, uuid);
         reply = format_response(4, LIST_USERS, uuid, copy->user_name,
