@@ -15,7 +15,8 @@ void broadcast_login(client_t *head, char *uuid, char *user_name)
     char *reply = format_response(3, CONNECTED, uuid, user_name);
 
     for (; copy; copy = copy->next)
-        insert_reply(&copy->replies, reply);
+        if (copy->is_connected == true)
+            insert_reply(&copy->replies, reply);
     free(reply);
 }
 
