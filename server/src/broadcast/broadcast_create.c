@@ -83,10 +83,8 @@ void broadcast_thread_created(myteams_t *teams, client_t *client,
             continue;
         if (copy == client)
             insert_reply(&copy->replies, reply_specific);
-        else {
+        else
             insert_reply(&copy->replies, reply_user);
-            printf("Sent reply_user thread created\n");
-        }
     }
     free(reply_specific);
     free(reply_user);
@@ -100,10 +98,8 @@ void insert_comment_replies(client_t *copy, client_t *client, char *reply_user,
             continue;
         if (copy == client)
             insert_reply(&copy->replies, reply_specific);
-        else if (already_subscribed(copy->thread_tab, client->thread_chosen)) {
-            printf("Notification received : %s\n", client->thread_chosen);
+        else if (already_subscribed(copy->thread_tab, client->thread_chosen))
             insert_reply(&copy->replies, reply_user);
-        }
     }
     free(reply_user);
     free(reply_specific);
