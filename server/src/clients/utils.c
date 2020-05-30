@@ -81,7 +81,6 @@ void send_next_reply(myteams_t *teams, int fd)
     client_t *client = get_client_by_fd(teams->client_head, fd);
 
     if (client && client->replies && client->is_connected) {
-        printf("Sending %s\n", client->replies->reply);
         dprintf(fd, "%s\r\n", client->replies->reply);
         if (strncmp(client->replies->reply, DISCONNECTED,
             strlen(DISCONNECTED)) == 0)
