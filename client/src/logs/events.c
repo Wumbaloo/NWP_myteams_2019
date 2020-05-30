@@ -40,7 +40,7 @@ int create_thread_event_trigger(char **array)
 
 int create_reply_event_trigger(char **array)
 {
-    if (get_array_length(array) != 4)
+    if (get_array_length(array) != 5)
         return (0);
     client_event_thread_message_received(array[1], array[2], array[3],
         array[4]);
