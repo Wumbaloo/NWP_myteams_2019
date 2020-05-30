@@ -17,7 +17,7 @@ thread_t *get_thread_by_title(thread_t *head, char *name)
 
     while (copy && strcmp(copy->thread_title, name))
         copy = copy->next;
-    return copy;
+    return (copy);
 }
 
 thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid)
@@ -26,7 +26,7 @@ thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid)
 
     while (copy && uuid_compare(copy->thread_uuid, uuid))
         copy = copy->next;
-    return copy;
+    return (copy);
 }
 
 thread_t *new_thread(char *title, char *content, uuid_t author)
@@ -42,18 +42,19 @@ thread_t *new_thread(char *title, char *content, uuid_t author)
     thread->thread_msg = strdup(content);
     thread->comment_head = NULL;
     thread->next = NULL;
-    return thread;
+    return (thread);
 }
 
-void insert_thread(thread_t **first, char *title, char *content, uuid_t author)
+thread_t *insert_thread(thread_t **first, char *title, char *content, uuid_t author)
 {
     thread_t *copy = *first;
     thread_t *thread = new_thread(title, content, author);
 
     if (!*first) {
         *first = thread;
-        return;
+        return (thread);
     }
     for (; copy->next; copy = copy->next);
     copy->next = thread;
+    return (thread);
 }

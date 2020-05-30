@@ -20,26 +20,30 @@ sub_list_t *new_in_sublist(uuid_t uuid)
     return new;
 }
 
-void remove_in_sub_list(sub_list_t *first, uuid_t uuid)
+#include <stdio.h>
+int remove_in_sub_list(sub_list_t *first, uuid_t uuid)
 {
     sub_list_t *copy = first;
     sub_list_t *tmp = NULL;
 
     if (!first)
-        return;
+        return (0);
     if (copy != NULL && !uuid_compare(uuid, copy->uuid)) {
         first = copy->next;
         free(copy);
-        return;
+        return (0);
     }
     while (copy != NULL && uuid_compare(uuid, copy->uuid)) {
         tmp = copy;
         copy = copy->next;
     }
     if (!copy)
-        return;
+        return (0);
     tmp->next = copy->next;
+    if (first == tmp)
+        return (1);
     free(copy);
+    return (0);
 }
 
 void insert_in_sub_list(sub_list_t **first, uuid_t uuid)

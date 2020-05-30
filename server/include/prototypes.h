@@ -50,7 +50,7 @@ int use_cmd(myteams_t *teams, client_t *client, char **input);
 bool already_subscribed(sub_list_t *head, uuid_t team);
 bool already_subscribed(sub_list_t *head, uuid_t team);
 void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team);
-void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team);
+void subscribe_to_subchannels(sub_list_t **channel_list, team_t *team);
 int create_team(myteams_t *teams, client_t *client, char **input);
 int create_channel(myteams_t *teams, client_t *client, char **input);
 
@@ -73,7 +73,7 @@ void perror_exit(char *err, int exit_code);
 void console_log(client_t *from, char *msg, log_type type, char *custom_color);
 void free_array(char **arr);
 char **my_str_to_word_array(char *av, char separate);
-int uuid_tab_size(uuid_t *array);
+int uuid_tab_size(sub_list_t *tab);
 char *format_response(size_t nbr, ...);
 int reply_unauthorized(client_t *client);
 int reply_resource_already_exists(client_t *client);
@@ -117,7 +117,7 @@ message_t *get_message(message_t *messages, uuid_t sender, uuid_t receiver,
 
 //Subscription linked-list
 void insert_in_sub_list(sub_list_t **first, uuid_t uuid);
-void remove_in_sub_list(sub_list_t *first, uuid_t uuid);
+int remove_in_sub_list(sub_list_t *first, uuid_t uuid);
 
 //Teams linked-list
 void insert_team(team_t **first, char name[DEFAULT_NAME_LENGTH],
@@ -132,7 +132,7 @@ channel_t *get_channel_by_uuid(channel_t *head, uuid_t uuid);
 channel_t *get_channel_by_name(channel_t *head, char *name);
 
 //Thread linked-list
-void insert_thread(thread_t **first, char *title, char *content, uuid_t author);
+thread_t *insert_thread(thread_t **first, char *title, char *content, uuid_t author);
 thread_t *new_thread(char *title, char *content, uuid_t author);
 thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid);
 thread_t *get_thread_by_title(thread_t *head, char *name);
@@ -154,7 +154,7 @@ void broadcast_team_created(myteams_t *teams, client_t *client, team_t *team);
 void broadcast_channel_created(myteams_t *teams, client_t *client,
     channel_t *channel);
 void broadcast_thread_created(myteams_t *teams, client_t *client,
-    thread_t *thread);
+    thread_t *thread, uuid_t channel_uuid);
 void broadcast_comment_created(myteams_t *teams, client_t *client,
     comment_t *comment);
 void broadcast_unsubscription(client_t *client, char *team_uuid);

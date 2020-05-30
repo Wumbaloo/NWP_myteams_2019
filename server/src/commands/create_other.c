@@ -52,8 +52,8 @@ int create_channel_next(thread_t **thread, channel_t *channel,
     (*thread) = get_thread_by_title(channel->thread_head, input[1]);
     if ((*thread))
         return (1);
-    insert_thread(&channel->thread_head, input[1], input[2], client->user_uuid);
-    (*thread) = new_thread(input[1], input[2], client->user_uuid);
+    (*thread) = insert_thread(&channel->thread_head, input[1], input[2],
+        client->user_uuid);
     insert_in_sub_list(&client->thread_tab, (*thread)->thread_uuid);
     return (0);
 }

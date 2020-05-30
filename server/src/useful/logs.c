@@ -60,6 +60,6 @@ void console_log(client_t *from, char *msg, log_type type, char *custom_color)
             return;
         sprintf(new_msg, "\033%s%s\033[0:33m.", color, msg);
     }
-    printf("\033[0;36m[LOG]\033[0m %s\r\n", new_msg);
+    printf("\033[0;36m[LOG]\033[0m %s\033[0m\r\n", new_msg);
     free(new_msg);
 }

@@ -46,7 +46,7 @@ int help_cmd(myteams_t *teams, client_t *client, char **arg)
 void create_others_commands(command_t **head)
 {
     command_t *subscribed = create_command("SUBSCRIBED", 1, subscribed_cmd);
-    command_t *unsubscribe = create_command("SUBSCRIBE", 1, unsubscribe_cmd);
+    command_t *unsubscribe = create_command("UNSUBSCRIBE", 1, unsubscribe_cmd);
     command_t *use = create_command("USE", 1, use_cmd);
     command_t *create = create_command("CREATE", 1, create_cmd);
     command_t *list = create_command("LIST", 1, list_cmd);

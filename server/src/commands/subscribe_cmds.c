@@ -17,9 +17,14 @@ void unsubscribe_cmd_sequel(myteams_t *teams, client_t *client, uuid_t temp,
 
     for (; client_tmp; client_tmp = client_tmp->next) {
         if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
-            remove_in_sub_list(client_tmp->team_tab, temp);
+            if (remove_in_sub_list(client_tmp->team_tab, temp))
+                client_tmp->team_tab = NULL;
             unsubscribe_from_sub_channels(client_tmp->channel_tab,
                 to_unsubscribe);
+            client->depth = UNDEFINED;
+            uuid_clear(client->team_chosen);
+            uuid_clear(client->channel_chosen);
+            uuid_clear(client->thread_chosen);
         }
     }
 }
@@ -54,7 +59,7 @@ int uuid_tab_size(sub_list_t *tab)
     int i = 0;
     for (; copy; copy = copy->next)
         i++;
-    return i;
+    return (i);
 }
 
 void subscribe_cmd_sequel(myteams_t *teams, client_t *client, uuid_t temp,

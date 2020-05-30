@@ -33,21 +33,13 @@ int create_undefined(myteams_t *teams, client_t *client, char **input)
     return (0);
 }
 
-int create_thread(myteams_t *teams, client_t *client, char **input)
+void create_thread_sequel(myteams_t *teams, client_t *client,
+    thread_t *thread, char **input)
 {
-    team_t *team;
-    channel_t *channel;
-    thread_t *thread;
-    comment_t *comment;
     char thread_uuid[36];
     char user_uuid[36];
+    comment_t *comment;
 
-    if (double_array_size(input) != 2)
-        return (bad_cmd_parameters(client, input[0]));
-    team = get_team_by_uuid(teams->team_head, client->team_chosen);
-    channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
-    thread = get_thread_by_uuid(channel->thread_head, client->thread_chosen);
-    insert_comment(&thread->comment_head, input[1], client->user_uuid);
     comment = new_comment(input[1], client->user_uuid);
     if (!already_subscribed(client->thread_tab, thread->thread_uuid)) {
         insert_in_sub_list(&client->thread_tab, thread->thread_uuid);
@@ -57,6 +49,21 @@ int create_thread(myteams_t *teams, client_t *client, char **input)
     uuid_unparse(client->user_uuid, user_uuid);
     server_event_thread_new_message(thread_uuid, user_uuid, input[1]);
     broadcast_comment_created(teams, client, comment);
+}
+
+int create_thread(myteams_t *teams, client_t *client, char **input)
+{
+    team_t *team;
+    channel_t *channel;
+    thread_t *thread;
+
+    if (double_array_size(input) != 2)
+        return (bad_cmd_parameters(client, input[0]));
+    team = get_team_by_uuid(teams->team_head, client->team_chosen);
+    channel = get_channel_by_uuid(team->channel_head, client->channel_chosen);
+    thread = get_thread_by_uuid(channel->thread_head, client->thread_chosen);
+    insert_comment(&thread->comment_head, input[1], client->user_uuid);
+    create_thread_sequel(teams, client, thread, input);
     return (0);
 }
 
