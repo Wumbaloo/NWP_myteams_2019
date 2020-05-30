@@ -5,6 +5,7 @@
 ** Created by Anthony ANICOTTE,
 */
 
+#include <stdio.h>
 #include "logging_server.h"
 #include "structs.h"
 #include "prototypes.h"
@@ -29,10 +30,12 @@ void unsubscribe_from_sub_channels(sub_list_t *channel_list, team_t *team)
         remove_in_sub_list(channel_list, copy->channel_uuid);
 }
 
-void subscribe_to_subchannels(sub_list_t *channel_list, team_t *team)
+void subscribe_to_subchannels(sub_list_t **channel_list, team_t *team)
 {
     channel_t *copy = team->channel_head;
 
-    for (; copy; copy = copy->next)
-        insert_in_sub_list(&channel_list, copy->channel_uuid);
+    for (; copy; copy = copy->next) {
+        insert_in_sub_list(channel_list, copy->channel_uuid);
+        printf("Inserted a channel to the list\n");
+    }
 }

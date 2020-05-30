@@ -29,6 +29,8 @@ int use_team(myteams_t *teams, client_t *client, char **input)
     team = get_team_by_uuid(teams->team_head, uuid);
     if (!team)
         return (reply_unknown_team(client, input[1]));
+    else if (!already_subscribed(client->team_tab, team->team_uuid))
+        return (reply_unauthorized(client));
     uuid_copy(client->team_chosen, uuid);
     uuid_clear(client->channel_chosen);
     uuid_clear(client->thread_chosen);

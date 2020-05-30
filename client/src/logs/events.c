@@ -30,7 +30,7 @@ int create_thread_event_trigger(char **array)
     long int timestamp;
     char *endptr = NULL;
 
-    if (get_array_length(array) != 5)
+    if (get_array_length(array) != 6)
         return (0);
     timestamp = strtol(array[3], &endptr, 10);
     client_event_thread_created(array[1], array[2], (time_t) timestamp,

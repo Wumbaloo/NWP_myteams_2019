@@ -5,6 +5,7 @@
 ** Created by Anthony ANICOTTE,
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "prototypes.h"
@@ -23,7 +24,7 @@ thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid)
 {
     thread_t *copy = head;
 
-    while (copy && uuid_compare(copy->thread_uuid, uuid) == 0)
+    while (copy && uuid_compare(copy->thread_uuid, uuid))
         copy = copy->next;
     return copy;
 }

@@ -23,6 +23,8 @@ void broadcast_team_created(myteams_t *teams, client_t *client, team_t *team)
     reply_specific = format_response(4, SUCCESS_CREATED_TEAM, uuid,
         team->team_name, team->team_desc);
     for (; copy; copy = copy->next) {
+        if (copy->is_connected == false)
+            continue;
         if (copy == client)
             insert_reply(&copy->replies, reply_specific);
         else
@@ -46,6 +48,9 @@ void broadcast_channel_created(myteams_t *teams, client_t *client,
     reply_specific = format_response(4, SUCCESS_CREATED_CHANNEL, uuid,
         channel->channel_name, channel->channel_desc);
     for (; copy; copy = copy->next) {
+        if (copy->is_connected == false ||
+        !already_subscribed(copy->channel_tab, channel->channel_uuid))
+            continue;
         if (copy == client)
             insert_reply(&copy->replies, reply_specific);
         else
@@ -56,7 +61,7 @@ void broadcast_channel_created(myteams_t *teams, client_t *client,
 }
 
 void broadcast_thread_created(myteams_t *teams, client_t *client,
-    thread_t *thread)
+    thread_t *thread, uuid_t channel_uuid)
 {
     client_t *copy = teams->client_head;
     char *reply_user;
@@ -72,11 +77,17 @@ void broadcast_thread_created(myteams_t *teams, client_t *client,
         user_uuid, timestamp, thread->thread_title, thread->thread_msg);
     reply_user = format_response(6, THREAD_CREATED, thread_uuid,
         user_uuid, timestamp, thread->thread_title, thread->thread_msg);
-    for (; copy; copy = copy->next)
+    for (; copy; copy = copy->next) {
+        if (copy->is_connected == false ||
+        !already_subscribed(copy->channel_tab, channel_uuid))
+            continue;
         if (copy == client)
             insert_reply(&copy->replies, reply_specific);
-        else if (already_subscribed(copy->channel_tab, client->channel_chosen))
+        else {
             insert_reply(&copy->replies, reply_user);
+            printf("Sent reply_user thread created\n");
+        }
+    }
     free(reply_specific);
     free(reply_user);
 }
@@ -85,10 +96,14 @@ void insert_comment_replies(client_t *copy, client_t *client, char *reply_user,
     char *reply_specific)
 {
     for (; copy; copy = copy->next) {
+        if (copy->is_connected == false)
+            continue;
         if (copy == client)
             insert_reply(&copy->replies, reply_specific);
-        else if (already_subscribed(copy->thread_tab, client->thread_chosen))
+        else if (already_subscribed(copy->thread_tab, client->thread_chosen)) {
+            printf("Notification received : %s\n", client->thread_chosen);
             insert_reply(&copy->replies, reply_user);
+        }
     }
     free(reply_user);
     free(reply_specific);

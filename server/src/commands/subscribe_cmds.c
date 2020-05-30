@@ -48,6 +48,15 @@ int unsubscribe_cmd(myteams_t *teams, client_t *client, char **input)
     return (0);
 }
 
+int uuid_tab_size(sub_list_t *tab)
+{
+    sub_list_t *copy = tab;
+    int i = 0;
+    for (; copy; copy = copy->next)
+        i++;
+    return i;
+}
+
 void subscribe_cmd_sequel(myteams_t *teams, client_t *client, uuid_t temp,
     team_t *to_subscribe)
 {
@@ -56,7 +65,8 @@ void subscribe_cmd_sequel(myteams_t *teams, client_t *client, uuid_t temp,
     for (; client_tmp; client_tmp = client_tmp->next) {
         if (uuid_compare(client->user_uuid, client_tmp->user_uuid) == 0) {
             insert_in_sub_list(&client_tmp->team_tab, temp);
-            subscribe_to_subchannels(client->channel_tab, to_subscribe);
+            subscribe_to_subchannels(&client->channel_tab, to_subscribe);
+            printf("Client subscribed to %d channels\n", uuid_tab_size(client->channel_tab));
         }
     }
 }

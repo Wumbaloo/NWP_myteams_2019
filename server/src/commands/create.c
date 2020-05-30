@@ -27,7 +27,7 @@ int create_undefined(myteams_t *teams, client_t *client, char **input)
     uuid_unparse(team->team_uuid, uuid);
     uuid_unparse(client->user_uuid, user_uuid);
     insert_in_sub_list(&client->team_tab, team->team_uuid);
-    subscribe_to_subchannels(client->channel_tab, team);
+    subscribe_to_subchannels(&client->channel_tab, team);
     server_event_team_created(uuid, team->team_name, user_uuid);
     broadcast_team_created(teams, client, team);
     return (0);
@@ -49,12 +49,14 @@ int create_thread(myteams_t *teams, client_t *client, char **input)
     thread = get_thread_by_uuid(channel->thread_head, client->thread_chosen);
     insert_comment(&thread->comment_head, input[1], client->user_uuid);
     comment = new_comment(input[1], client->user_uuid);
-    if (!already_subscribed(client->thread_tab, thread->thread_uuid))
+    if (!already_subscribed(client->thread_tab, thread->thread_uuid)) {
         insert_in_sub_list(&client->thread_tab, thread->thread_uuid);
+        printf("Added the thread uuid to the client\n");
+    }
     uuid_unparse(thread->thread_uuid, thread_uuid);
     uuid_unparse(client->user_uuid, user_uuid);
-    broadcast_comment_created(teams, client, comment);
     server_event_thread_new_message(thread_uuid, user_uuid, input[1]);
+    broadcast_comment_created(teams, client, comment);
     return (0);
 }
 

@@ -48,7 +48,7 @@ void save_users(myteams_t *teams, int file)
             dprintf(file, "USER \"%s\" \"%s\" ", tmp->user_name, uuid);
             save_sub_list("TEAM_SUB", tmp->team_tab, file);
             save_sub_list("CHANNEL_SUB", tmp->channel_tab, file);
-            save_sub_list("THREAD_SUB", tmp->channel_tab, file);
+            save_sub_list("THREAD_SUB", tmp->thread_tab, file);
             dprintf(file, "\n");
             save_private_messages(tmp->message_head, file, uuid);
             insert_in_sub_list(&banned, tmp->user_uuid);

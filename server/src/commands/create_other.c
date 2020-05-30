@@ -16,7 +16,8 @@ void subscribe_all_clients(myteams_t *teams, team_t *team, channel_t *channel)
     client_t *copy = teams->client_head;
 
     for (; copy; copy = copy->next) {
-        if (!already_subscribed(copy->team_tab, team->team_uuid))
+        if (!already_subscribed(copy->team_tab, team->team_uuid) ||
+        already_subscribed(copy->channel_tab, channel->channel_uuid))
             continue;
         insert_in_sub_list(&copy->channel_tab, channel->channel_uuid);
     }
@@ -77,6 +78,6 @@ int create_channel(myteams_t *teams, client_t *client, char **input)
     uuid_unparse(client->user_uuid, user_uuid);
     server_event_thread_created(channel_uuid, thread_uuid,
         user_uuid, thread->thread_msg);
-    broadcast_thread_created(teams, client, thread);
+    broadcast_thread_created(teams, client, thread, channel->channel_uuid);
     return (0);
 }
