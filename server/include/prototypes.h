@@ -132,7 +132,8 @@ channel_t *get_channel_by_uuid(channel_t *head, uuid_t uuid);
 channel_t *get_channel_by_name(channel_t *head, char *name);
 
 //Thread linked-list
-thread_t *insert_thread(thread_t **first, char *title, char *content, uuid_t author);
+thread_t *insert_thread(thread_t **first, char *title, char *content,
+    uuid_t author);
 thread_t *new_thread(char *title, char *content, uuid_t author);
 thread_t *get_thread_by_uuid(thread_t *head, uuid_t uuid);
 thread_t *get_thread_by_title(thread_t *head, char *name);
