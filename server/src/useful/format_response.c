@@ -38,7 +38,7 @@ char *format_response(size_t nbr, ...)
             answer[size++] = ' ';
         buffer = put_char_around(buffer, '\"');
         size += strlen(buffer);
-        answer = realloc(answer, sizeof(char) * (size + (i < nbr - 1 ? 2 : 1)));
+        answer = realloc(answer, sizeof(char)*(size + (i < nbr - 1 ? 2 : 1)));
         if (!answer)
             perror_exit("realloc", 84);
         memcpy(answer + size - strlen(buffer), buffer, strlen(buffer) + 1);

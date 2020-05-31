@@ -45,7 +45,8 @@ thread_t *new_thread(char *title, char *content, uuid_t author)
     return (thread);
 }
 
-thread_t *insert_thread(thread_t **first, char *title, char *content, uuid_t author)
+thread_t *insert_thread(thread_t **first, char *title, char *content,
+    uuid_t author)
 {
     thread_t *copy = *first;
     thread_t *thread = new_thread(title, content, author);

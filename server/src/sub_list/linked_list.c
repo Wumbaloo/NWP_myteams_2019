@@ -20,7 +20,6 @@ sub_list_t *new_in_sublist(uuid_t uuid)
     return new;
 }
 
-#include <stdio.h>
 int remove_in_sub_list(sub_list_t *first, uuid_t uuid)
 {
     sub_list_t *copy = first;

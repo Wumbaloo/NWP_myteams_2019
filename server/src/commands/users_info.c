@@ -32,6 +32,14 @@ int specific_user_cmd(myteams_t *teams, client_t *client, char **input)
     return (0);
 }
 
+void shorten_function(client_t *client, char *reply, sub_list_t **banned,
+    uuid_t uuid)
+{
+    insert_reply(&client->replies, reply);
+    insert_in_sub_list(banned, uuid);
+    free(reply);
+}
+
 int users_cmd(myteams_t *teams, client_t *client,
     __attribute__((unused)) char **input)
 {
@@ -51,9 +59,7 @@ int users_cmd(myteams_t *teams, client_t *client,
         uuid_unparse(copy->user_uuid, uuid);
         reply = format_response(4, LIST_USERS, uuid, copy->user_name,
             copy->is_connected ? "1" : "0");
-        insert_reply(&client->replies, reply);
-        insert_in_sub_list(&banned, copy->user_uuid);
-        free(reply);
+        shorten_function(client, reply, &banned, copy->user_uuid);
     }
     free_sub_list(banned);
     return (0);

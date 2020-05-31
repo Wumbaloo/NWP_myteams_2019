@@ -174,9 +174,14 @@ void load_user(myteams_t *teams, char **array);
 void load_private_message(myteams_t *teams, char **array);
 void analyze_save(myteams_t *teams, char *line);
 int open_save_file(myteams_t *teams);
+
 //Save parser
 char **get_parameters(char *line, char separator);
 char *get_saved_type(char *line);
+
+//Shorten
+void optimize(char *thread_uuid, char *user_uuid, uuid_t client, uuid_t thread);
+void multi_free(char *str_one, char *str_two);
 
 //Free Things
 void free_myteams(myteams_t *myteams);

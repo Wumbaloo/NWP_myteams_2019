@@ -49,7 +49,7 @@ void broadcast_channel_created(myteams_t *teams, client_t *client,
         channel->channel_name, channel->channel_desc);
     for (; copy; copy = copy->next) {
         if (copy->is_connected == false ||
-        !already_subscribed(copy->channel_tab, channel->channel_uuid))
+            !already_subscribed(copy->channel_tab, channel->channel_uuid))
             continue;
         if (copy == client)
             insert_reply(&copy->replies, reply_specific);
@@ -66,28 +66,24 @@ void broadcast_thread_created(myteams_t *teams, client_t *client,
     client_t *copy = teams->client_head;
     char *reply_user;
     char *reply_specific;
-    char thread_uuid[36];
-    char user_uuid[36];
+    char t_uuid[36];
+    char u_uuid[36];
     char timestamp[64];
 
-    uuid_unparse(client->user_uuid, user_uuid);
-    uuid_unparse(thread->thread_uuid, thread_uuid);
+    optimize(&t_uuid[0], &u_uuid[0], client->user_uuid, thread->thread_uuid);
     sprintf(timestamp, "%ld", thread->timestamp);
-    reply_specific = format_response(6, SUCCESS_CREATED_THREAD, thread_uuid,
-        user_uuid, timestamp, thread->thread_title, thread->thread_msg);
-    reply_user = format_response(6, THREAD_CREATED, thread_uuid,
-        user_uuid, timestamp, thread->thread_title, thread->thread_msg);
+    reply_specific = format_response(6, SUCCESS_CREATED_THREAD, t_uuid,
+        u_uuid, timestamp, thread->thread_title, thread->thread_msg);
+    reply_user = format_response(6, THREAD_CREATED, t_uuid,
+        u_uuid, timestamp, thread->thread_title, thread->thread_msg);
     for (; copy; copy = copy->next) {
         if (copy->is_connected == false ||
         !already_subscribed(copy->channel_tab, channel_uuid))
             continue;
-        if (copy == client)
-            insert_reply(&copy->replies, reply_specific);
-        else
-            insert_reply(&copy->replies, reply_user);
+        (copy == client ? insert_reply(&copy->replies, reply_specific) :
+        insert_reply(&copy->replies, reply_user));
     }
-    free(reply_specific);
-    free(reply_user);
+    multi_free(reply_specific, reply_user);
 }
 
 void insert_comment_replies(client_t *copy, client_t *client, char *reply_user,

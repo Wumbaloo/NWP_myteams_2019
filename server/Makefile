@@ -11,6 +11,7 @@ FILES	=	free.c								\
 			broadcast/broadcast_create.c		\
 			broadcast/broadcast_login.c			\
 			broadcast/broadcast_subscription.c	\
+			broadcast/shorten.c					\
 			channels/free.c						\
 			channels/linked_list.c				\
 			clients/free.c						\
