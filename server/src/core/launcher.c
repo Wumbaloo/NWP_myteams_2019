@@ -13,6 +13,7 @@
 int start_teams(myteams_t *teams)
 {
     stop = 0;
+
     while (1) {
         if (stop)
             break;
