@@ -41,10 +41,8 @@ void create_thread_sequel(myteams_t *teams, client_t *client,
     comment_t *comment;
 
     comment = new_comment(input[1], client->user_uuid);
-    if (!already_subscribed(client->thread_tab, thread->thread_uuid)) {
+    if (!already_subscribed(client->thread_tab, thread->thread_uuid))
         insert_in_sub_list(&client->thread_tab, thread->thread_uuid);
-        printf("Added the thread uuid to the client\n");
-    }
     uuid_unparse(thread->thread_uuid, thread_uuid);
     uuid_unparse(client->user_uuid, user_uuid);
     server_event_thread_new_message(thread_uuid, user_uuid, input[1]);
@@ -76,11 +74,9 @@ int create_cmd(myteams_t *teams, client_t *client, char **input)
             create_team(teams, client, input);
             break;
         case CHANNEL:
-            printf("Creating a thread\n");
             create_channel(teams, client, input);
             break;
         case THREAD:
-            printf("Creating a reply\n");
             create_thread(teams, client, input);
             break;
         default:

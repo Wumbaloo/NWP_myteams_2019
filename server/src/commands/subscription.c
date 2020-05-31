@@ -34,8 +34,6 @@ void subscribe_to_subchannels(sub_list_t **channel_list, team_t *team)
 {
     channel_t *copy = team->channel_head;
 
-    for (; copy; copy = copy->next) {
+    for (; copy; copy = copy->next)
         insert_in_sub_list(channel_list, copy->channel_uuid);
-        printf("Inserted a channel to the list\n");
-    }
 }

@@ -18,13 +18,11 @@ int end_use_thread(client_t *client, uuid_t team_uuid, thread_t *thread_head,
     if (uuid_parse(thread_uuid_str, thread_uuid) == -1)
         return (reply_unknown_thread(client, thread_uuid_str));
     thread = get_thread_by_uuid(thread_head, thread_uuid);
-    printf("Ok boomer\n");
     if (!thread)
         return (reply_unknown_thread(client, thread_uuid_str));
     uuid_copy(client->team_chosen, team_uuid);
     uuid_copy(client->thread_chosen, thread_uuid);
     client->depth = THREAD;
-    printf("Successfully switched the thread\n");
     return (0);
 }
 
